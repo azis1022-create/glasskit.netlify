@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi Tools Asik - Liquid Glass Design</title>
+    <title>Tongkrongan Tools - Glassmorphism Edition</title>
     
     <!-- Library Eksternal -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -12,186 +12,326 @@
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
         :root {
-            --accent: #08C159;
+            --accent: #00D2FF;
+            --accent-glow: rgba(0, 210, 255, 0.3);
+            --bg-glass: rgba(18, 24, 38, 0.55);
+            --card-glass: rgba(255, 255, 255, 0.04);
+            --border-glass: rgba(255, 255, 255, 0.15);
         }
 
         * { 
             box-sizing: border-box; 
             margin: 0; 
             padding: 0; 
-            font-family: 'Poppins', sans-serif; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
         }
 
-        @keyframes gradientShift {
+        @keyframes gradientMove {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
         body { 
-            background: linear-gradient(-45deg, #1a2f22, #0d0d0d, #0f1f17, #121212); 
+            background: linear-gradient(-45deg, #0b1329, #101c38, #0a2239, #0d111e); 
             background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            color: #fff; 
+            animation: gradientMove 15s ease infinite;
+            color: #f3f4f6; 
             min-height: 100vh; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            padding: 20px; 
-            transition: background 0.5s ease;
+            padding: 30px 15px; 
         }
 
-        .container { 
-            display: flex; 
-            width: 100%; 
-            max-width: 1000px; 
-            height: 650px; 
-            background: #181818; 
-            border: 1px solid #2a2a2a; 
-            border-radius: 24px; 
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6); 
-            overflow: hidden; 
-            transition: all 0.5s ease;
+        /* MAIN WRAPPER CONTAINER */
+        .app-wrapper {
+            width: 100%;
+            max-width: 950px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            transition: all 0.3s ease;
         }
 
-        .sidebar { 
-            width: 280px; 
-            background: #121212; 
-            border-right: 1px solid #2a2a2a; 
-            padding: 25px 20px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            transition: all 0.5s ease;
+        /* HEADER & TOP CONTROLS */
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-glass);
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
-        .sidebar-top { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            overflow-y: auto; 
-            padding-right: 5px; 
-        }
-
-        .sidebar-top::-webkit-scrollbar { width: 5px; }
-        .sidebar-top::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-
-        .sidebar h2 { 
-            font-size: 1.1rem; 
-            margin-bottom: 5px; 
-            color: var(--accent); 
-            font-weight: 700;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
-
-        .menu-btn { 
-            background: transparent; 
-            border: 1px solid transparent; 
-            padding: 12px 15px; 
-            border-radius: 12px; 
-            color: #b3b3b3; 
-            text-align: left; 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-            font-size: 0.85rem; 
-            font-weight: 600; 
+        .brand-title {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
-        .menu-btn svg {
-            width: 18px;
-            height: 18px;
-            stroke: currentColor;
-            flex-shrink: 0;
+        .brand-title h1 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
 
-        .menu-btn:hover { 
-            background: #222; 
-            color: #fff; 
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .menu-btn.active { 
-            background: rgba(8, 193, 89, 0.15); 
-            border-color: var(--accent); 
-            color: var(--accent); 
+        .glass-badge-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            padding: 8px 14px;
+            border-radius: 12px;
+            color: #d1d5db;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
         }
 
-        .donate-btn { 
-            background: #252525;
-            border: 1px solid #333;
-            padding: 14px 15px; 
-            border-radius: 12px; 
-            color: var(--accent); 
-            text-align: center; 
-            text-decoration: none; 
-            font-weight: 600; 
-            font-size: 0.9rem; 
-            transition: all 0.3s ease; 
+        .glass-badge-btn:hover {
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .customizer-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            padding: 6px 10px;
+            border-radius: 12px;
+        }
+
+        .color-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color-dot:hover { transform: scale(1.2); }
+
+        .donate-outline-btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            padding: 8px 16px;
+            border-radius: 12px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.82rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .donate-outline-btn:hover {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .donate-outline-btn svg { width: 16px; height: 16px; stroke: currentColor; }
+
+        /* GRID CARD MENU NAVIGATION (2 KOLOM) */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+
+        .tool-card {
+            background: var(--card-glass);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 18px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-align: left;
+        }
+
+        .tool-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .tool-card.active {
+            background: rgba(0, 210, 255, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .tool-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-glass);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin-top: 15px; 
+            color: var(--accent);
+            flex-shrink: 0;
+            transition: all 0.3s;
         }
 
-        .donate-btn svg {
-            width: 18px;
-            height: 18px;
-            stroke: currentColor;
+        .tool-card.active .tool-card-icon {
+            background: var(--accent);
+            color: #0b1329;
         }
 
-        .donate-btn:hover { 
-            background: var(--accent); 
-            color: #000;
-            border-color: var(--accent);
-            transform: translateY(-3px); 
+        .tool-card-icon svg { width: 22px; height: 22px; stroke: currentColor; }
+
+        .tool-card-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 2px;
         }
 
-        .content { 
-            flex: 1; 
-            padding: 40px 50px; 
-            overflow-y: auto; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
+        .tool-card-info p {
+            font-size: 0.75rem;
+            color: #9ca3af;
         }
-        
-        .content::-webkit-scrollbar { width: 5px; }
-        .content::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
 
-        .tool-panel { display: none; animation: fadeIn 0.4s ease; }
+        /* WORKSPACE CONTENT AREA */
+        .workspace-panel {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 30px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tool-panel { display: none; }
         .tool-panel.active { display: block; }
         
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(8px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
 
-        .tool-panel h3 { 
-            font-size: 1.8rem; 
-            margin-bottom: 8px; 
-            color: #fff;
+        .panel-header {
+            margin-bottom: 20px;
+        }
+
+        .panel-header h3 {
+            font-size: 1.3rem;
             font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
         }
 
-        .tool-panel p { 
-            font-size: 0.9rem; 
-            margin-bottom: 25px; 
-            color: #999; 
-            line-height: 1.5;
+        .panel-header p {
+            font-size: 0.85rem;
+            color: #9ca3af;
         }
 
+        /* DRAG AND DROP FILE UPLOAD AREA */
+        .dropzone {
+            border: 2px dashed var(--border-glass);
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 18px;
+            padding: 35px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .dropzone:hover, .dropzone.dragover {
+            border-color: var(--accent);
+            background: rgba(0, 210, 255, 0.05);
+            transform: scale(1.005);
+        }
+
+        .dropzone svg {
+            width: 42px;
+            height: 42px;
+            stroke: var(--accent);
+            opacity: 0.85;
+            transition: transform 0.3s;
+        }
+
+        .dropzone:hover svg {
+            transform: translateY(-4px);
+        }
+
+        .dropzone-text {
+            font-size: 0.88rem;
+            color: #d1d5db;
+        }
+
+        .dropzone-text span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .dropzone-sub {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .selected-file-badge {
+            font-size: 0.82rem;
+            color: var(--accent);
+            font-weight: 600;
+            background: rgba(0, 210, 255, 0.12);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--accent);
+            display: inline-block;
+            margin-top: 5px;
+            word-break: break-all;
+        }
+
+        /* INPUTS & CONTROLS */
         .top-left-switch { display: flex; gap: 10px; margin-bottom: 20px; }
         
         .switch-tab { 
-            background: #222; 
-            border: 1px solid #333; 
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid var(--border-glass); 
             padding: 10px 18px; 
-            border-radius: 10px; 
-            color: #b3b3b3; 
+            border-radius: 12px; 
+            color: #9ca3af; 
             font-size: 0.85rem; 
             font-weight: 600; 
             cursor: pointer; 
@@ -201,15 +341,15 @@
         .switch-tab.active { 
             background: var(--accent); 
             border-color: var(--accent); 
-            color: #000;
+            color: #0b1329;
         }
 
-        input[type="text"], input[type="file"], select { 
+        input[type="text"], select { 
             width: 100%; 
             padding: 14px 18px; 
-            background: #222; 
-            border: 1px solid #333; 
-            border-radius: 12px; 
+            background: rgba(255, 255, 255, 0.04); 
+            border: 1px solid var(--border-glass); 
+            border-radius: 14px; 
             color: #fff; 
             margin-bottom: 15px; 
             outline: none; 
@@ -219,220 +359,219 @@
 
         input[type="text"]:focus, select:focus {
             border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
-        select option { background: #222; color: #fff; }
-        
-        /* Custom range slider */
+        select option { background: #101c38; color: #fff; }
+
+        .range-container { 
+            margin-bottom: 20px; 
+            font-size: 0.85rem; 
+            color: #9ca3af; 
+        }
+
         input[type="range"] {
             -webkit-appearance: none;
             width: 100%;
             height: 6px;
-            background: #333;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 5px;
             outline: none;
             margin-top: 10px;
         }
+
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            appearance: none;
             width: 18px;
             height: 18px;
             border-radius: 50%;
             background: var(--accent);
             cursor: pointer;
+            box-shadow: 0 0 10px var(--accent);
         }
 
         .action-btn { 
             background: var(--accent); 
             border: none; 
             padding: 14px 20px; 
-            border-radius: 12px; 
-            color: #000; 
+            border-radius: 14px; 
+            color: #0b1329; 
             font-weight: 700; 
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             cursor: pointer; 
             width: 100%; 
             text-align: center; 
             display: block; 
-            margin-top: 15px; 
+            margin-top: 10px; 
             text-decoration: none; 
             transition: all 0.3s;
         }
 
         .action-btn:hover { 
-            filter: brightness(0.9);
+            filter: brightness(1.1);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(8, 193, 89, 0.3);
+            box-shadow: 0 8px 20px var(--accent-glow);
         }
 
         .status-msg { 
             margin-top: 15px; 
             font-size: 0.85rem; 
             color: var(--accent); 
-            background: rgba(8, 193, 89, 0.1); 
-            padding: 12px; 
-            border-radius: 10px; 
+            background: rgba(0, 210, 255, 0.08); 
+            padding: 12px 16px; 
+            border-radius: 12px; 
             word-break: break-all; 
-            border: 1px dashed rgba(8, 193, 89, 0.3);
+            border: 1px dashed var(--accent);
         }
 
         .preview-box { 
-            background: #222; 
+            background: rgba(255, 255, 255, 0.03); 
             color: #fff; 
             padding: 20px; 
-            border-radius: 12px; 
+            border-radius: 14px; 
             margin-top: 15px; 
             text-align: center; 
-            border: 1px solid #333;
-            transition: all 0.3s;
+            border: 1px solid var(--border-glass);
         }
 
-        .range-container { margin-bottom: 20px; font-size: 0.9rem; color: #b3b3b3; }
-
-        /* Toast Notification */
+        /* TOAST NOTIFICATION */
         #customToast {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: var(--accent);
-            color: #000;
+            color: #0b1329;
             padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease, opacity 0.3s ease;
             opacity: 0;
             z-index: 9999;
         }
 
-        /* ========================================== */
-        /* STYLING LIQUID GLASS MODE                  */
-        /* ========================================== */
-        body.liquid-glass-mode {
-            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1b3b4a) !important;
-            background-size: 400% 400% !important;
-            animation: gradientShift 15s ease infinite !important;
-        }
-        body.liquid-glass-mode .container {
-            background: rgba(25, 25, 35, 0.45) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.18) !important;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
-        }
-        body.liquid-glass-mode .sidebar {
-            background: rgba(15, 15, 22, 0.35) !important;
-            backdrop-filter: blur(15px) !important;
-            -webkit-backdrop-filter: blur(15px) !important;
-            border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
-        }
-        body.liquid-glass-mode input[type="text"], 
-        body.liquid-glass-mode input[type="file"], 
-        body.liquid-glass-mode select {
-            background: rgba(30, 30, 40, 0.5) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
-            backdrop-filter: blur(5px);
-        }
-        body.liquid-glass-mode .preview-box {
-            background: rgba(30, 30, 40, 0.4) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            backdrop-filter: blur(10px);
-        }
-        body.liquid-glass-mode .donate-btn,
-        body.liquid-glass-mode .customizer-box {
-            background: rgba(37, 37, 45, 0.4) !important;
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
-            backdrop-filter: blur(5px);
-        }
-        
-        @media (max-width: 768px) { 
-            .container { flex-direction: column; height: auto; border-radius: 15px; } 
-            .sidebar { width: 100%; padding: 20px; border-right: none; border-bottom: 1px solid #2a2a2a; } 
-            .content { padding: 30px 20px; } 
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 680px) { 
+            .menu-grid { grid-template-columns: 1fr; } 
+            .header-bar { flex-direction: column; align-items: flex-start; }
+            .header-actions { width: 100%; justify-content: space-between; }
+            .app-wrapper { padding: 20px; border-radius: 20px; }
+            .workspace-panel { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="customToast">Pesan notifikasi</div>
+    <div id="customToast">Notifikasi</div>
 
-    <div class="container">
-        <!-- SIDEBAR -->
-        <div class="sidebar">
-            <div class="sidebar-top">
-                <!-- TOMBOL TOGGLE LIQUID GLASS -->
-                <div style="display: flex; justify-content: flex-start; margin-bottom: 5px;">
-                    <button id="glassToggleBtn" onclick="toggleLiquidGlass()" style="background: #1e1e1e; border: 1px solid #333; padding: 6px 12px; border-radius: 8px; color: #b3b3b3; font-size: 0.7rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.3s; width: 100%;">
-                        💎 Glass: <span id="glassStatus" style="color: #ff5555; font-weight: bold;">Mati</span>
-                    </button>
-                </div>
-
-                <!-- THEME CUSTOMIZER (AKSEN WARNA) -->
-                <div class="customizer-box" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; background: #1e1e1e; border: 1px solid #333; padding: 8px 12px; border-radius: 8px;">
-                    <span style="font-size: 0.7rem; color: #b3b3b3; font-weight: 600;">🎨 Tema:</span>
-                    <input type="color" id="accentColorPicker" value="#08C159" onchange="changeAccentColor(this.value)" style="width: 24px; height: 20px; border: none; background: none; cursor: pointer; padding: 0;">
-                    <div style="display: flex; gap: 6px; margin-left: auto;">
-                        <button onclick="changeAccentColor('#08C159')" style="width: 14px; height: 14px; border-radius: 50%; background: #08C159; border: none; cursor: pointer;" title="Hijau"></button>
-                        <button onclick="changeAccentColor('#00f0ff')" style="width: 14px; height: 14px; border-radius: 50%; background: #00f0ff; border: none; cursor: pointer;" title="Cyan"></button>
-                        <button onclick="changeAccentColor('#ff7700')" style="width: 14px; height: 14px; border-radius: 50%; background: #ff7700; border: none; cursor: pointer;" title="Orange"></button>
-                        <button onclick="changeAccentColor('#b026ff')" style="width: 14px; height: 14px; border-radius: 50%; background: #b026ff; border: none; cursor: pointer;" title="Ungu"></button>
-                    </div>
-                </div>
-
-                <h2>🔥 Tongkrongan Tools</h2>
-                
-                <button class="menu-btn active" onclick="switchTool(0)">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                    Kecilin & Ubah Foto
-                </button>
-                <button class="menu-btn" onclick="switchTool(1)">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                    Gepengin PDF
-                </button>
-                <button class="menu-btn" onclick="switchTool(2)">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-                    Sedot MP3 Video
-                </button>
-                <button class="menu-btn" onclick="switchTool(3)">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
-                    Sedot TikTok (No WM)
-                </button>
-                <button class="menu-btn" onclick="switchTool(4)">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                    Mainan QR Code
-                </button>
+    <div class="app-wrapper">
+        
+        <!-- HEADER & TOP CONTROLS -->
+        <div class="header-bar">
+            <div class="brand-title">
+                <h1>⚡ Tongkrongan Tools</h1>
             </div>
-            <div>
-                <!-- Link Saweria -->
-                <a href="https://saweria.co/Weeenkyy" target="_blank" class="donate-btn">
+
+            <div class="header-actions">
+                <button id="glassToggleBtn" class="glass-badge-btn" onclick="toggleLiquidGlass()">
+                    💎 Glass: <span id="glassStatus" style="color: var(--accent); font-weight: bold;">Aktif</span>
+                </button>
+
+                <div class="customizer-box">
+                    <button class="color-dot" style="background: #00D2FF;" onclick="changeAccentColor('#00D2FF')" title="Cyan"></button>
+                    <button class="color-dot" style="background: #08C159;" onclick="changeAccentColor('#08C159')" title="Hijau"></button>
+                    <button class="color-dot" style="background: #FF7700;" onclick="changeAccentColor('#FF7700')" title="Orange"></button>
+                    <button class="color-dot" style="background: #B026FF;" onclick="changeAccentColor('#B026FF')" title="Ungu"></button>
+                </div>
+
+                <a href="https://saweria.co/Weeenkyy" target="_blank" class="donate-outline-btn">
                     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-                    Traktir Gue Kopi
+                    Traktir Kopi
                 </a>
             </div>
         </div>
 
-        <!-- CONTENT AREA -->
-        <div class="content">
+        <!-- 2-COLUMN GRID CARD MENU -->
+        <div class="menu-grid">
+            <div class="tool-card active" onclick="switchTool(0)">
+                <div class="tool-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </div>
+                <div class="tool-card-info">
+                    <h4>Kecilin & Ubah Foto</h4>
+                    <p>Kompres ukuran & konvert format gambar</p>
+                </div>
+            </div>
 
-            <!-- 0. KOMPRES & CONVERT FOTO -->
+            <div class="tool-card" onclick="switchTool(1)">
+                <div class="tool-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                </div>
+                <div class="tool-card-info">
+                    <h4>Gepengin PDF</h4>
+                    <p>Pangkas ukuran file PDF biar enteng</p>
+                </div>
+            </div>
+
+            <div class="tool-card" onclick="switchTool(2)">
+                <div class="tool-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                </div>
+                <div class="tool-card-info">
+                    <h4>Sedot MP3 Video</h4>
+                    <p>Ekstrak audio MP3 jernih dari video</p>
+                </div>
+            </div>
+
+            <div class="tool-card" onclick="switchTool(3)">
+                <div class="tool-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+                </div>
+                <div class="tool-card-info">
+                    <h4>TikTok (No WM)</h4>
+                    <p>Unduh video TikTok bersih tanpa watermark</p>
+                </div>
+            </div>
+
+            <div class="tool-card" style="grid-column: span 2;" id="qrCard">
+                <div class="tool-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                </div>
+                <div class="tool-card-info">
+                    <h4>Mainan QR Code</h4>
+                    <p>Bikin QR Code baru atau scan gambar QR Code secara instan</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- WORKSPACE AREA -->
+        <div class="workspace-panel">
+
+            <!-- PANEL 0: KOMPRES & CONVERT FOTO -->
             <div class="tool-panel active" id="panel-0">
-                <h3>Kecilin & Ubah Foto</h3>
-                <p>Bikin ukuran foto lo makin imut tanpa ngurangin gaya. Ganti format juga bisa banget di mari, anti ribet!</p>
-                <input type="file" id="imgInput" accept="image/*">
-                
-                <div style="display: flex; gap: 10px;">
-                    <select id="imgFormat">
-                        <option value="jpeg">Jadiin: JPG / JPEG</option>
-                        <option value="png">Jadiin: PNG</option>
-                        <option value="webp">Jadiin: WebP (Biar enteng)</option>
-                    </select>
+                <div class="panel-header">
+                    <h3>🖼️ Kecilin & Ubah Foto</h3>
+                    <p>Bikin ukuran foto lo makin imut tanpa ngurangin gaya. Pilih format & kompresi sesuai selera!</p>
                 </div>
 
+                <div class="dropzone" id="imgDropzone">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <div class="dropzone-text">Drag & Drop foto di sini atau <span>klik untuk memilih</span></div>
+                    <div class="dropzone-sub">Format didukung: JPG, PNG, WebP</div>
+                    <div id="imgFileName" class="selected-file-badge" style="display:none;"></div>
+                </div>
+                <input type="file" id="imgInput" accept="image/*" style="display: none;">
+
+                <select id="imgFormat">
+                    <option value="jpeg">Konversi ke: JPG / JPEG</option>
+                    <option value="png">Konversi ke: PNG</option>
+                    <option value="webp">Konversi ke: WebP (Rekomendasi Enteng)</option>
+                </select>
+
                 <div class="range-container">
-                    <label>Tingkat Kemulusan: <span id="qualityVal" style="color:var(--accent); font-weight:bold;">70</span>%</label>
+                    <label>Tingkat Kemulusan Kualitas: <span id="qualityVal" style="color:var(--accent); font-weight:bold;">70</span>%</label>
                     <input type="range" id="imgQuality" min="10" max="100" value="70" oninput="document.getElementById('qualityVal').innerText = this.value">
                 </div>
 
@@ -440,17 +579,26 @@
                 <div id="imgResult"></div>
             </div>
 
-            <!-- 1. KOMPRES PDF -->
+            <!-- PANEL 1: KOMPRES PDF -->
             <div class="tool-panel" id="panel-1">
-                <h3>Gepengin PDF</h3>
-                <p>File PDF kegedean buat di-upload? Santai, gepengin aja ukurannya di sini langsung kelar.</p>
-                <input type="file" id="pdfInput" accept=".pdf">
-                
-                <label style="font-size: 0.85rem; color: #b3b3b3; margin-bottom: 5px; display: block;">Seberapa Gepeng?</label>
+                <div class="panel-header">
+                    <h3>📄 Gepengin PDF</h3>
+                    <p>File PDF kegedean buat di-upload? Gepengin ukurannya langsung kelar tanpa ribet.</p>
+                </div>
+
+                <div class="dropzone" id="pdfDropzone">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <div class="dropzone-text">Drag & Drop file PDF di sini atau <span>klik untuk memilih</span></div>
+                    <div class="dropzone-sub">Maksimal ukuran sesuai kapasitas memori browser</div>
+                    <div id="pdfFileName" class="selected-file-badge" style="display:none;"></div>
+                </div>
+                <input type="file" id="pdfInput" accept=".pdf" style="display: none;">
+
+                <label style="font-size: 0.82rem; color: #9ca3af; margin-bottom: 6px; display: block;">Tingkat Kompresi:</label>
                 <select id="pdfCompressLevel">
-                    <option value="medium">Sedang aja (Paling Aman)</option>
+                    <option value="medium">Sedang aja (Paling Aman & Seimbang)</option>
                     <option value="high">Rata Tanah (Ukurannya super kecil)</option>
-                    <option value="low">Dikit aja (Kualitas tetep juara)</option>
+                    <option value="low">Dikit aja (Kualitas gambar tetep tinggi)</option>
                 </select>
 
                 <button class="action-btn" onclick="compressPDF()">⚡ Gepengin PDF-nya!</button>
@@ -458,47 +606,66 @@
                 <div id="pdfResult"></div>
             </div>
 
-            <!-- 2. MP4 KE MP3 -->
+            <!-- PANEL 2: MP4 KE MP3 -->
             <div class="tool-panel" id="panel-2">
-                <h3>Sedot MP3 dari Video</h3>
-                <p>Nemu lagu enak di video tapi pengen dengerin audionya doang? Langsung ekstrak aja MP3-nya bosku!</p>
-                <input type="file" id="videoInput" accept="video/mp4,video/webm,video/*">
+                <div class="panel-header">
+                    <h3>🎵 Sedot MP3 dari Video</h3>
+                    <p>Nemu lagu enak di video tapi cuma pengen ambil audionya? Langsung ekstrak MP3-nya di sini!</p>
+                </div>
+
+                <div class="dropzone" id="videoDropzone">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                    <div class="dropzone-text">Drag & Drop video di sini atau <span>klik untuk memilih</span></div>
+                    <div class="dropzone-sub">Format: MP4, WebM, AVI, dll</div>
+                    <div id="videoFileName" class="selected-file-badge" style="display:none;"></div>
+                </div>
+                <input type="file" id="videoInput" accept="video/mp4,video/webm,video/*" style="display: none;">
+
                 <button class="action-btn" onclick="convertMp4ToMp3()">⚡ Tarik Suaranya!</button>
                 <div id="audioStatus"></div>
                 <div id="audioResult"></div>
             </div>
 
-            <!-- 3. TIKTOK DOWNLOADER -->
+            <!-- PANEL 3: TIKTOK DOWNLOADER -->
             <div class="tool-panel" id="panel-3">
-                <h3>Sedot TikTok (No WM)</h3>
-                <p>Naksir video TikTok tapi males ada logo joget-jogetnya? Tempel link-nya, sikat videonya bersih!</p>
-                <input type="text" id="ttUrl" placeholder="Tempel link video TikTok di sini bang...">
+                <div class="panel-header">
+                    <h3>📥 Sedot TikTok (No WM)</h3>
+                    <p>Naksir video TikTok tanpa watermark? Tempel link-nya di bawah, sikat videonya bersih!</p>
+                </div>
+
+                <input type="text" id="ttUrl" placeholder="Tempel link video TikTok di sini lek...">
                 <button class="action-btn" onclick="downloadTikTok()">📥 Tarik Videonya!</button>
                 <div id="ttStatus"></div>
                 <div id="ttResult"></div>
             </div>
 
-            <!-- 4. QR CODE & SCAN BARCODE -->
+            <!-- PANEL 4: QR CODE TOOLS -->
             <div class="tool-panel" id="panel-4">
-                <h3>Mainan QR Code</h3>
-                <p>Butuh ngumpetin link atau mau baca rahasia di balik gambar QR code? Gass lah pilih menu di bawah.</p>
+                <div class="panel-header">
+                    <h3>🔲 Mainan QR Code</h3>
+                    <p>Bikin QR Code rapi atau baca rahasia teks di balik gambar QR Code.</p>
+                </div>
 
                 <div class="top-left-switch">
                     <button class="switch-tab active" id="btnQrGen" onclick="setQrMode('gen')">Bikin QR Baru</button>
                     <button class="switch-tab" id="btnQrScan" onclick="setQrMode('scan')">Nge-Scan QR</button>
                 </div>
 
-                <!-- SUB PANEL: GENERATE -->
+                <!-- SUB: GENERATE -->
                 <div id="qrGenArea">
-                    <input type="text" id="qrText" placeholder="Ketik text atau paste link di sini...">
+                    <input type="text" id="qrText" placeholder="Ketik teks atau paste link di sini...">
                     <button class="action-btn" onclick="generateQR()">🔲 Sulap Jadi QR!</button>
                     <div id="qrcode" class="preview-box" style="display:none; justify-content:center; background:#fff; padding:20px; border-radius:15px; margin-top:20px; width:max-content; margin-inline:auto;"></div>
                 </div>
 
-                <!-- SUB PANEL: SCANNER -->
+                <!-- SUB: SCANNER -->
                 <div id="qrScanArea" style="display: none;">
-                    <p style="font-size: 0.85rem; margin-bottom: 10px; color:#b3b3b3;">Upload aja foto QR Code-nya ke sini:</p>
-                    <input type="file" id="qrFileInput" accept="image/*" onchange="scanQrFile()">
+                    <div class="dropzone" id="qrDropzone">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M20.4 14.5 16 10l-6 6"/></svg>
+                        <div class="dropzone-text">Upload foto QR Code di sini atau <span>klik untuk memilih</span></div>
+                        <div id="qrFileName" class="selected-file-badge" style="display:none;"></div>
+                    </div>
+                    <input type="file" id="qrFileInput" accept="image/*" style="display: none;" onchange="scanQrFile()">
                     <div id="qrScanResult" class="status-msg" style="display:none;"></div>
                 </div>
             </div>
@@ -509,7 +676,7 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-        // FUNGSI CUSTOM TOAST NOTIFICATION (GANTI ALERT)
+        // CUSTOM TOAST NOTIFICATION
         function showToast(message) {
             const toast = document.getElementById('customToast');
             toast.innerText = message;
@@ -521,77 +688,105 @@
             }, 3500);
         }
 
-        // FUNGSI GANTI WARNA AKSEN (THEME CUSTOMIZER)
+        // TEMA WARNA AKSEN
         function changeAccentColor(color) {
             document.documentElement.style.setProperty('--accent', color);
-            document.getElementById('accentColorPicker').value = color;
-            
-            let dynamicStyle = document.getElementById('dynamicAccentStyle');
-            if (!dynamicStyle) {
-                dynamicStyle = document.createElement('style');
-                dynamicStyle.id = 'dynamicAccentStyle';
-                document.head.appendChild(dynamicStyle);
-            }
-            dynamicStyle.innerHTML = `
-                .menu-btn.active {
-                    background: ${color}26 !important;
-                    border-color: ${color} !important;
-                    color: ${color} !important;
-                }
-                .switch-tab.active {
-                    background: ${color} !important;
-                    border-color: ${color} !important;
-                    color: #000 !important;
-                }
-                .action-btn:hover {
-                    box-shadow: 0 5px 15px ${color}4d !important;
-                }
-                input[type="text"]:focus, select:focus {
-                    border-color: ${color} !important;
-                }
-                input[type="range"]::-webkit-slider-thumb {
-                    background: ${color} !important;
-                }
-            `;
+            document.documentElement.style.setProperty('--accent-glow', color + '4D');
         }
 
-        // FUNGSI TOGGLE LIQUID GLASS
+        // TOGGLE LIQUID GLASS
+        let glassActive = true;
         function toggleLiquidGlass() {
-            const body = document.body;
-            body.classList.toggle('liquid-glass-mode');
-            const isGlass = body.classList.contains('liquid-glass-mode');
+            glassActive = !glassActive;
             const statusSpan = document.getElementById('glassStatus');
-            const btn = document.getElementById('glassToggleBtn');
+            const app = document.querySelector('.app-wrapper');
             
-            if (isGlass) {
-                statusSpan.innerText = "Hidup";
+            if (glassActive) {
+                statusSpan.innerText = "Aktif";
                 statusSpan.style.color = "var(--accent)";
-                btn.style.borderColor = "var(--accent)";
-                btn.style.background = "rgba(8, 193, 89, 0.15)";
+                app.style.backdropFilter = "blur(12px)";
+                app.style.background = "var(--bg-glass)";
             } else {
                 statusSpan.innerText = "Mati";
                 statusSpan.style.color = "#ff5555";
-                btn.style.borderColor = "#333";
-                btn.style.background = "#1e1e1e";
+                app.style.backdropFilter = "none";
+                app.style.background = "#111827";
             }
         }
 
-        // NAVIGASI SIDEBAR
+        // NAVIGASI MENU GRID CARD
         function switchTool(index) {
             const panels = document.querySelectorAll('.tool-panel');
             panels.forEach(p => p.classList.remove('active'));
-            const toolButtons = document.querySelectorAll('.sidebar-top .menu-btn');
-            toolButtons.forEach(b => b.classList.remove('active'));
+            
+            const toolCards = document.querySelectorAll('.menu-grid .tool-card');
+            toolCards.forEach(c => c.classList.remove('active'));
             
             panels[index].classList.add('active');
-            toolButtons[index].classList.add('active');
+            toolCards[index].classList.add('active');
         }
 
-        // 0. FITUR KOMPRES & CONVERT FOTO
+        // SETUP SETUP DRAG & DROP FILE UPLOAD
+        function setupDropzone(dropzoneId, inputId, badgeId) {
+            const dropzone = document.getElementById(dropzoneId);
+            const input = document.getElementById(inputId);
+            const badge = document.getElementById(badgeId);
+
+            if(!dropzone || !input) return;
+
+            dropzone.addEventListener('click', () => input.click());
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.add('dragover');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.remove('dragover');
+                }, false);
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length) {
+                    input.files = files;
+                    updateBadge(files[0].name);
+                    if(inputId === 'qrFileInput') scanQrFile();
+                }
+            });
+
+            input.addEventListener('change', () => {
+                if (input.files.length) {
+                    updateBadge(input.files[0].name);
+                }
+            });
+
+            function updateBadge(filename) {
+                if(badge) {
+                    badge.style.display = 'inline-block';
+                    badge.innerText = '📄 Terpilih: ' + filename;
+                }
+            }
+        }
+
+        // Inisialisasi semua Dropzone
+        setupDropzone('imgDropzone', 'imgInput', 'imgFileName');
+        setupDropzone('pdfDropzone', 'pdfInput', 'pdfFileName');
+        setupDropzone('videoDropzone', 'videoInput', 'videoFileName');
+        setupDropzone('qrDropzone', 'qrFileInput', 'qrFileName');
+
+        // 0. KOMPRES & CONVERT FOTO
         function processImage() {
             const fileInput = document.getElementById('imgInput');
             const resultDiv = document.getElementById('imgResult');
-            if (!fileInput.files.length) return showToast('Pilih gambarnya dulu dong lek!');
+            if (!fileInput.files.length) return showToast('Pilih atau drop fotonya dulu lek!');
 
             const file = fileInput.files[0];
             const reader = new FileReader();
@@ -616,9 +811,9 @@
                     const newSize = (newSizeBytes / 1024).toFixed(1) + ' KB';
 
                     resultDiv.innerHTML = `
-                        <div class="status-msg">Ukuran Awal: ${origSize} ➔ <b>Sekarang Cuma: ${newSize}</b> 🎉</div>
+                        <div class="status-msg">Ukuran Awal: ${origSize} ➔ <b>Sekarang: ${newSize}</b> 🎉</div>
                         <div class="preview-box">
-                            <img src="${dataUrl}" style="max-width:100%; max-height:200px; border-radius:8px;"><br>
+                            <img src="${dataUrl}" style="max-width:100%; max-height:200px; border-radius:10px;"><br>
                             <a href="${dataUrl}" download="hasil-foto-asik.${format}" class="action-btn" style="margin-top:15px;">📥 Sikat Fotonya!</a>
                         </div>
                     `;
@@ -628,15 +823,15 @@
             reader.readAsDataURL(file);
         }
 
-        // 1. FITUR KOMPRES PDF
+        // 1. KOMPRES PDF
         async function compressPDF() {
             const fileInput = document.getElementById('pdfInput');
             const status = document.getElementById('pdfStatus');
             const resultArea = document.getElementById('pdfResult');
-            if (!fileInput.files.length) return showToast('Masukin dulu file PDF-nya bro lek!');
+            if (!fileInput.files.length) return showToast('Masukin dulu file PDF-nya lek!');
 
             status.style.display = 'block';
-            status.innerText = "Sabar, lagi baca PDF lo ini lek...";
+            status.innerText = "Sabar, lagi membaca file PDF lo...";
             resultArea.innerHTML = "";
 
             try {
@@ -654,7 +849,7 @@
                 else if(level === 'low') { scale = 1.5; quality = 0.8; }
 
                 for (let i = 1; i <= pdf.numPages; i++) {
-                    status.innerText = `Lagi ngegepengin halaman ${i} dari ${pdf.numPages} nih lek...`;
+                    status.innerText = `Ngegepengin halaman ${i} dari ${pdf.numPages}...`;
                     const page = await pdf.getPage(i);
                     const viewport = page.getViewport({ scale: scale });
 
@@ -688,25 +883,25 @@
                 const url = URL.createObjectURL(compressedBlob);
 
                 resultArea.innerHTML = `
-                    <div class="status-msg" style="margin-top:10px;">Awalnya: ${origMB} MB ➔ <b>Sekarang Cuma: ${compMB} MB</b> 🔥</div>
+                    <div class="status-msg" style="margin-top:10px;">Awalnya: ${origMB} MB ➔ <b>Sekarang: ${compMB} MB</b> 🔥</div>
                     <a href="${url}" download="${file.name.replace('.pdf', '')}-gepeng.pdf" class="action-btn">📥 Ambil PDF-nya</a>
                 `;
             } catch(e) {
                 console.error(e);
-                status.innerText = "Waduh, gagal bro ngerjain PDF-nya lek.";
+                status.innerText = "Waduh, gagal ngerjain PDF-nya lek.";
             }
         }
 
-        // 2. FITUR MP4 KE MP3
+        // 2. MP4 KE MP3
         async function convertMp4ToMp3() {
             const fileInput = document.getElementById('videoInput');
             const status = document.getElementById('audioStatus');
             const result = document.getElementById('audioResult');
 
-            if (!fileInput.files.length) return showToast('Pilih videonya dulu dong lek!');
+            if (!fileInput.files.length) return showToast('Pilih videonya dulu lek!');
 
             status.style.display = 'block';
-            status.innerText = "Lagi narik suaranya nih lek... Santai dulu!";
+            status.innerText = "Lagi narik suaranya nih... Santai!";
             result.innerHTML = "";
 
             try {
@@ -722,20 +917,19 @@
                 result.innerHTML = `
                     <div class="preview-box">
                         <audio controls src="${url}" style="width:100%; margin-bottom:15px; outline:none;"></audio>
-                        <a href="${url}" download="${file.name.replace(/\.[^/.]+$/, "")}-asik.mp3" class="action-btn">📥 Simpan MP3</a>
+                        <a href="${url}" download="${file.name.replace(/\.[^/.]+$/, "")}-ekstrak.mp3" class="action-btn">📥 Simpan MP3</a>
                     </div>
                 `;
             } catch (err) {
                 console.error(err);
-                status.innerText = "Yah gagal lek, format videonya kurang asik kayaknya.";
+                status.innerText = "Gagal lek, format videonya tidak didukung browser.";
             }
         }
 
-        // Helper fungsi konversi AudioBuffer
+        // Helper Audio Encoder
         function audioBufferToWav(buffer) {
             let numChannels = buffer.numberOfChannels;
             let sampleRate = buffer.sampleRate;
-            let format = 1;
             let bitDepth = 16;
             let result = numChannels === 2 ? interleave(buffer.getChannelData(0), buffer.getChannelData(1)) : buffer.getChannelData(0);
             return encodeWAV(result, numChannels, sampleRate, bitDepth);
@@ -786,16 +980,16 @@
             }
         }
 
-        // 3. FITUR TIKTOK DOWNLOADER (NO WATERMARK)
+        // 3. TIKTOK DOWNLOADER
         async function downloadTikTok() {
             const urlInput = document.getElementById('ttUrl').value;
             const status = document.getElementById('ttStatus');
             const result = document.getElementById('ttResult');
 
-            if (!urlInput) return showToast('Woy link-nya belom di-paste lek!');
+            if (!urlInput) return showToast('Link TikTok-nya belom di-paste lek!');
 
             status.style.display = 'block';
-            status.innerText = "Bentar, lagi nyari videonya nih lek...";
+            status.innerText = "Bentar, lagi melacak videonya...";
             result.innerHTML = "";
 
             try {
@@ -803,25 +997,25 @@
                 const data = await response.json();
 
                 if (data.code === 0) {
-                    status.innerText = "Dapet nih videonya! Gass...";
+                    status.innerText = "Ketemu videonya! Gass...";
                     result.innerHTML = `
                         <div class="preview-box">
                             <p style="font-weight:600; margin-bottom:10px; color:var(--accent);">${data.data.title || 'TikTok Video'}</p>
                             <video controls src="${data.data.play}" style="max-width:100%; max-height:220px; border-radius:10px; margin-bottom:15px;"></video>
-                            <a href="${data.data.play}" target="_blank" download class="action-btn">📥 Sikat Video (Polos)</a>
-                            <a href="${data.data.music}" target="_blank" download class="action-btn" style="background: transparent; border: 2px solid var(--accent); color:var(--accent); margin-top:10px;">🎵 Ambil Lagunya Aja</a>
+                            <a href="${data.data.play}" target="_blank" download class="action-btn">📥 Sikat Video (Tanpa WM)</a>
+                            <a href="${data.data.music}" target="_blank" download class="action-btn" style="background: transparent; border: 1px solid var(--accent); color:var(--accent); margin-top:10px;">🎵 Ambil Musiknya Aja</a>
                         </div>
                     `;
                 } else {
-                    status.innerText = "Yah videonya gak ketemu lek, pastiin link-nya bener ya.";
+                    status.innerText = "Video tidak ditemukan, pastikan link benar.";
                 }
             } catch (err) {
                 console.error(err);
-                status.innerText = "Aduh, servernya lagi ngambek nih lek, koneksi putus.";
+                status.innerText = "Gagal terhubung ke server.";
             }
         }
 
-        // 4. FITUR QR CODE & BARCODE SCANNER
+        // 4. QR CODE TOOLS
         function setQrMode(mode) {
             document.getElementById('btnQrGen').classList.toggle('active', mode === 'gen');
             document.getElementById('btnQrScan').classList.toggle('active', mode === 'scan');
@@ -833,7 +1027,7 @@
             const text = document.getElementById('qrText').value;
             const box = document.getElementById('qrcode');
             box.innerHTML = "";
-            if (!text) return showToast('Isi teks atau link-nya dulu lek biar jadi QR!');
+            if (!text) return showToast('Isi teks/link dulu untuk diubah ke QR!');
 
             box.style.display = "flex";
             new QRCode(box, {
@@ -851,15 +1045,15 @@
             if (!fileInput.files.length) return;
 
             resultMsg.style.display = 'block';
-            resultMsg.innerText = "Lagi baca isinya nih lek...";
+            resultMsg.innerText = "Membaca QR Code...";
 
             const html5QrCode = new Html5Qrcode("qrScanArea");
             html5QrCode.scanFile(fileInput.files[0], true)
                 .then(decodedText => {
-                    resultMsg.innerHTML = `<b>Ini dia isinya lek:</b> <br> <a href="${decodedText}" target="_blank" style="color:#fff; font-weight:bold; word-break:break-all;">${decodedText}</a>`;
+                    resultMsg.innerHTML = `<b>Hasil Scan:</b> <br> <a href="${decodedText}" target="_blank" style="color:var(--accent); font-weight:bold; word-break:break-all;">${decodedText}</a>`;
                 })
                 .catch(err => {
-                    resultMsg.innerText = "Waduh blur, gambarnya gak bisa dibaca lek.";
+                    resultMsg.innerText = "Gagal membaca QR code, gambar kurang jelas.";
                 });
         }
     </script>
