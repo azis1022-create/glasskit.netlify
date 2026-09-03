@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi Tools Gratis - Liquid Glass Design</title>
+    <title>Multi Tools Asik - Liquid Glass Design</title>
     
     <!-- Library Eksternal -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -12,32 +12,258 @@
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .container { display: flex; width: 100%; max-width: 1050px; height: 650px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); overflow: hidden; }
-        .sidebar { width: 290px; background: rgba(255, 255, 255, 0.05); border-right: 1px solid rgba(255, 255, 255, 0.1); padding: 25px 15px; display: flex; flex-direction: column; justify-content: space-between; }
-        .sidebar-top { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; max-height: 500px; padding-right: 5px; }
-        .sidebar h2 { font-size: 1.2rem; margin-bottom: 8px; color: #fff; padding-left: 5px; }
-        .menu-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); padding: 10px 12px; border-radius: 10px; color: #fff; text-align: left; cursor: pointer; transition: all 0.3s ease; font-size: 0.85rem; font-weight: 500; }
-        .menu-btn:hover, .menu-btn.active { background: rgba(255, 255, 255, 0.25); border-color: rgba(255, 255, 255, 0.4); transform: translateX(5px); }
-        .donate-btn { background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%); border: none; padding: 12px 15px; border-radius: 10px; color: #fff; text-align: center; text-decoration: none; font-weight: bold; font-size: 0.9rem; transition: transform 0.3s ease; display: block; margin-top: 10px; }
-        .donate-btn:hover { transform: scale(1.02); }
-        .content { flex: 1; padding: 30px 40px; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; }
-        .tool-panel { display: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Poppins', sans-serif; 
+        }
+
+        body { 
+            background: #0d0d0d; 
+            background-image: radial-gradient(circle at top right, #1a2f22, #0d0d0d);
+            color: #fff; 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px; 
+        }
+
+        .container { 
+            display: flex; 
+            width: 100%; 
+            max-width: 1000px; 
+            height: 650px; 
+            background: #181818; 
+            border: 1px solid #2a2a2a; 
+            border-radius: 24px; 
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6); 
+            overflow: hidden; 
+        }
+
+        .sidebar { 
+            width: 280px; 
+            background: #121212; 
+            border-right: 1px solid #2a2a2a; 
+            padding: 30px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+        }
+
+        .sidebar-top { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            overflow-y: auto; 
+            padding-right: 5px; 
+        }
+
+        .sidebar-top::-webkit-scrollbar { width: 5px; }
+        .sidebar-top::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        .sidebar h2 { 
+            font-size: 1.3rem; 
+            margin-bottom: 15px; 
+            color: #08C159; /* Green Joox */
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .menu-btn { 
+            background: transparent; 
+            border: 1px solid transparent; 
+            padding: 12px 15px; 
+            border-radius: 12px; 
+            color: #b3b3b3; 
+            text-align: left; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-btn:hover { 
+            background: #222; 
+            color: #fff; 
+        }
+
+        .menu-btn.active { 
+            background: rgba(8, 193, 89, 0.15); 
+            border-color: #08C159; 
+            color: #08C159; 
+        }
+
+        .donate-btn { 
+            background: #252525;
+            border: 1px solid #333;
+            padding: 14px 15px; 
+            border-radius: 12px; 
+            color: #08C159; 
+            text-align: center; 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 0.9rem; 
+            transition: all 0.3s ease; 
+            display: block; 
+            margin-top: 15px; 
+        }
+
+        .donate-btn:hover { 
+            background: #08C159; 
+            color: #000;
+            border-color: #08C159;
+            transform: translateY(-3px); 
+        }
+
+        .content { 
+            flex: 1; 
+            padding: 40px 50px; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+        }
+        
+        .content::-webkit-scrollbar { width: 5px; }
+        .content::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        .tool-panel { display: none; animation: fadeIn 0.4s ease; }
         .tool-panel.active { display: block; }
-        .tool-panel h3 { font-size: 1.5rem; margin-bottom: 5px; }
-        .tool-panel p { font-size: 0.85rem; margin-bottom: 15px; color: rgba(255, 255, 255, 0.8); }
-        .top-left-switch { display: flex; gap: 8px; margin-bottom: 15px; }
-        .switch-tab { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px 12px; border-radius: 8px; color: #fff; font-size: 0.8rem; font-weight: bold; cursor: pointer; }
-        .switch-tab.active { background: #00b09b; border-color: #00ffe5; }
-        input[type="text"], input[type="file"], select { width: 100%; padding: 12px 15px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #fff; margin-bottom: 12px; outline: none; }
-        select option { background: #333; color: #fff; }
-        .action-btn { background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%); border: none; padding: 12px 20px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; width: 100%; text-align: center; display: block; margin-top: 10px; text-decoration: none; }
-        .status-msg { margin-top: 10px; font-size: 0.85rem; color: #d4edda; background: rgba(0, 255, 128, 0.1); padding: 8px; border-radius: 5px; word-break: break-all; }
-        .preview-box { background: rgba(255, 255, 255, 0.9); color: #333; padding: 15px; border-radius: 8px; margin-top: 10px; text-align: center; }
-        .range-container { margin-bottom: 12px; font-size: 0.85rem; }
-        .range-container input { width: 100%; margin-top: 5px; }
-        @media (max-width: 768px) { .container { flex-direction: column; height: auto; } .sidebar { width: 100%; } .content { padding: 20px 15px; } }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .tool-panel h3 { 
+            font-size: 1.8rem; 
+            margin-bottom: 8px; 
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .tool-panel p { 
+            font-size: 0.9rem; 
+            margin-bottom: 25px; 
+            color: #999; 
+            line-height: 1.5;
+        }
+
+        .top-left-switch { display: flex; gap: 10px; margin-bottom: 20px; }
+        
+        .switch-tab { 
+            background: #222; 
+            border: 1px solid #333; 
+            padding: 10px 18px; 
+            border-radius: 10px; 
+            color: #b3b3b3; 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.3s;
+        }
+        
+        .switch-tab.active { 
+            background: #08C159; 
+            border-color: #08C159; 
+            color: #000;
+        }
+
+        input[type="text"], input[type="file"], select { 
+            width: 100%; 
+            padding: 14px 18px; 
+            background: #222; 
+            border: 1px solid #333; 
+            border-radius: 12px; 
+            color: #fff; 
+            margin-bottom: 15px; 
+            outline: none; 
+            font-size: 0.9rem;
+            transition: border 0.3s;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: #08C159;
+        }
+
+        select option { background: #222; color: #fff; }
+        
+        /* Custom range slider */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #333;
+            border-radius: 5px;
+            outline: none;
+            margin-top: 10px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #08C159;
+            cursor: pointer;
+        }
+
+        .action-btn { 
+            background: #08C159; 
+            border: none; 
+            padding: 14px 20px; 
+            border-radius: 12px; 
+            color: #000; 
+            font-weight: 700; 
+            font-size: 0.95rem;
+            cursor: pointer; 
+            width: 100%; 
+            text-align: center; 
+            display: block; 
+            margin-top: 15px; 
+            text-decoration: none; 
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover { 
+            background: #069e48; 
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(8, 193, 89, 0.3);
+        }
+
+        .status-msg { 
+            margin-top: 15px; 
+            font-size: 0.85rem; 
+            color: #08C159; 
+            background: rgba(8, 193, 89, 0.1); 
+            padding: 12px; 
+            border-radius: 10px; 
+            word-break: break-all; 
+            border: 1px dashed rgba(8, 193, 89, 0.3);
+        }
+
+        .preview-box { 
+            background: #222; 
+            color: #fff; 
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-top: 15px; 
+            text-align: center; 
+            border: 1px solid #333;
+        }
+
+        .range-container { margin-bottom: 20px; font-size: 0.9rem; color: #b3b3b3; }
+        
+        @media (max-width: 768px) { 
+            .container { flex-direction: column; height: auto; border-radius: 15px; } 
+            .sidebar { width: 100%; padding: 20px; border-right: none; border-bottom: 1px solid #2a2a2a; } 
+            .content { padding: 30px 20px; } 
+        }
     </style>
 </head>
 <body>
@@ -46,15 +272,16 @@
         <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-top">
-                <h2>⚡ Multi Tools</h2>
-                <button class="menu-btn active" onclick="switchTool(0)">🖼️ Kompres & Convert Foto</button>
-                <button class="menu-btn" onclick="switchTool(1)">📄 Kompres PDF</button>
-                <button class="menu-btn" onclick="switchTool(2)">🎧 MP4 ke MP3</button>
-                <button class="menu-btn" onclick="switchTool(3)">🎵 TikTok Downloader</button>
-                <button class="menu-btn" onclick="switchTool(4)">🔲 QR Code & Scanner</button>
+                <h2>🔥 Tongkrongan Tools</h2>
+                <button class="menu-btn active" onclick="switchTool(0)">🖼️ Kecilin & Ubah Foto</button>
+                <button class="menu-btn" onclick="switchTool(1)">📄 Gepengin PDF</button>
+                <button class="menu-btn" onclick="switchTool(2)">🎧 Sedot MP3 Video</button>
+                <button class="menu-btn" onclick="switchTool(3)">🎵 Sedot TikTok (No WM)</button>
+                <button class="menu-btn" onclick="switchTool(4)">🔲 Mainan QR Code</button>
             </div>
             <div>
-                <a href="https://saweria.co" target="_blank" class="donate-btn">☕ Traktir Kopi</a>
+                <!-- Link Saweria Updated -->
+                <a href="https://saweria.co/Weeenkyy" target="_blank" class="donate-btn">☕ Traktir Gue Kopi</a>
             </div>
         </div>
 
@@ -63,87 +290,87 @@
 
             <!-- 0. KOMPRES & CONVERT FOTO -->
             <div class="tool-panel active" id="panel-0">
-                <h3>Kompres & Convert Foto</h3>
-                <p>Ubah format gambar dan kecilkan ukurannya secara instan.</p>
+                <h3>Kecilin & Ubah Foto</h3>
+                <p>Bikin ukuran foto lo makin imut tanpa ngurangin gaya. Ganti format juga bisa banget di mari, anti ribet!</p>
                 <input type="file" id="imgInput" accept="image/*">
                 
                 <div style="display: flex; gap: 10px;">
                     <select id="imgFormat">
-                        <option value="jpeg">Format: JPG / JPEG</option>
-                        <option value="png">Format: PNG</option>
-                        <option value="webp">Format: WebP</option>
+                        <option value="jpeg">Jadiin: JPG / JPEG</option>
+                        <option value="png">Jadiin: PNG</option>
+                        <option value="webp">Jadiin: WebP (Biar enteng)</option>
                     </select>
                 </div>
 
                 <div class="range-container">
-                    <label>Kualitas / Kompresi: <span id="qualityVal">70</span>%</label>
+                    <label>Tingkat Kemulusan: <span id="qualityVal" style="color:#08C159; font-weight:bold;">70</span>%</label>
                     <input type="range" id="imgQuality" min="10" max="100" value="70" oninput="document.getElementById('qualityVal').innerText = this.value">
                 </div>
 
-                <button class="action-btn" onclick="processImage()">⚡ Proses Foto</button>
+                <button class="action-btn" onclick="processImage()">⚡ Sikat Fotonya!</button>
                 <div id="imgResult"></div>
             </div>
 
             <!-- 1. KOMPRES PDF -->
             <div class="tool-panel" id="panel-1">
-                <h3>Kompres PDF</h3>
-                <p>Kecilkan ukuran file PDF Anda langsung di browser.</p>
+                <h3>Gepengin PDF</h3>
+                <p>File PDF kegedean buat di-upload? Santai, gepengin aja ukurannya di sini langsung kelar.</p>
                 <input type="file" id="pdfInput" accept=".pdf">
                 
-                <label style="font-size: 0.85rem;">Tingkat Kompresi:</label>
+                <label style="font-size: 0.85rem; color: #b3b3b3; margin-bottom: 5px; display: block;">Seberapa Gepeng?</label>
                 <select id="pdfCompressLevel">
-                    <option value="medium">Sedang (Rekomendasi - Kualitas Bagus)</option>
-                    <option value="high">Tinggi (Ukuran Lebih Kecil)</option>
-                    <option value="low">Rendah (Kualitas Utama)</option>
+                    <option value="medium">Sedang aja (Paling Aman)</option>
+                    <option value="high">Rata Tanah (Ukurannya super kecil)</option>
+                    <option value="low">Dikit aja (Kualitas tetep juara)</option>
                 </select>
 
-                <button class="action-btn" onclick="compressPDF()">⚡ Kompres PDF</button>
+                <button class="action-btn" onclick="compressPDF()">⚡ Gepengin PDF-nya!</button>
                 <div id="pdfStatus"></div>
                 <div id="pdfResult"></div>
             </div>
 
             <!-- 2. MP4 KE MP3 -->
             <div class="tool-panel" id="panel-2">
-                <h3>MP4 ke MP3</h3>
-                <p>Ekstrak dan ambil suara dari video MP4 secara instan.</p>
+                <h3>Sedot MP3 dari Video</h3>
+                <p>Nemu lagu enak di video tapi pengen dengerin audionya doang? Langsung ekstrak aja MP3-nya bosku!</p>
                 <input type="file" id="videoInput" accept="video/mp4,video/webm,video/*">
-                <button class="action-btn" onclick="convertMp4ToMp3()">⚡ Ekstrak Audio (MP3)</button>
+                <button class="action-btn" onclick="convertMp4ToMp3()">⚡ Tarik Suaranya!</button>
                 <div id="audioStatus"></div>
                 <div id="audioResult"></div>
             </div>
 
             <!-- 3. TIKTOK DOWNLOADER -->
             <div class="tool-panel" id="panel-3">
-                <h3>TikTok Downloader (No WM)</h3>
-                <p>Unduh video TikTok tanpa Watermark gratis.</p>
-                <input type="text" id="ttUrl" placeholder="Tempel URL Video TikTok di sini...">
-                <button class="action-btn" onclick="downloadTikTok()">📥 Download Video</button>
+                <h3>Sedot TikTok (No WM)</h3>
+                <p>Naksir video TikTok tapi males ada logo joget-jogetnya? Tempel link-nya, sikat videonya bersih!</p>
+                <input type="text" id="ttUrl" placeholder="Tempel link video TikTok di sini bang...">
+                <button class="action-btn" onclick="downloadTikTok()">📥 Tarik Videonya!</button>
                 <div id="ttStatus"></div>
                 <div id="ttResult"></div>
             </div>
 
             <!-- 4. QR CODE & SCAN BARCODE -->
             <div class="tool-panel" id="panel-4">
-                <h3>QR Code & Scan Barcode</h3>
-                <p>Buat QR Code baru atau Scan Barcode/QR dari file gambar.</p>
+                <h3>Mainan QR Code</h3>
+                <p>Butuh ngumpetin link atau mau baca rahasia di balik gambar QR code? Gass lah pilih menu di bawah.</p>
 
                 <div class="top-left-switch">
-                    <button class="switch-tab active" id="btnQrGen" onclick="setQrMode('gen')">Buat QR Code</button>
-                    <button class="switch-tab" id="btnQrScan" onclick="setQrMode('scan')">Scan Barcode / QR</button>
+                    <button class="switch-tab active" id="btnQrGen" onclick="setQrMode('gen')">Bikin QR Baru</button>
+                    <button class="switch-tab" id="btnQrScan" onclick="setQrMode('scan')">Nge-Scan QR</button>
                 </div>
 
                 <!-- SUB PANEL: GENERATE -->
                 <div id="qrGenArea">
-                    <input type="text" id="qrText" placeholder="Masukkan Link atau Teks di sini...">
-                    <button class="action-btn" onclick="generateQR()">🔲 Buat QR Code</button>
-                    <div id="qrcode" class="preview-box" style="display:none; justify-content:center;"></div>
+                    <input type="text" id="qrText" placeholder="Ketik text atau paste link di sini...">
+                    <button class="action-btn" onclick="generateQR()">🔲 Sulap Jadi QR!</button>
+                    <div id="qrcode" class="preview-box" style="display:none; justify-content:center; background:#fff; padding:20px; border-radius:15px; margin-top:20px; width:max-content; margin-inline:auto;"></div>
                 </div>
 
                 <!-- SUB PANEL: SCANNER -->
                 <div id="qrScanArea" style="display: none;">
-                    <p style="font-size: 0.8rem; margin-bottom: 8px;">Unggah foto QR Code / Barcode:</p>
+                    <p style="font-size: 0.85rem; margin-bottom: 10px; color:#b3b3b3;">Upload aja foto QR Code-nya ke sini:</p>
                     <input type="file" id="qrFileInput" accept="image/*" onchange="scanQrFile()">
-                    <div id="qrScanResult" class="status-msg"></div>
+                    <div id="qrScanResult" class="status-msg" style="display:none;"></div>
                 </div>
             </div>
 
@@ -167,7 +394,7 @@
         function processImage() {
             const fileInput = document.getElementById('imgInput');
             const resultDiv = document.getElementById('imgResult');
-            if (!fileInput.files.length) return alert('Pilih gambar terlebih dahulu!');
+            if (!fileInput.files.length) return alert('Pilih gambarnya dulu dong bos!');
 
             const file = fileInput.files[0];
             const reader = new FileReader();
@@ -192,10 +419,10 @@
                     const newSize = (newSizeBytes / 1024).toFixed(1) + ' KB';
 
                     resultDiv.innerHTML = `
-                        <div class="status-msg">Ukuran Asli: ${origSize} ➔ <b>Ukuran Baru: ${newSize}</b></div>
+                        <div class="status-msg">Ukuran Awal: ${origSize} ➔ <b>Sekarang Cuma: ${newSize}</b> 🎉</div>
                         <div class="preview-box">
-                            <img src="${dataUrl}" style="max-width:100%; max-height:150px; border-radius:5px;"><br>
-                            <a href="${dataUrl}" download="hasil-foto.${format}" class="action-btn">📥 Download Foto</a>
+                            <img src="${dataUrl}" style="max-width:100%; max-height:200px; border-radius:8px;"><br>
+                            <a href="${dataUrl}" download="hasil-foto-asik.${format}" class="action-btn" style="margin-top:15px;">📥 Sikat Fotonya!</a>
                         </div>
                     `;
                 };
@@ -209,9 +436,10 @@
             const fileInput = document.getElementById('pdfInput');
             const status = document.getElementById('pdfStatus');
             const resultArea = document.getElementById('pdfResult');
-            if (!fileInput.files.length) return alert('Pilih file PDF!');
+            if (!fileInput.files.length) return alert('Masukin dulu file PDF-nya bro!');
 
-            status.innerText = "Membaca file PDF...";
+            status.style.display = 'block';
+            status.innerText = "Sabar, lagi baca PDF lo nih...";
             resultArea.innerHTML = "";
 
             try {
@@ -229,7 +457,7 @@
                 else if(level === 'low') { scale = 1.5; quality = 0.8; }
 
                 for (let i = 1; i <= pdf.numPages; i++) {
-                    status.innerText = `Mengompresi Halaman ${i} dari ${pdf.numPages}...`;
+                    status.innerText = `Lagi ngegepengin Halaman ${i} dari ${pdf.numPages}...`;
                     const page = await pdf.getPage(i);
                     const viewport = page.getViewport({ scale: scale });
 
@@ -256,19 +484,19 @@
                     newPdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
                 }
 
-                status.innerText = "Kompresi Selesai!";
+                status.innerText = "Mantap! PDF-nya udah gepeng.";
                 const compressedBlob = newPdf.output('blob');
                 const origMB = (file.size / (1024*1024)).toFixed(2);
                 const compMB = (compressedBlob.size / (1024*1024)).toFixed(2);
                 const url = URL.createObjectURL(compressedBlob);
 
                 resultArea.innerHTML = `
-                    <div class="status-msg">Ukuran Asli: ${origMB} MB ➔ <b>Ukuran Baru: ${compMB} MB</b></div>
-                    <a href="${url}" download="${file.name.replace('.pdf', '')}-kompres.pdf" class="action-btn">📥 Unduh PDF Terkompres</a>
+                    <div class="status-msg" style="margin-top:10px;">Awalnya: ${origMB} MB ➔ <b>Sekarang Cuma: ${compMB} MB</b> 🔥</div>
+                    <a href="${url}" download="${file.name.replace('.pdf', '')}-gepeng.pdf" class="action-btn">📥 Ambil PDF-nya</a>
                 `;
             } catch(e) {
                 console.error(e);
-                status.innerText = "Gagal mengompres PDF.";
+                status.innerText = "Waduh, gagal bro ngerjain PDF-nya.";
             }
         }
 
@@ -278,9 +506,10 @@
             const status = document.getElementById('audioStatus');
             const result = document.getElementById('audioResult');
 
-            if (!fileInput.files.length) return alert('Pilih file Video MP4!');
+            if (!fileInput.files.length) return alert('Pilih videonya dulu dong!');
 
-            status.innerText = "Mengekstrak Trek Audio... Harap tunggu...";
+            status.style.display = 'block';
+            status.innerText = "Lagi narik suaranya nih... Santai dulu yak...";
             result.innerHTML = "";
 
             try {
@@ -292,20 +521,20 @@
                 const wavBlob = audioBufferToWav(audioBuffer);
                 const url = URL.createObjectURL(wavBlob);
 
-                status.innerText = "Selesai! Audio berhasil diekstrak.";
+                status.innerText = "Cakep! Suaranya udah ketarik.";
                 result.innerHTML = `
                     <div class="preview-box">
-                        <audio controls src="${url}" style="width:100%; margin-bottom:10px;"></audio>
-                        <a href="${url}" download="${file.name.replace(/\.[^/.]+$/, "")}.mp3" class="action-btn">📥 Unduh Audio MP3</a>
+                        <audio controls src="${url}" style="width:100%; margin-bottom:15px; outline:none;"></audio>
+                        <a href="${url}" download="${file.name.replace(/\.[^/.]+$/, "")}-asik.mp3" class="action-btn">📥 Simpan MP3</a>
                     </div>
                 `;
             } catch (err) {
                 console.error(err);
-                status.innerText = "Gagal mengekstrak audio dari video ini.";
+                status.innerText = "Yah gagal, format videonya kurang asik kayaknya.";
             }
         }
 
-        // Helper fungsi konversi AudioBuffer ke Format Suara WAV/MP3
+        // Helper fungsi konversi AudioBuffer (Tetap sama)
         function audioBufferToWav(buffer) {
             let numChannels = buffer.numberOfChannels;
             let sampleRate = buffer.sampleRate;
@@ -366,9 +595,10 @@
             const status = document.getElementById('ttStatus');
             const result = document.getElementById('ttResult');
 
-            if (!urlInput) return alert('Masukkan URL Video TikTok!');
+            if (!urlInput) return alert('Woy link-nya belom di-paste bos!');
 
-            status.innerText = "Sedang mengambil data video...";
+            status.style.display = 'block';
+            status.innerText = "Bentar, lagi nyari videonya nih...";
             result.innerHTML = "";
 
             try {
@@ -376,21 +606,21 @@
                 const data = await response.json();
 
                 if (data.code === 0) {
-                    status.innerText = "Video berhasil ditemukan!";
+                    status.innerText = "Dapet nih videonya! Gass...";
                     result.innerHTML = `
                         <div class="preview-box">
-                            <p style="font-weight:bold; margin-bottom:5px;">${data.data.title || 'TikTok Video'}</p>
-                            <video controls src="${data.data.play}" style="max-width:100%; max-height:200px; border-radius:8px; margin-bottom:10px;"></video>
-                            <a href="${data.data.play}" target="_blank" download class="action-btn">📥 Download Video (No WM)</a>
-                            <a href="${data.data.music}" target="_blank" download class="action-btn" style="background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%); margin-top:5px;">🎵 Download Audio Saja</a>
+                            <p style="font-weight:600; margin-bottom:10px; color:#08C159;">${data.data.title || 'TikTok Video'}</p>
+                            <video controls src="${data.data.play}" style="max-width:100%; max-height:220px; border-radius:10px; margin-bottom:15px;"></video>
+                            <a href="${data.data.play}" target="_blank" download class="action-btn">📥 Sikat Video (Polos)</a>
+                            <a href="${data.data.music}" target="_blank" download class="action-btn" style="background: transparent; border: 2px solid #08C159; color:#08C159; margin-top:10px;">🎵 Ambil Lagunya Aja</a>
                         </div>
                     `;
                 } else {
-                    status.innerText = "Gagal mengambil video. Pastikan link TikTok valid.";
+                    status.innerText = "Yah videonya gak ketemu, pastiin link-nya bener ya.";
                 }
             } catch (err) {
                 console.error(err);
-                status.innerText = "Terjadi kesalahan koneksi saat mengambil TikTok.";
+                status.innerText = "Aduh, servernya lagi ngambek nih, koneksi putus.";
             }
         }
 
@@ -406,13 +636,15 @@
             const text = document.getElementById('qrText').value;
             const box = document.getElementById('qrcode');
             box.innerHTML = "";
-            if (!text) return alert('Masukkan teks atau link terlebih dahulu!');
+            if (!text) return alert('Isi teks atau link-nya dulu bro biar bisa jadi QR!');
 
             box.style.display = "flex";
             new QRCode(box, {
                 text: text,
-                width: 150,
-                height: 150
+                width: 160,
+                height: 160,
+                colorDark : "#000000",
+                colorLight : "#ffffff"
             });
         }
 
@@ -421,13 +653,16 @@
             const resultMsg = document.getElementById('qrScanResult');
             if (!fileInput.files.length) return;
 
+            resultMsg.style.display = 'block';
+            resultMsg.innerText = "Lagi baca isinya nih...";
+
             const html5QrCode = new Html5Qrcode("qrScanArea");
             html5QrCode.scanFile(fileInput.files[0], true)
                 .then(decodedText => {
-                    resultMsg.innerHTML = `<b>Hasil Scan:</b> <br> <a href="${decodedText}" target="_blank" style="color:#00ffe5">${decodedText}</a>`;
+                    resultMsg.innerHTML = `<b>Ini dia isinya:</b> <br> <a href="${decodedText}" target="_blank" style="color:#fff; font-weight:bold; word-break:break-all;">${decodedText}</a>`;
                 })
                 .catch(err => {
-                    resultMsg.innerText = "Tidak dapat membaca Barcode/QR Code dari gambar ini.";
+                    resultMsg.innerText = "Waduh blur, gambarnya gak bisa dibaca.";
                 });
         }
     </script>
