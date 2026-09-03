@@ -7,8 +7,9 @@
     
     <!-- Library Pendukung -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
         * {
@@ -147,16 +148,16 @@
         .top-left-switch {
             display: flex;
             gap: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .switch-tab {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 14px;
+            padding: 8px 12px;
             border-radius: 8px;
             color: #fff;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
@@ -165,7 +166,6 @@
         .switch-tab.active {
             background: #00b09b;
             border-color: #00ffe5;
-            box-shadow: 0 0 10px rgba(0, 176, 155, 0.4);
         }
 
         input[type="text"], input[type="file"] {
@@ -210,14 +210,14 @@
         }
 
         .preview-box {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 12px;
+            background: #fff;
+            color: #333;
+            padding: 15px;
             border-radius: 8px;
             margin-top: 10px;
-            max-height: 150px;
+            max-height: 160px;
             overflow-y: auto;
             font-size: 0.85rem;
-            color: #fff;
             display: none;
         }
 
@@ -297,7 +297,7 @@
             <div class="sidebar-top">
                 <h2>⚡ Multi Tools</h2>
                 <button class="menu-btn active" onclick="switchTool(0)">🖼️ Konverter Gambar</button>
-                <button class="menu-btn" onclick="switchTool(1)">🔄 Konverter Dokumen</button>
+                <button class="menu-btn" onclick="switchTool(1)">📄 Konverter Dokumen</button>
                 <button class="menu-btn" onclick="switchTool(2)">🎵 TikTok Downloader</button>
                 <button class="menu-btn" onclick="switchTool(3)">🔲 QR Code Generator</button>
                 <button class="menu-btn" onclick="switchTool(4)">🔒 Password Generator</button>
@@ -313,7 +313,7 @@
             <!-- 1. Konverter Gambar -->
             <div class="tool-panel active" id="panel-0">
                 <h3>Konverter Format Gambar</h3>
-                <p>Pilih mode, unggah foto Anda, lalu klik tombol unduh yang muncul.</p>
+                <p>Ubah format foto JPG ke PNG atau sebaliknya secara instan di HP.</p>
                 
                 <div class="top-left-switch">
                     <button class="switch-tab active" id="btnJpgToPng" onclick="setImageMode('jpg2png')">JPG ke PNG</button>
@@ -328,7 +328,7 @@
             <!-- 2. Konverter Dokumen -->
             <div class="tool-panel" id="panel-1">
                 <h3>Konverter Dokumen</h3>
-                <p>Pilih mode, unggah file dokumen, lalu unduh hasilnya langsung di HP.</p>
+                <p>Ubah PDF ke Word atau Word ke PDF langsung di browser.</p>
                 
                 <div class="top-left-switch">
                     <button class="switch-tab active" id="btnPdfToWord" onclick="setDocMode('pdf2word')">PDF ke Word</button>
@@ -379,6 +379,8 @@
 
         let currentImageMode = 'jpg2png'; 
         let currentDocMode = 'pdf2word'; 
+        let wordHtmlContent = "";
+        let originalDocName = "dokumen";
 
         function switchTool(index) {
             const panels = document.querySelectorAll('.tool-panel');
@@ -458,11 +460,12 @@
             if (fileInput.files.length === 0) return;
             
             const file = fileInput.files[0];
+            originalDocName = file.name.replace(/\.[^/.]+$/, "");
             downloadArea.innerHTML = "";
             previewBox.style.display = 'none';
 
             if (currentDocMode === 'pdf2word') {
-                statusMsg.innerText = "Membaca file PDF, mohon tunggu...";
+                statusMsg.innerText = "Membaca file PDF...";
                 try {
                     const arrayBuffer = await file.arrayBuffer();
                     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
@@ -475,48 +478,54 @@
                         fullText += `<p>${pageText}</p><br>`;
                     }
 
-                    if (!fullText.trim() || fullText.replace(/<[^>]*>/g, '').trim().length < 3) {
-                        statusMsg.innerText = "Gagal: PDF ini berupa gambar/scan atau tidak memiliki teks yang terbaca.";
-                        return;
-                    }
-
-                    const docContent = `
-                        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-                        <head><meta charset='utf-8'><title>Converted Document</title></head>
-                        <body style="font-family: Arial, sans-serif;">${fullText}</body>
-                        </html>
-                    `;
-
-                    // Menggunakan Data URI agar aman dan terbaca sebagai file unduhan di HP
+                    const docContent = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'></head><body>${fullText}</body></html>`;
                     const dataUri = 'data:application/msword;charset=utf-8,' + encodeURIComponent(docContent);
-                    const fileName = file.name.replace(/\.[^/.]+$/, "") + ".doc";
+                    const fileName = originalDocName + ".doc";
 
                     statusMsg.innerText = "Berhasil! Silakan ketuk tombol unduh di bawah.";
                     downloadArea.innerHTML = `<a href="${dataUri}" download="${fileName}" class="action-btn">📥 Unduh Dokumen Word (.doc)</a>`;
                 } catch (error) {
-                    statusMsg.innerText = "Gagal memproses file PDF. Pastikan file tidak terkunci.";
+                    statusMsg.innerText = "Gagal memproses file PDF.";
                 }
             } else {
-                statusMsg.innerText = "Membaca file Word (.docx), mohon tunggu...";
+                statusMsg.innerText = "Membaca file Word (.docx) dengan format aslinya...";
                 try {
                     const arrayBuffer = await file.arrayBuffer();
-                    const result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
-                    let textContent = result.value.trim();
+                    const result = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
+                    wordHtmlContent = result.value;
 
-                    if (!textContent) {
+                    if (!wordHtmlContent.trim()) {
                         statusMsg.innerText = "Gagal: File Word kosong atau tidak dapat dibaca.";
                         return;
                     }
 
-                    statusMsg.innerText = "Berhasil dibaca! Klik tombol di bawah untuk menyimpan sebagai PDF.";
+                    statusMsg.innerText = "Berhasil dibaca! Klik tombol di bawah untuk mendownload PDF.";
                     previewBox.style.display = 'block';
-                    previewBox.innerHTML = "<strong>Preview Teks:</strong><br>" + textContent.replace(/\n/g, '<br>');
+                    previewBox.innerHTML = wordHtmlContent;
 
-                    downloadArea.innerHTML = `<button onclick="window.print()" class="action-btn">🖨️ Simpan / Cetak sebagai PDF</button>`;
+                    downloadArea.innerHTML = `<button onclick="convertHtmlToPdf()" class="action-btn">📥 Unduh Hasil ke PDF (.pdf)</button>`;
                 } catch (error) {
                     statusMsg.innerText = "Gagal membaca file Word (.docx).";
                 }
             }
+        }
+
+        function convertHtmlToPdf() {
+            const statusMsg = document.getElementById('statusDoc');
+            const element = document.getElementById('docPreview');
+            statusMsg.innerText = "Sedang merakit file PDF...";
+            
+            const opt = {
+                margin:       10,
+                filename:     originalDocName + '.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().from(element).set(opt).save().then(() => {
+                statusMsg.innerText = "PDF berhasil diunduh!";
+            });
         }
 
         async function downloadTikTok() {
