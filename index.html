@@ -30,6 +30,7 @@
             justify-content: center; 
             align-items: center; 
             padding: 20px; 
+            transition: background 0.5s ease;
         }
 
         .container { 
@@ -42,16 +43,18 @@
             border-radius: 24px; 
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6); 
             overflow: hidden; 
+            transition: all 0.5s ease;
         }
 
         .sidebar { 
             width: 280px; 
             background: #121212; 
             border-right: 1px solid #2a2a2a; 
-            padding: 30px 20px; 
+            padding: 25px 20px; 
             display: flex; 
             flex-direction: column; 
             justify-content: space-between; 
+            transition: all 0.5s ease;
         }
 
         .sidebar-top { 
@@ -66,12 +69,12 @@
         .sidebar-top::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
 
         .sidebar h2 { 
-            font-size: 1.3rem; 
-            margin-bottom: 15px; 
+            font-size: 1.2rem; 
+            margin-bottom: 10px; 
             color: #08C159; /* Green Joox */
             font-weight: 700;
             text-align: center;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .menu-btn { 
@@ -184,7 +187,7 @@
             margin-bottom: 15px; 
             outline: none; 
             font-size: 0.9rem;
-            transition: border 0.3s;
+            transition: all 0.3s;
         }
 
         input[type="text"]:focus, select:focus {
@@ -255,9 +258,48 @@
             margin-top: 15px; 
             text-align: center; 
             border: 1px solid #333;
+            transition: all 0.3s;
         }
 
         .range-container { margin-bottom: 20px; font-size: 0.9rem; color: #b3b3b3; }
+
+        /* ========================================== */
+        /* STYLING LIQUID GLASS MODE                  */
+        /* ========================================== */
+        body.liquid-glass-mode {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364) !important;
+            background-attachment: fixed !important;
+        }
+        body.liquid-glass-mode .container {
+            background: rgba(25, 25, 35, 0.45) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
+        }
+        body.liquid-glass-mode .sidebar {
+            background: rgba(15, 15, 22, 0.35) !important;
+            backdrop-filter: blur(15px) !important;
+            -webkit-backdrop-filter: blur(15px) !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        body.liquid-glass-mode input[type="text"], 
+        body.liquid-glass-mode input[type="file"], 
+        body.liquid-glass-mode select {
+            background: rgba(30, 30, 40, 0.5) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            backdrop-filter: blur(5px);
+        }
+        body.liquid-glass-mode .preview-box {
+            background: rgba(30, 30, 40, 0.4) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(10px);
+        }
+        body.liquid-glass-mode .donate-btn {
+            background: rgba(37, 37, 45, 0.4) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            backdrop-filter: blur(5px);
+        }
         
         @media (max-width: 768px) { 
             .container { flex-direction: column; height: auto; border-radius: 15px; } 
@@ -272,7 +314,15 @@
         <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-top">
+                <!-- TOMBOL TOGGLE LIQUID GLASS KECIL DI POJOK KIRI ATAS -->
+                <div style="display: flex; justify-content: flex-start; margin-bottom: 5px;">
+                    <button id="glassToggleBtn" onclick="toggleLiquidGlass()" style="background: #1e1e1e; border: 1px solid #333; padding: 5px 10px; border-radius: 8px; color: #b3b3b3; font-size: 0.7rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.3s;">
+                        💎 Glass: <span id="glassStatus" style="color: #ff5555; font-weight: bold;">Mati</span>
+                    </button>
+                </div>
+
                 <h2>🔥 Tongkrongan Tools</h2>
+                
                 <button class="menu-btn active" onclick="switchTool(0)">🖼️ Kecilin & Ubah Foto</button>
                 <button class="menu-btn" onclick="switchTool(1)">📄 Gepengin PDF</button>
                 <button class="menu-btn" onclick="switchTool(2)">🎧 Sedot MP3 Video</button>
@@ -380,14 +430,36 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
+        // FUNGSI TOGGLE LIQUID GLASS
+        function toggleLiquidGlass() {
+            const body = document.body;
+            body.classList.toggle('liquid-glass-mode');
+            const isGlass = body.classList.contains('liquid-glass-mode');
+            const statusSpan = document.getElementById('glassStatus');
+            const btn = document.getElementById('glassToggleBtn');
+            
+            if (isGlass) {
+                statusSpan.innerText = "Hidup";
+                statusSpan.style.color = "#08C159";
+                btn.style.borderColor = "#08C159";
+                btn.style.background = "rgba(8, 193, 89, 0.15)";
+            } else {
+                statusSpan.innerText = "Mati";
+                statusSpan.style.color = "#ff5555";
+                btn.style.borderColor = "#333";
+                btn.style.background = "#1e1e1e";
+            }
+        }
+
         // NAVIGASI SIDEBAR
         function switchTool(index) {
             const panels = document.querySelectorAll('.tool-panel');
-            const buttons = document.querySelectorAll('.menu-btn');
             panels.forEach(p => p.classList.remove('active'));
-            buttons.forEach(b => b.classList.remove('active'));
+            const toolButtons = document.querySelectorAll('.sidebar-top .menu-btn');
+            toolButtons.forEach(b => b.classList.remove('active'));
+            
             panels[index].classList.add('active');
-            buttons[index].classList.add('active');
+            toolButtons[index].classList.add('active');
         }
 
         // 0. FITUR KOMPRES & CONVERT FOTO
@@ -534,7 +606,7 @@
             }
         }
 
-        // Helper fungsi konversi AudioBuffer (Tetap sama)
+        // Helper fungsi konversi AudioBuffer
         function audioBufferToWav(buffer) {
             let numChannels = buffer.numberOfChannels;
             let sampleRate = buffer.sampleRate;
