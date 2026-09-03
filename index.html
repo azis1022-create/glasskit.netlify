@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Tools Gratis - Liquid Glass Design</title>
+    
+    <!-- Library Pendukung -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1050px;
+            height: 620px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 290px;
+            background: rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; 
+        }
+
+        .sidebar-top {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+            max-height: 480px;
+            padding-right: 5px;
+        }
+
+        .sidebar-top::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-top::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            padding-left: 5px;
+        }
+
+        .menu-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: #fff;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .menu-btn:hover, .menu-btn.active {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateX(5px);
+        }
+
+        .donate-btn {
+            background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+            border: none;
+            padding: 12px 15px;
+            border-radius: 10px;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(242, 153, 74, 0.4);
+            transition: transform 0.3s ease, opacity 0.3s;
+            display: block;
+        }
+
+        .donate-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .tool-panel {
+            display: none;
+        }
+
+        .tool-panel.active {
+            display: block;
+        }
+
+        .tool-panel h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .tool-panel p {
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .top-left-switch {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .switch-tab {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 14px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .switch-tab.active {
+            background: #00b09b;
+            border-color: #00ffe5;
+            box-shadow: 0 0 10px rgba(0, 176, 155, 0.4);
+        }
+
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            margin-bottom: 12px;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            transition: opacity 0.3s;
+            margin-top: 10px;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+
+        .status-msg {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: #d4edda;
+        }
+
+        .result-box {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #qrcode {
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .output-text {
+            font-size: 1.1rem;
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 6px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                align-items: flex-start;
+                padding: 10px;
+            }
+            .container {
+                flex-direction: column;
+                height: auto;
+                max-height: none;
+            }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 15px 10px;
+            }
+            .sidebar-top {
+                max-height: none;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+            .menu-btn {
+                flex: 1 1 calc(50% - 5px);
+                font-size: 0.75rem;
+                padding: 8px;
+                text-align: center;
+            }
+            .donate-btn {
+                margin-top: 10px;
+                padding: 10px;
+            }
+            .content {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Sidebar Menu -->
+        <div class="sidebar">
+            <div class="sidebar-top">
+                <h2>⚡ Multi Tools</h2>
+                <button class="menu-btn active" onclick="switchTool(0)">🖼️ Konverter Gambar</button>
+                <button class="menu-btn" onclick="switchTool(1)">🔄 Konverter Dokumen</button>
+                <button class="menu-btn" onclick="switchTool(2)">🎵 TikTok Downloader</button>
+                <button class="menu-btn" onclick="switchTool(3)">🔲 QR Code Generator</button>
+                <button class="menu-btn" onclick="switchTool(4)">🔒 Password Generator</button>
+            </div>
+            
+            <a href="https://saweria.co/Weeenkyy" target="_blank" class="donate-btn">
+                ☕ Traktir Kopi
+            </a>
+        </div>
+
+        <!-- Area Konten Alat -->
+        <div class="content">
+            <!-- 1. Konverter Gambar -->
+            <div class="tool-panel active" id="panel-0">
+                <h3>Konverter Format Gambar</h3>
+                <p>Pilih mode, unggah foto Anda, lalu klik tombol unduh yang muncul.</p>
+                
+                <div class="top-left-switch">
+                    <button class="switch-tab active" id="btnJpgToPng" onclick="setImageMode('jpg2png')">JPG ke PNG</button>
+                    <button class="switch-tab" id="btnPngToJpg" onclick="setImageMode('png2jpg')">PNG ke JPG</button>
+                </div>
+
+                <input type="file" id="imageInput" accept="image/jpeg, image/jpg, image/png" onchange="processImage()">
+                <div id="statusImage" class="status-msg"></div>
+                <div id="imageDownloadArea"></div>
+            </div>
+
+            <!-- 2. Konverter Dokumen -->
+            <div class="tool-panel" id="panel-1">
+                <h3>Konverter Dokumen</h3>
+                <p>Pilih mode, unggah file dokumen, lalu unduh hasilnya langsung di HP.</p>
+                
+                <div class="top-left-switch">
+                    <button class="switch-tab active" id="btnPdfToWord" onclick="setDocMode('pdf2word')">PDF ke Word</button>
+                    <button class="switch-tab" id="btnWordToPdf" onclick="setDocMode('word2pdf')">Word ke PDF</button>
+                </div>
+
+                <input type="file" id="docInput" accept=".pdf, .docx" onchange="processDocument()">
+                <div id="statusDoc" class="status-msg"></div>
+                <div id="docDownloadArea"></div>
+            </div>
+
+            <!-- 3. TikTok Downloader -->
+            <div class="tool-panel" id="panel-2">
+                <h3>TikTok Downloader (No Watermark)</h3>
+                <p>Tempel tautan video TikTok di bawah ini untuk mengunduhnya.</p>
+                <input type="text" id="tiktokUrl" placeholder="https://www.tiktok.com/@user/video/...">
+                <button class="action-btn" onclick="downloadTikTok()">Download Video</button>
+                <div id="statusTiktok" class="status-msg"></div>
+                <div id="tiktokDownloadArea"></div>
+            </div>
+
+            <!-- 4. QR Code Generator -->
+            <div class="tool-panel" id="panel-3">
+                <h3>Generator QR Code</h3>
+                <p>Ketik teks atau tautan web untuk langsung membuat kode QR.</p>
+                <input type="text" id="qrText" placeholder="https://website-anda.com atau teks bebas..." oninput="generateQRCode()">
+                <button class="action-btn" onclick="generateQRCode()">Buat QR Code</button>
+                <div class="result-box" id="qrResultContainer" style="display: none;">
+                    <div id="qrcode"></div>
+                    <p style="font-size: 0.8rem; margin: 0;">Screenshot atau klik tahan gambar untuk menyimpan.</p>
+                </div>
+            </div>
+
+            <!-- 5. Password Generator -->
+            <div class="tool-panel" id="panel-4">
+                <h3>Generator Password Kuat</h3>
+                <p>Buat kata sandi yang aman dan acak untuk melindungi akun penting Anda.</p>
+                <div class="output-text" id="passwordOutput">Klik tombol di bawah</div>
+                <button class="action-btn" onclick="generatePassword()">Buat Password Baru</button>
+                <div id="statusPassword" class="status-msg"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        let currentImageMode = 'jpg2png'; 
+        let currentDocMode = 'pdf2word'; 
+
+        function switchTool(index) {
+            const panels = document.querySelectorAll('.tool-panel');
+            const buttons = document.querySelectorAll('.menu-btn');
+
+            panels.forEach(panel => panel.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            panels[index].classList.add('active');
+            buttons[index].classList.add('active');
+        }
+
+        function setImageMode(mode) {
+            currentImageMode = mode;
+            document.getElementById('btnJpgToPng').classList.toggle('active', mode === 'jpg2png');
+            document.getElementById('btnPngToJpg').classList.toggle('active', mode === 'png2jpg');
+            document.getElementById('imageInput').accept = mode === 'jpg2png' ? "image/jpeg, image/jpg" : "image/png";
+            document.getElementById('imageDownloadArea.innerHTML').innerHTML = '';
+        }
+
+        function setDocMode(mode) {
+            currentDocMode = mode;
+            document.getElementById('btnPdfToWord').classList.toggle('active', mode === 'pdf2word');
+            document.getElementById('btnWordToPdf').classList.toggle('active', mode === 'word2pdf');
+            document.getElementById('docInput').accept = mode === 'pdf2word' ? ".pdf" : ".docx";
+            document.getElementById('docDownloadArea').innerHTML = '';
+        }
+
+        function processImage() {
+            const fileInput = document.getElementById('imageInput');
+            const statusMsg = document.getElementById('statusImage');
+            const downloadArea = document.getElementById('imageDownloadArea');
+            if (fileInput.files.length === 0) return;
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            statusMsg.innerText = "Memproses gambar...";
+            downloadArea.innerHTML = "";
+
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width; 
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+
+                    let mimeType = 'image/png';
+                    let ext = '-converted.png';
+
+                    if (currentImageMode === 'png2jpg') {
+                        mimeType = 'image/jpeg';
+                        ext = '-converted.jpg';
+                        ctx.fillStyle = "#FFFFFF";
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    }
+
+                    ctx.drawImage(img, 0, 0);
+                    const dataUrl = canvas.toDataURL(mimeType, 1.0);
+                    
+                    const fileName = file.name.replace(/\.[^/.]+$/, "") + ext;
+                    statusMsg.innerText = "Berhasil diproses! Klik tombol di bawah untuk mengunduh.";
+                    
+                    downloadArea.innerHTML = `<a href="${dataUrl}" download="${fileName}" class="action-btn">📥 Unduh Gambar (${ext.replace('-', '').toUpperCase()})</a>`;
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function processDocument() {
+            const fileInput = document.getElementById('docInput');
+            const statusMsg = document.getElementById('statusDoc');
+            const downloadArea = document.getElementById('docDownloadArea');
+            if (fileInput.files.length === 0) return;
+            
+            const file = fileInput.files[0];
+            downloadArea.innerHTML = "";
+
+            if (currentDocMode === 'pdf2word') {
+                statusMsg.innerText = "Membaca file PDF, mohon tunggu...";
+                try {
+                    const arrayBuffer = await file.arrayBuffer();
+                    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                    let fullText = "";
+
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        const pageText = textContent.items.map(item => item.str).join(' ');
+                        fullText += `<p>${pageText}</p><br>`;
+                    }
+
+                    const docContent = `
+                        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                        <head><meta charset='utf-8'><title>Converted Document</title></head>
+                        <body style="font-family: Arial, sans-serif;">${fullText}</body>
+                        </html>
+                    `;
+
+                    const blob = new Blob(['\ufeff' + docContent], { type: 'application/msword' });
+                    const url = URL.createObjectURL(blob);
+                    const fileName = file.name.replace(/\.[^/.]+$/, "") + ".doc";
+
+                    statusMsg.innerText = "Berhasil! Silakan ketuk tombol unduh di bawah.";
+                    downloadArea.innerHTML = `<a href="${url}" download="${fileName}" class="action-btn">📥 Unduh Dokumen Word (.doc)</a>`;
+                } catch (error) {
+                    statusMsg.innerText = "Gagal memproses file PDF. Pastikan file tidak terkunci.";
+                }
+            } else {
+                statusMsg.innerText = "Membaca file Word (.docx), mohon tunggu...";
+                try {
+                    const arrayBuffer = await file.arrayBuffer();
+                    const result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+                    let textContent = result.value.replace(/\n/g, '<br>');
+
+                    const printWindow = window.open('', '_blank');
+                    printWindow.document.write(`
+                        <html>
+                        <head><title>${file.name}</title></head>
+                        <body style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6;">
+                            <h2>${file.name.replace(/\.[^/.]+$/, "")}</h2>
+                            <hr/><br/>
+                            <div>${textContent}</div>
+                            <script>
+                                window.onload = function() {
+                                    window.print();
+                                };
+                            <\/script>
+                        </body>
+                        </html>
+                    `);
+                    printWindow.document.close();
+                    statusMsg.innerText = "Berhasil! Gunakan opsi 'Simpan sebagai PDF' / 'Save as PDF' pada dialog cetak.";
+                } catch (error) {
+                    statusMsg.innerText = "Gagal membaca file Word (.docx).";
+                }
+            }
+        }
+
+        async function downloadTikTok() {
+            const urlInput = document.getElementById('tiktokUrl').value.trim();
+            const statusMsg = document.getElementById('statusTiktok');
+            const downloadArea = document.getElementById('tiktokDownloadArea');
+            
+            if (!urlInput) return;
+            
+            statusMsg.innerText = "Menghubungkan ke server...";
+            downloadArea.innerHTML = "";
+            
+            try {
+                const response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(urlInput)}`);
+                const data = await response.json();
+                
+                if (data.code === 0 && data.data && data.data.play) {
+                    const videoDownloadUrl = data.data.play;
+                    statusMsg.innerText = "Video ditemukan!";
+                    downloadArea.innerHTML = `<a href="${videoDownloadUrl}" target="_blank" class="action-btn">📥 Download Video Tanpa Watermark</a>`;
+                } else {
+                    statusMsg.innerText = "Pastikan tautan TikTok benar dan bersifat publik.";
+                }
+            } catch (error) {
+                statusMsg.innerText = "Terjadi kesalahan koneksi jaringan.";
+            }
+        }
+
+        function generateQRCode() {
+            const text = document.getElementById('qrText').value.trim();
+            const container = document.getElementById('qrResultContainer');
+            const qrcodeDiv = document.getElementById('qrcode');
+            if (!text) { container.style.display = "none"; return; }
+            
+            qrcodeDiv.innerHTML = ""; 
+            container.style.display = "flex";
+            new QRCode(qrcodeDiv, {
+                text: text,
+                width: 150,
+                height: 150
+            });
+        }
+
+        function generatePassword() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&!";
+            let password = "";
+            for (let i = 0; i < 12; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('passwordOutput').innerText = password;
+            document.getElementById('statusPassword').innerText = "Password baru berhasil dibuat!";
+        }
+    </script>
+
+</body>
+</html>
