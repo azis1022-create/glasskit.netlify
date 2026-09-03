@@ -487,12 +487,12 @@
                         </html>
                     `;
 
-                    const blob = new Blob(['\ufeff' + docContent], { type: 'application/msword' });
-                    const url = URL.createObjectURL(blob);
+                    // Menggunakan Data URI agar aman dan terbaca sebagai file unduhan di HP
+                    const dataUri = 'data:application/msword;charset=utf-8,' + encodeURIComponent(docContent);
                     const fileName = file.name.replace(/\.[^/.]+$/, "") + ".doc";
 
                     statusMsg.innerText = "Berhasil! Silakan ketuk tombol unduh di bawah.";
-                    downloadArea.innerHTML = `<a href="${url}" download="${fileName}" class="action-btn">📥 Unduh Dokumen Word (.doc)</a>`;
+                    downloadArea.innerHTML = `<a href="${dataUri}" download="${fileName}" class="action-btn">📥 Unduh Dokumen Word (.doc)</a>`;
                 } catch (error) {
                     statusMsg.innerText = "Gagal memproses file PDF. Pastikan file tidak terkunci.";
                 }
