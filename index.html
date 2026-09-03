@@ -211,13 +211,14 @@
         .preview-box {
             background: #fff;
             color: #333;
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
             margin-top: 10px;
-            max-height: 160px;
+            max-height: 180px;
             overflow-y: auto;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             display: none;
+            border: 1px solid #ccc;
         }
 
         .result-box {
@@ -467,17 +468,15 @@
                         const page = await pdf.getPage(i);
                         const textContent = await page.getTextContent();
                         
-                        // Urutkan elemen teks berdasarkan koordinat vertikal (Y) dan horizontal (X)
                         textContent.items.sort((a, b) => {
                             const yA = a.transform[5];
                             const yB = b.transform[5];
                             if (Math.abs(yA - yB) > 4) {
-                                return yB - yA; // Dari atas ke bawah
+                                return yB - yA; 
                             }
-                            return a.transform[4] - b.transform[4]; // Dari kiri ke kanan
+                            return a.transform[4] - b.transform[4]; 
                         });
 
-                        // Kelompokkan teks per baris agar tidak acak-acakan
                         let lines = [];
                         let currentLine = [];
                         let lastY = null;
@@ -487,7 +486,7 @@
                             if (lastY === null || Math.abs(y - lastY) < 4) {
                                 currentLine.push(item.str);
                             } else {
-                                lines.push(currentLine.join(" "));
+                                if(currentLine.length > 0) lines.push(currentLine.join(" "));
                                 currentLine = [item.str];
                             }
                             lastY = y;
@@ -496,7 +495,7 @@
                             lines.push(currentLine.join(" "));
                         }
 
-                        let pageHtml = lines.map(line => `<p style="margin: 0 0 8pt 0; line-height: 1.5; text-align: justify; font-family: 'Times New Roman', Times, serif; font-size: 12pt; color: #000000;">${line}</p>`).join('');
+                        let pageHtml = lines.map(line => `<p style="margin: 0 0 10pt 0; line-height: 1.6; text-align: justify; font-family: 'Times New Roman', Times, serif; font-size: 12pt; color: #000000;">${line}</p>`).join('');
                         fullText += `<div style="page-break-after: always; margin-bottom: 20px;">${pageHtml}</div>`;
                     }
 
@@ -506,8 +505,8 @@
                             <meta charset='utf-8'>
                             <title>Converted Document</title>
                             <style>
-                                body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; color: #000000; line-height: 1.5; margin: 2cm; }
-                                p { margin: 0 0 8pt 0; text-align: justify; }
+                                body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; color: #000000; line-height: 1.6; margin: 2.5cm; }
+                                p { margin: 0 0 10pt 0; text-align: justify; }
                             </style>
                         </head>
                         <body>${fullText}</body>
@@ -524,7 +523,7 @@
                     document.body.removeChild(link);
                     URL.revokeObjectURL(url);
 
-                    statusMsg.innerText = "Berhasil! Dokumen Word (.doc) berhasil diunduh dengan tata letak yang lebih rapi.";
+                    statusMsg.innerText = "Berhasil! Dokumen Word (.doc) berhasil diunduh dengan tata letak yang rapi.";
                 } catch (error) {
                     statusMsg.innerText = "Gagal memproses file PDF.";
                 }
@@ -556,15 +555,24 @@
             const element = document.getElementById('docPreview');
             statusMsg.innerText = "Sedang merakit file PDF...";
             
+            // Buat elemen kloning untuk PDF agar styling max-height di UI tidak memotong isi PDF
+            const clone = element.cloneNode(true);
+            clone.style.maxHeight = 'none';
+            clone.style.overflow = 'visible';
+            clone.style.fontSize = '12pt';
+            clone.style.padding = '10mm';
+            clone.style.background = '#ffffff';
+            clone.style.color = '#000000';
+
             const opt = {
                 margin:       10,
                 filename:     originalDocName + '.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2 },
+                html2canvas:  { scale: 2, useCORS: true },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            html2pdf().from(element).set(opt).save().then(() => {
+            html2pdf().from(clone).set(opt).save().then(() => {
                 statusMsg.innerText = "PDF berhasil diunduh!";
             });
         }
