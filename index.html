@@ -209,6 +209,18 @@
             color: #d4edda;
         }
 
+        .preview-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+            color: #fff;
+            display: none;
+        }
+
         .result-box {
             margin-top: 15px;
             display: flex;
@@ -326,6 +338,7 @@
                 <input type="file" id="docInput" accept=".pdf, .docx" onchange="processDocument()">
                 <div id="statusDoc" class="status-msg"></div>
                 <div id="docDownloadArea"></div>
+                <div id="docPreview" class="preview-box"></div>
             </div>
 
             <!-- 3. TikTok Downloader -->
@@ -392,6 +405,7 @@
             document.getElementById('btnWordToPdf').classList.toggle('active', mode === 'word2pdf');
             document.getElementById('docInput').accept = mode === 'pdf2word' ? ".pdf" : ".docx";
             document.getElementById('docDownloadArea').innerHTML = '';
+            document.getElementById('docPreview').style.display = 'none';
         }
 
         function processImage() {
@@ -440,10 +454,12 @@
             const fileInput = document.getElementById('docInput');
             const statusMsg = document.getElementById('statusDoc');
             const downloadArea = document.getElementById('docDownloadArea');
+            const previewBox = document.getElementById('docPreview');
             if (fileInput.files.length === 0) return;
             
             const file = fileInput.files[0];
             downloadArea.innerHTML = "";
+            previewBox.style.display = 'none';
 
             if (currentDocMode === 'pdf2word') {
                 statusMsg.innerText = "Membaca file PDF, mohon tunggu...";
@@ -457,6 +473,11 @@
                         const textContent = await page.getTextContent();
                         const pageText = textContent.items.map(item => item.str).join(' ');
                         fullText += `<p>${pageText}</p><br>`;
+                    }
+
+                    if (!fullText.trim() || fullText.replace(/<[^>]*>/g, '').trim().length < 3) {
+                        statusMsg.innerText = "Gagal: PDF ini berupa gambar/scan atau tidak memiliki teks yang terbaca.";
+                        return;
                     }
 
                     const docContent = `
@@ -480,26 +501,18 @@
                 try {
                     const arrayBuffer = await file.arrayBuffer();
                     const result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
-                    let textContent = result.value.replace(/\n/g, '<br>');
+                    let textContent = result.value.trim();
 
-                    const printWindow = window.open('', '_blank');
-                    printWindow.document.write(`
-                        <html>
-                        <head><title>${file.name}</title></head>
-                        <body style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6;">
-                            <h2>${file.name.replace(/\.[^/.]+$/, "")}</h2>
-                            <hr/><br/>
-                            <div>${textContent}</div>
-                            <script>
-                                window.onload = function() {
-                                    window.print();
-                                };
-                            <\/script>
-                        </body>
-                        </html>
-                    `);
-                    printWindow.document.close();
-                    statusMsg.innerText = "Berhasil! Gunakan opsi 'Simpan sebagai PDF' / 'Save as PDF' pada dialog cetak.";
+                    if (!textContent) {
+                        statusMsg.innerText = "Gagal: File Word kosong atau tidak dapat dibaca.";
+                        return;
+                    }
+
+                    statusMsg.innerText = "Berhasil dibaca! Klik tombol di bawah untuk menyimpan sebagai PDF.";
+                    previewBox.style.display = 'block';
+                    previewBox.innerHTML = "<strong>Preview Teks:</strong><br>" + textContent.replace(/\n/g, '<br>');
+
+                    downloadArea.innerHTML = `<button onclick="window.print()" class="action-btn">🖨️ Simpan / Cetak sebagai PDF</button>`;
                 } catch (error) {
                     statusMsg.innerText = "Gagal membaca file Word (.docx).";
                 }
