@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Multi Tools Gratis - Liquid Glass Design</title>
     
-    <!-- Library Pendukung -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -292,7 +291,6 @@
 <body>
 
     <div class="container">
-        <!-- Sidebar Menu -->
         <div class="sidebar">
             <div class="sidebar-top">
                 <h2>⚡ Multi Tools</h2>
@@ -308,9 +306,7 @@
             </a>
         </div>
 
-        <!-- Area Konten Alat -->
         <div class="content">
-            <!-- 1. Konverter Gambar -->
             <div class="tool-panel active" id="panel-0">
                 <h3>Konverter Format Gambar</h3>
                 <p>Ubah format foto JPG ke PNG atau sebaliknya secara instan di HP.</p>
@@ -325,7 +321,6 @@
                 <div id="imageDownloadArea"></div>
             </div>
 
-            <!-- 2. Konverter Dokumen -->
             <div class="tool-panel" id="panel-1">
                 <h3>Konverter Dokumen</h3>
                 <p>Ubah PDF ke Word atau Word ke PDF langsung di browser.</p>
@@ -341,7 +336,6 @@
                 <div id="docPreview" class="preview-box"></div>
             </div>
 
-            <!-- 3. TikTok Downloader -->
             <div class="tool-panel" id="panel-2">
                 <h3>TikTok Downloader (No Watermark)</h3>
                 <p>Tempel tautan video TikTok di bawah ini untuk mengunduhnya.</p>
@@ -351,7 +345,6 @@
                 <div id="tiktokDownloadArea"></div>
             </div>
 
-            <!-- 4. QR Code Generator -->
             <div class="tool-panel" id="panel-3">
                 <h3>Generator QR Code</h3>
                 <p>Ketik teks atau tautan web untuk langsung membuat kode QR.</p>
@@ -363,7 +356,6 @@
                 </div>
             </div>
 
-            <!-- 5. Password Generator -->
             <div class="tool-panel" id="panel-4">
                 <h3>Generator Password Kuat</h3>
                 <p>Buat kata sandi yang aman dan acak untuk melindungi akun penting Anda.</p>
@@ -465,7 +457,7 @@
             previewBox.style.display = 'none';
 
             if (currentDocMode === 'pdf2word') {
-                statusMsg.innerText = "Membaca file PDF...";
+                statusMsg.innerText = "Membaca dan menyusun ulang teks PDF...";
                 try {
                     const arrayBuffer = await file.arrayBuffer();
                     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
@@ -474,16 +466,39 @@
                     for (let i = 1; i <= pdf.numPages; i++) {
                         const page = await pdf.getPage(i);
                         const textContent = await page.getTextContent();
+                        
+                        // Urutkan teks berdasarkan koordinat Y & X agar rapi
+                        textContent.items.sort((a, b) => {
+                            const yA = a.transform[5];
+                            const yB = b.transform[5];
+                            if (Math.abs(yA - yB) > 5) {
+                                return yB - yA; 
+                            }
+                            return a.transform[4] - b.transform[4]; 
+                        });
+
                         const pageText = textContent.items.map(item => item.str).join(' ');
-                        fullText += `<p>${pageText}</p><br>`;
+                        fullText += `<p style="margin-bottom: 15px; line-height: 1.6;">${pageText}</p>`;
                     }
 
-                    const docContent = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'></head><body>${fullText}</body></html>`;
-                    const dataUri = 'data:application/msword;charset=utf-8,' + encodeURIComponent(docContent);
-                    const fileName = originalDocName + ".doc";
+                    const docContent = `
+                        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                        <head><meta charset='utf-8'><title>Converted Document</title></head>
+                        <body style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #333;">${fullText}</body>
+                        </html>
+                    `;
 
-                    statusMsg.innerText = "Berhasil! Silakan ketuk tombol unduh di bawah.";
-                    downloadArea.innerHTML = `<a href="${dataUri}" download="${fileName}" class="action-btn">📥 Unduh Dokumen Word (.doc)</a>`;
+                    const blob = new Blob(['\ufeff' + docContent], { type: 'application/msword' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = originalDocName + ".doc";
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+
+                    statusMsg.innerText = "Berhasil! Dokumen Word (.doc) berhasil diunduh.";
                 } catch (error) {
                     statusMsg.innerText = "Gagal memproses file PDF.";
                 }
