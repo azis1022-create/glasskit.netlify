@@ -383,7 +383,7 @@
             document.getElementById('btnJpgToPng').classList.toggle('active', mode === 'jpg2png');
             document.getElementById('btnPngToJpg').classList.toggle('active', mode === 'png2jpg');
             document.getElementById('imageInput').accept = mode === 'jpg2png' ? "image/jpeg, image/jpg" : "image/png";
-            document.getElementById('imageDownloadArea.innerHTML').innerHTML = '';
+            document.getElementById('imageDownloadArea').innerHTML = '';
         }
 
         function setDocMode(mode) {
