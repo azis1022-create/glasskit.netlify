@@ -14,6 +14,10 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
+        :root {
+            --accent: #08C159;
+        }
+
         * { 
             box-sizing: border-box; 
             margin: 0; 
@@ -21,9 +25,16 @@
             font-family: 'Poppins', sans-serif; 
         }
 
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         body { 
-            background: #0d0d0d; 
-            background-image: radial-gradient(circle at top right, #1a2f22, #0d0d0d);
+            background: linear-gradient(-45deg, #1a2f22, #0d0d0d, #0f1f17, #121212); 
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             color: #fff; 
             min-height: 100vh; 
             display: flex; 
@@ -69,9 +80,9 @@
         .sidebar-top::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
 
         .sidebar h2 { 
-            font-size: 1.2rem; 
-            margin-bottom: 10px; 
-            color: #08C159; /* Green Joox */
+            font-size: 1.1rem; 
+            margin-bottom: 5px; 
+            color: var(--accent); 
             font-weight: 700;
             text-align: center;
             letter-spacing: 0.5px;
@@ -90,7 +101,14 @@
             font-weight: 600; 
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+        }
+
+        .menu-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            flex-shrink: 0;
         }
 
         .menu-btn:hover { 
@@ -100,8 +118,8 @@
 
         .menu-btn.active { 
             background: rgba(8, 193, 89, 0.15); 
-            border-color: #08C159; 
-            color: #08C159; 
+            border-color: var(--accent); 
+            color: var(--accent); 
         }
 
         .donate-btn { 
@@ -109,20 +127,29 @@
             border: 1px solid #333;
             padding: 14px 15px; 
             border-radius: 12px; 
-            color: #08C159; 
+            color: var(--accent); 
             text-align: center; 
             text-decoration: none; 
             font-weight: 600; 
             font-size: 0.9rem; 
             transition: all 0.3s ease; 
-            display: block; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             margin-top: 15px; 
         }
 
+        .donate-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+        }
+
         .donate-btn:hover { 
-            background: #08C159; 
+            background: var(--accent); 
             color: #000;
-            border-color: #08C159;
+            border-color: var(--accent);
             transform: translateY(-3px); 
         }
 
@@ -172,8 +199,8 @@
         }
         
         .switch-tab.active { 
-            background: #08C159; 
-            border-color: #08C159; 
+            background: var(--accent); 
+            border-color: var(--accent); 
             color: #000;
         }
 
@@ -191,7 +218,7 @@
         }
 
         input[type="text"]:focus, select:focus {
-            border-color: #08C159;
+            border-color: var(--accent);
         }
 
         select option { background: #222; color: #fff; }
@@ -212,12 +239,12 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
-            background: #08C159;
+            background: var(--accent);
             cursor: pointer;
         }
 
         .action-btn { 
-            background: #08C159; 
+            background: var(--accent); 
             border: none; 
             padding: 14px 20px; 
             border-radius: 12px; 
@@ -234,7 +261,7 @@
         }
 
         .action-btn:hover { 
-            background: #069e48; 
+            filter: brightness(0.9);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(8, 193, 89, 0.3);
         }
@@ -242,7 +269,7 @@
         .status-msg { 
             margin-top: 15px; 
             font-size: 0.85rem; 
-            color: #08C159; 
+            color: var(--accent); 
             background: rgba(8, 193, 89, 0.1); 
             padding: 12px; 
             border-radius: 10px; 
@@ -263,12 +290,31 @@
 
         .range-container { margin-bottom: 20px; font-size: 0.9rem; color: #b3b3b3; }
 
+        /* Toast Notification */
+        #customToast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--accent);
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+            z-index: 9999;
+        }
+
         /* ========================================== */
         /* STYLING LIQUID GLASS MODE                  */
         /* ========================================== */
         body.liquid-glass-mode {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364) !important;
-            background-attachment: fixed !important;
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1b3b4a) !important;
+            background-size: 400% 400% !important;
+            animation: gradientShift 15s ease infinite !important;
         }
         body.liquid-glass-mode .container {
             background: rgba(25, 25, 35, 0.45) !important;
@@ -295,7 +341,8 @@
             border: 1px solid rgba(255, 255, 255, 0.1) !important;
             backdrop-filter: blur(10px);
         }
-        body.liquid-glass-mode .donate-btn {
+        body.liquid-glass-mode .donate-btn,
+        body.liquid-glass-mode .customizer-box {
             background: rgba(37, 37, 45, 0.4) !important;
             border: 1px solid rgba(255, 255, 255, 0.12) !important;
             backdrop-filter: blur(5px);
@@ -310,28 +357,60 @@
 </head>
 <body>
 
+    <div id="customToast">Pesan notifikasi</div>
+
     <div class="container">
         <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-top">
-                <!-- TOMBOL TOGGLE LIQUID GLASS KECIL DI POJOK KIRI ATAS -->
+                <!-- TOMBOL TOGGLE LIQUID GLASS -->
                 <div style="display: flex; justify-content: flex-start; margin-bottom: 5px;">
-                    <button id="glassToggleBtn" onclick="toggleLiquidGlass()" style="background: #1e1e1e; border: 1px solid #333; padding: 5px 10px; border-radius: 8px; color: #b3b3b3; font-size: 0.7rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.3s;">
+                    <button id="glassToggleBtn" onclick="toggleLiquidGlass()" style="background: #1e1e1e; border: 1px solid #333; padding: 6px 12px; border-radius: 8px; color: #b3b3b3; font-size: 0.7rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.3s; width: 100%;">
                         💎 Glass: <span id="glassStatus" style="color: #ff5555; font-weight: bold;">Mati</span>
                     </button>
                 </div>
 
+                <!-- THEME CUSTOMIZER (AKSEN WARNA) -->
+                <div class="customizer-box" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; background: #1e1e1e; border: 1px solid #333; padding: 8px 12px; border-radius: 8px;">
+                    <span style="font-size: 0.7rem; color: #b3b3b3; font-weight: 600;">🎨 Tema:</span>
+                    <input type="color" id="accentColorPicker" value="#08C159" onchange="changeAccentColor(this.value)" style="width: 24px; height: 20px; border: none; background: none; cursor: pointer; padding: 0;">
+                    <div style="display: flex; gap: 6px; margin-left: auto;">
+                        <button onclick="changeAccentColor('#08C159')" style="width: 14px; height: 14px; border-radius: 50%; background: #08C159; border: none; cursor: pointer;" title="Hijau"></button>
+                        <button onclick="changeAccentColor('#00f0ff')" style="width: 14px; height: 14px; border-radius: 50%; background: #00f0ff; border: none; cursor: pointer;" title="Cyan"></button>
+                        <button onclick="changeAccentColor('#ff7700')" style="width: 14px; height: 14px; border-radius: 50%; background: #ff7700; border: none; cursor: pointer;" title="Orange"></button>
+                        <button onclick="changeAccentColor('#b026ff')" style="width: 14px; height: 14px; border-radius: 50%; background: #b026ff; border: none; cursor: pointer;" title="Ungu"></button>
+                    </div>
+                </div>
+
                 <h2>🔥 Tongkrongan Tools</h2>
                 
-                <button class="menu-btn active" onclick="switchTool(0)">🖼️ Kecilin & Ubah Foto</button>
-                <button class="menu-btn" onclick="switchTool(1)">📄 Gepengin PDF</button>
-                <button class="menu-btn" onclick="switchTool(2)">🎧 Sedot MP3 Video</button>
-                <button class="menu-btn" onclick="switchTool(3)">🎵 Sedot TikTok (No WM)</button>
-                <button class="menu-btn" onclick="switchTool(4)">🔲 Mainan QR Code</button>
+                <button class="menu-btn active" onclick="switchTool(0)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    Kecilin & Ubah Foto
+                </button>
+                <button class="menu-btn" onclick="switchTool(1)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    Gepengin PDF
+                </button>
+                <button class="menu-btn" onclick="switchTool(2)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                    Sedot MP3 Video
+                </button>
+                <button class="menu-btn" onclick="switchTool(3)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+                    Sedot TikTok (No WM)
+                </button>
+                <button class="menu-btn" onclick="switchTool(4)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    Mainan QR Code
+                </button>
             </div>
             <div>
-                <!-- Link Saweria Updated -->
-                <a href="https://saweria.co/Weeenkyy" target="_blank" class="donate-btn">☕ Traktir Gue Kopi</a>
+                <!-- Link Saweria -->
+                <a href="https://saweria.co/Weeenkyy" target="_blank" class="donate-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                    Traktir Gue Kopi
+                </a>
             </div>
         </div>
 
@@ -353,7 +432,7 @@
                 </div>
 
                 <div class="range-container">
-                    <label>Tingkat Kemulusan: <span id="qualityVal" style="color:#08C159; font-weight:bold;">70</span>%</label>
+                    <label>Tingkat Kemulusan: <span id="qualityVal" style="color:var(--accent); font-weight:bold;">70</span>%</label>
                     <input type="range" id="imgQuality" min="10" max="100" value="70" oninput="document.getElementById('qualityVal').innerText = this.value">
                 </div>
 
@@ -430,6 +509,52 @@
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
+        // FUNGSI CUSTOM TOAST NOTIFICATION (GANTI ALERT)
+        function showToast(message) {
+            const toast = document.getElementById('customToast');
+            toast.innerText = message;
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+                toast.style.opacity = '0';
+            }, 3500);
+        }
+
+        // FUNGSI GANTI WARNA AKSEN (THEME CUSTOMIZER)
+        function changeAccentColor(color) {
+            document.documentElement.style.setProperty('--accent', color);
+            document.getElementById('accentColorPicker').value = color;
+            
+            let dynamicStyle = document.getElementById('dynamicAccentStyle');
+            if (!dynamicStyle) {
+                dynamicStyle = document.createElement('style');
+                dynamicStyle.id = 'dynamicAccentStyle';
+                document.head.appendChild(dynamicStyle);
+            }
+            dynamicStyle.innerHTML = `
+                .menu-btn.active {
+                    background: ${color}26 !important;
+                    border-color: ${color} !important;
+                    color: ${color} !important;
+                }
+                .switch-tab.active {
+                    background: ${color} !important;
+                    border-color: ${color} !important;
+                    color: #000 !important;
+                }
+                .action-btn:hover {
+                    box-shadow: 0 5px 15px ${color}4d !important;
+                }
+                input[type="text"]:focus, select:focus {
+                    border-color: ${color} !important;
+                }
+                input[type="range"]::-webkit-slider-thumb {
+                    background: ${color} !important;
+                }
+            `;
+        }
+
         // FUNGSI TOGGLE LIQUID GLASS
         function toggleLiquidGlass() {
             const body = document.body;
@@ -440,8 +565,8 @@
             
             if (isGlass) {
                 statusSpan.innerText = "Hidup";
-                statusSpan.style.color = "#08C159";
-                btn.style.borderColor = "#08C159";
+                statusSpan.style.color = "var(--accent)";
+                btn.style.borderColor = "var(--accent)";
                 btn.style.background = "rgba(8, 193, 89, 0.15)";
             } else {
                 statusSpan.innerText = "Mati";
@@ -466,7 +591,7 @@
         function processImage() {
             const fileInput = document.getElementById('imgInput');
             const resultDiv = document.getElementById('imgResult');
-            if (!fileInput.files.length) return alert('Pilih gambarnya dulu dong bos!');
+            if (!fileInput.files.length) return showToast('Pilih gambarnya dulu dong lek!');
 
             const file = fileInput.files[0];
             const reader = new FileReader();
@@ -508,10 +633,10 @@
             const fileInput = document.getElementById('pdfInput');
             const status = document.getElementById('pdfStatus');
             const resultArea = document.getElementById('pdfResult');
-            if (!fileInput.files.length) return alert('Masukin dulu file PDF-nya bro!');
+            if (!fileInput.files.length) return showToast('Masukin dulu file PDF-nya bro lek!');
 
             status.style.display = 'block';
-            status.innerText = "Sabar, lagi baca PDF lo nih...";
+            status.innerText = "Sabar, lagi baca PDF lo ini lek...";
             resultArea.innerHTML = "";
 
             try {
@@ -529,7 +654,7 @@
                 else if(level === 'low') { scale = 1.5; quality = 0.8; }
 
                 for (let i = 1; i <= pdf.numPages; i++) {
-                    status.innerText = `Lagi ngegepengin Halaman ${i} dari ${pdf.numPages}...`;
+                    status.innerText = `Lagi ngegepengin halaman ${i} dari ${pdf.numPages} nih lek...`;
                     const page = await pdf.getPage(i);
                     const viewport = page.getViewport({ scale: scale });
 
@@ -556,7 +681,7 @@
                     newPdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
                 }
 
-                status.innerText = "Mantap! PDF-nya udah gepeng.";
+                status.innerText = "Mantap! PDF-nya udah gepeng total.";
                 const compressedBlob = newPdf.output('blob');
                 const origMB = (file.size / (1024*1024)).toFixed(2);
                 const compMB = (compressedBlob.size / (1024*1024)).toFixed(2);
@@ -568,7 +693,7 @@
                 `;
             } catch(e) {
                 console.error(e);
-                status.innerText = "Waduh, gagal bro ngerjain PDF-nya.";
+                status.innerText = "Waduh, gagal bro ngerjain PDF-nya lek.";
             }
         }
 
@@ -578,10 +703,10 @@
             const status = document.getElementById('audioStatus');
             const result = document.getElementById('audioResult');
 
-            if (!fileInput.files.length) return alert('Pilih videonya dulu dong!');
+            if (!fileInput.files.length) return showToast('Pilih videonya dulu dong lek!');
 
             status.style.display = 'block';
-            status.innerText = "Lagi narik suaranya nih... Santai dulu yak...";
+            status.innerText = "Lagi narik suaranya nih lek... Santai dulu!";
             result.innerHTML = "";
 
             try {
@@ -593,7 +718,7 @@
                 const wavBlob = audioBufferToWav(audioBuffer);
                 const url = URL.createObjectURL(wavBlob);
 
-                status.innerText = "Cakep! Suaranya udah ketarik.";
+                status.innerText = "Cakep! Suaranya udah ketarik bersih.";
                 result.innerHTML = `
                     <div class="preview-box">
                         <audio controls src="${url}" style="width:100%; margin-bottom:15px; outline:none;"></audio>
@@ -602,7 +727,7 @@
                 `;
             } catch (err) {
                 console.error(err);
-                status.innerText = "Yah gagal, format videonya kurang asik kayaknya.";
+                status.innerText = "Yah gagal lek, format videonya kurang asik kayaknya.";
             }
         }
 
@@ -667,10 +792,10 @@
             const status = document.getElementById('ttStatus');
             const result = document.getElementById('ttResult');
 
-            if (!urlInput) return alert('Woy link-nya belom di-paste bos!');
+            if (!urlInput) return showToast('Woy link-nya belom di-paste lek!');
 
             status.style.display = 'block';
-            status.innerText = "Bentar, lagi nyari videonya nih...";
+            status.innerText = "Bentar, lagi nyari videonya nih lek...";
             result.innerHTML = "";
 
             try {
@@ -681,18 +806,18 @@
                     status.innerText = "Dapet nih videonya! Gass...";
                     result.innerHTML = `
                         <div class="preview-box">
-                            <p style="font-weight:600; margin-bottom:10px; color:#08C159;">${data.data.title || 'TikTok Video'}</p>
+                            <p style="font-weight:600; margin-bottom:10px; color:var(--accent);">${data.data.title || 'TikTok Video'}</p>
                             <video controls src="${data.data.play}" style="max-width:100%; max-height:220px; border-radius:10px; margin-bottom:15px;"></video>
                             <a href="${data.data.play}" target="_blank" download class="action-btn">📥 Sikat Video (Polos)</a>
-                            <a href="${data.data.music}" target="_blank" download class="action-btn" style="background: transparent; border: 2px solid #08C159; color:#08C159; margin-top:10px;">🎵 Ambil Lagunya Aja</a>
+                            <a href="${data.data.music}" target="_blank" download class="action-btn" style="background: transparent; border: 2px solid var(--accent); color:var(--accent); margin-top:10px;">🎵 Ambil Lagunya Aja</a>
                         </div>
                     `;
                 } else {
-                    status.innerText = "Yah videonya gak ketemu, pastiin link-nya bener ya.";
+                    status.innerText = "Yah videonya gak ketemu lek, pastiin link-nya bener ya.";
                 }
             } catch (err) {
                 console.error(err);
-                status.innerText = "Aduh, servernya lagi ngambek nih, koneksi putus.";
+                status.innerText = "Aduh, servernya lagi ngambek nih lek, koneksi putus.";
             }
         }
 
@@ -708,7 +833,7 @@
             const text = document.getElementById('qrText').value;
             const box = document.getElementById('qrcode');
             box.innerHTML = "";
-            if (!text) return alert('Isi teks atau link-nya dulu bro biar bisa jadi QR!');
+            if (!text) return showToast('Isi teks atau link-nya dulu lek biar jadi QR!');
 
             box.style.display = "flex";
             new QRCode(box, {
@@ -726,15 +851,15 @@
             if (!fileInput.files.length) return;
 
             resultMsg.style.display = 'block';
-            resultMsg.innerText = "Lagi baca isinya nih...";
+            resultMsg.innerText = "Lagi baca isinya nih lek...";
 
             const html5QrCode = new Html5Qrcode("qrScanArea");
             html5QrCode.scanFile(fileInput.files[0], true)
                 .then(decodedText => {
-                    resultMsg.innerHTML = `<b>Ini dia isinya:</b> <br> <a href="${decodedText}" target="_blank" style="color:#fff; font-weight:bold; word-break:break-all;">${decodedText}</a>`;
+                    resultMsg.innerHTML = `<b>Ini dia isinya lek:</b> <br> <a href="${decodedText}" target="_blank" style="color:#fff; font-weight:bold; word-break:break-all;">${decodedText}</a>`;
                 })
                 .catch(err => {
-                    resultMsg.innerText = "Waduh blur, gambarnya gak bisa dibaca.";
+                    resultMsg.innerText = "Waduh blur, gambarnya gak bisa dibaca lek.";
                 });
         }
     </script>
