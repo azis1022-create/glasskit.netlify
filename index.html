@@ -457,7 +457,7 @@
             previewBox.style.display = 'none';
 
             if (currentDocMode === 'pdf2word') {
-                statusMsg.innerText = "Membaca dan menyusun ulang teks PDF...";
+                statusMsg.innerText = "Membaca dan merapikan struktur teks PDF...";
                 try {
                     const arrayBuffer = await file.arrayBuffer();
                     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
@@ -467,24 +467,50 @@
                         const page = await pdf.getPage(i);
                         const textContent = await page.getTextContent();
                         
-                        // Urutkan teks berdasarkan koordinat Y & X agar rapi
+                        // Urutkan elemen teks berdasarkan koordinat vertikal (Y) dan horizontal (X)
                         textContent.items.sort((a, b) => {
                             const yA = a.transform[5];
                             const yB = b.transform[5];
-                            if (Math.abs(yA - yB) > 5) {
-                                return yB - yA; 
+                            if (Math.abs(yA - yB) > 4) {
+                                return yB - yA; // Dari atas ke bawah
                             }
-                            return a.transform[4] - b.transform[4]; 
+                            return a.transform[4] - b.transform[4]; // Dari kiri ke kanan
                         });
 
-                        const pageText = textContent.items.map(item => item.str).join(' ');
-                        fullText += `<p style="margin-bottom: 15px; line-height: 1.6;">${pageText}</p>`;
+                        // Kelompokkan teks per baris agar tidak acak-acakan
+                        let lines = [];
+                        let currentLine = [];
+                        let lastY = null;
+
+                        for (let item of textContent.items) {
+                            let y = item.transform[5];
+                            if (lastY === null || Math.abs(y - lastY) < 4) {
+                                currentLine.push(item.str);
+                            } else {
+                                lines.push(currentLine.join(" "));
+                                currentLine = [item.str];
+                            }
+                            lastY = y;
+                        }
+                        if (currentLine.length > 0) {
+                            lines.push(currentLine.join(" "));
+                        }
+
+                        let pageHtml = lines.map(line => `<p style="margin: 0 0 8pt 0; line-height: 1.5; text-align: justify; font-family: 'Times New Roman', Times, serif; font-size: 12pt; color: #000000;">${line}</p>`).join('');
+                        fullText += `<div style="page-break-after: always; margin-bottom: 20px;">${pageHtml}</div>`;
                     }
 
                     const docContent = `
                         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-                        <head><meta charset='utf-8'><title>Converted Document</title></head>
-                        <body style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #333;">${fullText}</body>
+                        <head>
+                            <meta charset='utf-8'>
+                            <title>Converted Document</title>
+                            <style>
+                                body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; color: #000000; line-height: 1.5; margin: 2cm; }
+                                p { margin: 0 0 8pt 0; text-align: justify; }
+                            </style>
+                        </head>
+                        <body>${fullText}</body>
                         </html>
                     `;
 
@@ -498,7 +524,7 @@
                     document.body.removeChild(link);
                     URL.revokeObjectURL(url);
 
-                    statusMsg.innerText = "Berhasil! Dokumen Word (.doc) berhasil diunduh.";
+                    statusMsg.innerText = "Berhasil! Dokumen Word (.doc) berhasil diunduh dengan tata letak yang lebih rapi.";
                 } catch (error) {
                     statusMsg.innerText = "Gagal memproses file PDF.";
                 }
