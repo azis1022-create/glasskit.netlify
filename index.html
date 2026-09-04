@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi Tools + Ultimate Lara Bot Simulator</title>
+    <title>Multi Tools + Ultimate OwO Lara Bot Simulator</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -154,7 +154,7 @@
         #gameInterface.active { opacity: 1; visibility: visible; }
         
         .game-board {
-            width: 100%; max-width: 650px; padding: 25px; position: relative;
+            width: 100%; max-width: 700px; padding: 25px; position: relative;
             background: #313338; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; color: #dbdee1;
             max-height: 95vh; overflow-y: auto; box-shadow: 0 25px 50px rgba(0,0,0,0.6);
         }
@@ -177,7 +177,7 @@
 
         .discord-chat-box {
             background: #2b2d31; border-radius: 8px; padding: 12px; margin-bottom: 12px;
-            height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;
+            height: 170px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;
             font-size: 0.82rem; border: 1px solid #1f2023; line-height: 1.4;
         }
         .chat-msg { display: flex; flex-direction: column; }
@@ -202,7 +202,7 @@
         .owo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .inventory-box {
-            background: #2b2d31; padding: 8px; border-radius: 8px; max-height: 75px; overflow-y: auto;
+            background: #2b2d31; padding: 8px; border-radius: 8px; max-height: 85px; overflow-y: auto;
             font-size: 0.75rem; display: flex; flex-wrap: wrap; gap: 6px;
         }
         .inv-chip { background: #1e1f22; padding: 3px 8px; border-radius: 4px; border: 1px solid #3f4147; }
@@ -228,9 +228,10 @@
     <div id="customToast">Notifikasi</div>
 
     <div class="minigame-btn" onclick="openLaraGame()">
-        <span>🤖 Lara Bot</span>
+        <span>🤖 OwO / Lara Bot</span>
     </div>
 
+    <!-- CAPTCHA MODAL -->
     <div id="captchaModal">
         <div class="captcha-box">
             <h3 style="color:#ef4444; margin-bottom:5px;">⚠️ VERIFIKASI CAPTCHA!</h3>
@@ -241,31 +242,32 @@
         </div>
     </div>
 
+    <!-- LARA BOT SIMULATOR -->
     <div id="gameInterface">
         <div class="game-board">
             <button class="close-game" onclick="closeLaraGame()">✕</button>
             
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; padding-right: 35px;">
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <span style="background:#5865f2; color:#fff; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:700;">Lara Bot</span>
-                    <h3 style="font-size:1.1rem; color:#fff; margin:0;">Mini Game Grinding</h3>
+                    <span style="background:#5865f2; color:#fff; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:700;">OwO Bot</span>
+                    <h3 style="font-size:1.1rem; color:#fff; margin:0;">Ultimate Grinding & Battle</h3>
                 </div>
                 <button onclick="triggerHelp()" style="background:#383a40; border:1px solid #5865f2; color:var(--accent); padding:5px 10px; border-radius:6px; font-size:0.75rem; cursor:pointer; display:flex; align-items:center; gap:5px; font-weight:600; transition:0.2s;">
-                    💬 <span style="color:#fff;">Tips / Tutorial</span>
+                    💬 <span style="color:#fff;">Panduan Command</span>
                 </button>
             </div>
             
             <div class="game-stats">
                 <div><div class="stat-label">Level</div><div class="stat-val" id="gLevel">1</div></div>
-                <div><div class="stat-label">Cowries 🐚</div><div class="stat-val" id="gMoney">400</div></div>
-                <div><div class="stat-label">Gems 💎</div><div class="stat-val" id="gGems" style="color:var(--accent);">0</div></div>
-                <div><div class="stat-label">Crates 📦</div><div class="stat-val" id="gCrates" style="color:#a855f7;">1</div></div>
+                <div><div class="stat-label">Cowries 🐚</div><div class="stat-val" id="gMoney">500</div></div>
+                <div><div class="stat-label">Gems 💎</div><div class="stat-val" id="gGems" style="color:var(--accent);">5</div></div>
+                <div><div class="stat-label">Crates 📦</div><div class="stat-val" id="gCrates" style="color:#a855f7;">2</div></div>
                 <div><div class="stat-label">CD</div><div class="stat-val" id="gCooldown" style="color:#f59e0b;">Ready</div></div>
             </div>
 
             <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:4px; color:#949ba4;">
                 <span id="expText">0 / 100 EXP</span>
-                <span id="weaponInfo">Senjata: Tangan Kosong</span>
+                <span id="questStatusText">Quest Harian: 0/5</span>
             </div>
             <div class="exp-container">
                 <div id="expFill"></div>
@@ -273,34 +275,34 @@
 
             <div class="discord-chat-box" id="discordChatBox">
                 <div class="chat-msg">
-                    <span class="chat-user">@BotLara <span style="font-size:0.6rem; background:#5865f2; color:#fff; padding:1px 3px; border-radius:3px;">BOT</span></span>
-                    <span class="chat-text">👋 Halo Pemula! Selamat datang di <strong>Lara Bot</strong>. Ketik <strong>lara help</strong> atau klik Tips untuk mulai bermain!</span>
+                    <span class="chat-user">@OwO Bot <span style="font-size:0.6rem; background:#5865f2; color:#fff; padding:1px 3px; border-radius:3px;">BOT</span></span>
+                    <span class="chat-text">👋 Selamat datang di OwO & Lara Bot Simulator! Ketik <strong>lara weapons</strong> untuk melihat senjata legendaris atau <strong>lara battle</strong> untuk bertarung!</span>
                 </div>
             </div>
 
             <div class="discord-input-container">
                 <span>Command:</span>
-                <input type="text" id="discordCommandInput" placeholder="Ketik command (cth: lara hunt)..." onkeypress="handleCommandKey(event)">
+                <input type="text" id="discordCommandInput" placeholder="Ketik command (cth: lara hunt, lara weapons, lara battle)..." onkeypress="handleCommandKey(event)">
             </div>
 
             <div class="owo-quick-btns">
                 <button class="owo-btn" onclick="executeCommand('lara hunt')" id="btnHunt">hunt</button>
+                <button class="owo-btn" onclick="executeCommand('lara battle')">battle</button>
+                <button class="owo-btn" onclick="executeCommand('lara weapons')">weapons</button>
                 <button class="owo-btn" onclick="executeCommand('lara quest')">quest</button>
-                <button class="owo-btn" onclick="executeCommand('lara sacrifice')">sac</button>
-                <button class="owo-btn" onclick="executeCommand('lara shop')">shop</button>
-                <button class="owo-btn" onclick="executeCommand('lara pray')">pray</button>
+                <button class="owo-btn" onclick="executeCommand('lara zoo')">zoo</button>
             </div>
             <div class="owo-quick-btns" style="margin-bottom: 10px;">
-                <button class="owo-btn" onclick="executeCommand('lara pay @user 100')">pay</button>
-                <button class="owo-btn" onclick="executeCommand('lara coinflip 50')">flip 50</button>
+                <button class="owo-btn" onclick="executeCommand('lara sacrifice')">sac</button>
                 <button class="owo-btn" onclick="executeCommand('lara crate')">crate</button>
-                <button class="owo-btn" onclick="executeCommand('lara zoo')">zoo</button>
+                <button class="owo-btn" onclick="executeCommand('lara pray')">pray</button>
+                <button class="owo-btn" onclick="executeCommand('lara coinflip 50')">flip</button>
                 <button class="owo-btn" onclick="executeCommand('lara sell')" style="background:#ef4444;">sell</button>
             </div>
 
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                <div style="font-size:0.75rem; font-weight:600; color:#949ba4;">Zoo Hewan:</div>
-                <div style="font-size:0.7rem; color:var(--accent); cursor:pointer;" onclick="executeCommand('lara zoo')">Cek Zoo ↗</div>
+                <div style="font-size:0.75rem; font-weight:600; color:#949ba4;">Zoo & Senjata Kamu:</div>
+                <div style="font-size:0.7rem; color:var(--accent); cursor:pointer;" onclick="executeCommand('lara weapons')">Cek Senjata ↗</div>
             </div>
             <div class="inventory-box" id="inventoryBox">
                 <span style="color:#72767d; font-style:italic;">Belum ada hewan. Ketik lara hunt!</span>
@@ -308,6 +310,7 @@
         </div>
     </div>
 
+    <!-- MAIN APP -->
     <div class="app-wrapper">
         <header class="glass-panel">
             <h2>🛠️ Multi<span>Tools</span></h2>
@@ -341,6 +344,7 @@
         </nav>
 
         <main class="content-area glass-panel">
+            <!-- TOOL 0: EDIT FOTO -->
             <div class="tool-panel active" id="panel-0">
                 <h3>Kecilin & Ubah Foto</h3>
                 <p>Resize ukuran dan konversi format gambar secara instan.</p>
@@ -366,6 +370,7 @@
                 <button class="action-btn" onclick="processPhoto()">⚡ Proses & Download Foto</button>
             </div>
 
+            <!-- TOOL 1: GEPENGIN PDF -->
             <div class="tool-panel" id="panel-1">
                 <h3>Gepengin PDF (Kompres / Konversi)</h3>
                 <p>Ubah atau kompres file gambar menjadi dokumen PDF ringkas.</p>
@@ -377,6 +382,7 @@
                 <button class="action-btn" onclick="processPDF()">📄 Generate & Download PDF</button>
             </div>
 
+            <!-- TOOL 2: TIKTOK DOWNLOADER NO WM & MP3 -->
             <div class="tool-panel" id="panel-2">
                 <h3>TikTok Downloader (No Watermark & MP3)</h3>
                 <p>Masukkan tautan video TikTok untuk mengambil video asli tanpa watermark dan ekstrak audionya.</p>
@@ -385,6 +391,7 @@
                 <div id="tiktokResult" style="margin-top:15px;"></div>
             </div>
 
+            <!-- TOOL 3: QR CODE GENERATOR -->
             <div class="tool-panel" id="panel-3">
                 <h3>QR Code Generator</h3>
                 <p>Buat QR Code kustom instan dari teks atau tautan web.</p>
@@ -393,6 +400,7 @@
                 <button class="action-btn" onclick="downloadQRCode()">💾 Download QR Code</button>
             </div>
 
+            <!-- TOOL 4: KUSTOM WARNA TEMA -->
             <div class="tool-panel" id="panel-4">
                 <h3>Kustomisasi Warna Tema</h3>
                 <p>Pilih warna aksen kesukaanmu untuk mengubah seluruh nuansa aplikasi.</p>
@@ -473,7 +481,6 @@
             }, 3000);
         }
 
-        // --- MENU SWITCHING FIX ---
         function switchTool(index) {
             document.querySelectorAll('.menu-card').forEach((el, i) => {
                 el.classList.toggle('active', i === index);
@@ -486,7 +493,6 @@
             }
         }
 
-        // --- THEME CUSTOMIZATION ---
         function changeAccentColor(hex) {
             document.documentElement.style.setProperty('--accent', hex);
             let r = parseInt(hex.slice(1,3), 16),
@@ -560,7 +566,6 @@
             reader.readAsDataURL(selectedPdfFile);
         }
 
-        // TIKTOK DOWNLOADER DENGAN API PUBLIK AMAN
         async function downloadTikTok() {
             let urlInput = document.getElementById('tiktokUrl').value.trim();
             let resultDiv = document.getElementById('tiktokResult');
@@ -615,7 +620,6 @@
             `;
         }
 
-        let qrInstance = null;
         function generateQRCode() {
             let container = document.getElementById('qrcodeContainer');
             if(!container) return;
@@ -646,47 +650,61 @@
             showToast("💾 QR Code berhasil diunduh!");
         }
 
-        // --- LARA BOT GAME STATE & SAFE STORAGE ---
-        let defaultLaraState = {
+        // --- OWOW / LARA BOT SIMULATOR ENHANCED STATE ---
+        let defaultOwOState = {
             level: 1,
             exp: 0,
-            money: 400,
-            gems: 0,
-            crates: 1,
-            inventory: {},
+            money: 600,
+            gems: 10,
+            crates: 3,
+            inventory: {
+                "Mythical_Deer": { baseName: "Deer", rarity: "Mythical", count: 1, weaponId: null },
+                "Epic_Squid": { baseName: "Squid", rarity: "Epic", count: 1, weaponId: null },
+                "Legendary_Shrimp": { baseName: "Shrimp", rarity: "Legendary", count: 1, weaponId: "FJ5RZ2" }
+            },
+            weapons: {
+                "FJ5RZ2": { name: "Orb of Potency", rarity: "Legendary", stat: 72.7, equippedTo: "Shrimp" },
+                "FJ5EA6": { name: "Healing Staff", rarity: "Epic", stat: 23.6, equippedTo: null },
+                "FJ58IA": { name: "Vanguard's Banner", rarity: "Mythical", stat: 53.4, equippedTo: null }
+            },
             captchaCounter: 0,
             quest: { target: 5, progress: 0, claimed: false },
-            weapon: "Tangan Kosong",
             prayTime: 0
         };
 
-        let lara = defaultLaraState;
+        let owo = defaultOwOState;
         try {
-            let savedLaraData = localStorage.getItem('lara_bot_save');
-            if (savedLaraData) {
-                let parsed = JSON.parse(savedLaraData);
-                lara = { ...defaultLaraState, ...parsed };
+            let savedData = localStorage.getItem('owo_bot_save_v2');
+            if (savedData) {
+                let parsed = JSON.parse(savedData);
+                owo = { ...defaultOwOState, ...parsed };
             }
         } catch(e) { console.log("Save load error"); }
-        lara.cooldown = false;
+        owo.cooldown = false;
 
         function saveGame() {
             try {
-                localStorage.setItem('lara_bot_save', JSON.stringify(lara));
+                localStorage.setItem('owo_bot_save_v2', JSON.stringify(owo));
             } catch(e) {}
         }
 
         const baseAnimals = [
+            { name: "Snail", emoji: "🐌", baseVal: 10 },
             { name: "Babi", emoji: "🐷", baseVal: 20 },
-            { name: "Sapi", emoji: "🐮", baseVal: 40 },
             { name: "Ayam", emoji: "🐔", baseVal: 15 },
-            { name: "Domba", emoji: "🐑", baseVal: 30 },
-            { name: "Kucing", emoji: "🐱", baseVal: 60 },
-            { name: "Panda", emoji: "🐼", baseVal: 120 },
-            { name: "Naga", emoji: "🐲", baseVal: 300 }
+            { name: "Deer", emoji: "🦌", baseVal: 50 },
+            { name: "Squid", emoji: "🦑", baseVal: 80 },
+            { name: "Shrimp", emoji: "🦐", baseVal: 70 },
+            { name: "Elephant", emoji: "🐘", baseVal: 150 },
+            { name: "Dragon", emoji: "🐲", baseVal: 350 },
+            { name: "Phoenix", emoji: "🔥", baseVal: 500 }
         ];
 
-        const rarities = ["Common", "Uncommon", "Rare", "Epic", "Mythical", "Fabled", "Special"];
+        const rarities = ["Common", "Uncommon", "Rare", "Epic", "Mythical", "Legendary", "Fabled"];
+        const weaponNamesList = [
+            "Orb of Potency", "Healing Staff", "Vanguard's Banner", "Energy Staff", 
+            "Staff of Purity", "Defender's Aegis", "Arbiter's Edge", "Vampiric Staff", "Wand of Absorption"
+        ];
         let currentCaptchaAnswer = "";
 
         function openLaraGame() {
@@ -702,26 +720,27 @@
 
         function updateUI() {
             try {
-                document.getElementById('gLevel').innerText = lara.level;
-                document.getElementById('gMoney').innerText = lara.money;
-                document.getElementById('gGems').innerText = lara.gems;
-                document.getElementById('gCrates').innerText = lara.crates;
-                document.getElementById('weaponInfo').innerText = `Senjata: ${lara.weapon}`;
+                document.getElementById('gLevel').innerText = owo.level;
+                document.getElementById('gMoney').innerText = owo.money;
+                document.getElementById('gGems').innerText = owo.gems;
+                document.getElementById('gCrates').innerText = owo.crates;
+                document.getElementById('questStatusText').innerText = `Quest Harian: ${owo.quest.progress}/5`;
 
-                let maxExp = lara.level * 100;
-                document.getElementById('expText').innerText = `${lara.exp} / ${maxExp} EXP`;
-                document.getElementById('expFill').style.width = `${Math.min(100, (lara.exp / maxExp) * 100)}%`;
+                let maxExp = owo.level * 100;
+                document.getElementById('expText').innerText = `${owo.exp} / ${maxExp} EXP`;
+                document.getElementById('expFill').style.width = `${Math.min(100, (owo.exp / maxExp) * 100)}%`;
 
                 const invBox = document.getElementById('inventoryBox');
-                const keys = Object.keys(lara.inventory);
+                const keys = Object.keys(owo.inventory);
                 if(keys.length === 0) {
                     invBox.innerHTML = `<span style="color:#72767d; font-style:italic;">Zoo kamu masih kosong. Ketik lara hunt!</span>`;
                 } else {
                     invBox.innerHTML = "";
                     keys.forEach(k => {
-                        let item = lara.inventory[k];
+                        let item = owo.inventory[k];
                         let ani = baseAnimals.find(a => a.name === item.baseName);
-                        invBox.innerHTML += `<div class="inv-chip">${ani ? ani.emoji : '🐾'} [${item.rarity}] ${item.baseName}: <strong>x${item.count}</strong></div>`;
+                        let weaponTag = item.weaponId ? ` 🗡️ [${item.weaponId}]` : "";
+                        invBox.innerHTML += `<div class="inv-chip">${ani ? ani.emoji : '🐾'} [${item.rarity}] ${item.baseName} (x${item.count})${weaponTag}</div>`;
                     });
                 }
                 saveGame();
@@ -751,7 +770,7 @@
         }
 
         function executeCommand(cmd) {
-            if(lara.cooldown) {
+            if(owo.cooldown) {
                 showToast("⏳ Bot sedang cooldown, sabar ya!");
                 return;
             }
@@ -764,17 +783,19 @@
                 triggerHunt();
             } else if (action === 'quest') {
                 triggerQuest();
+            } else if (action === 'weapons' || action === 'w') {
+                triggerWeaponsList();
+            } else if (action === 'weapon') {
+                triggerWeaponEquipOrUnequip(parts, cmd);
+            } else if (action === 'battle' || action === 'b') {
+                triggerBattle();
             } else if (action === 'sacrifice' || action === 's') {
                 triggerSacrifice();
-            } else if (action === 'shop') {
-                triggerShop(parts);
-            } else if (action === 'pay') {
-                triggerPay(parts);
             } else if (action === 'pray') {
                 triggerPray();
             } else if (action === 'coinflip' || action === 'cf') {
                 triggerCoinflip(parts);
-            } else if (action === 'crate' || action === 'open') {
+            } else if (action === 'crate') {
                 triggerOpenCrate();
             } else if (action === 'zoo' || action === 'inv') {
                 triggerZoo();
@@ -783,25 +804,26 @@
             } else if (action === 'help') {
                 triggerHelp();
             } else {
-                pushChat("@BotLara", `❓ Command tidak dikenal. Ketik atau klik <strong>Tips / Tutorial</strong> untuk bantuan!`);
+                pushChat("@OwO Bot", `❓ Command tidak dikenal. Ketik <strong>lara help</strong> atau klik Panduan Command.`);
             }
         }
 
         function triggerHelp() {
-            pushChat("@BotLara", 
-                `📖 <strong>PANDUAN LARA BOT:</strong><br>` +
+            pushChat("@OwO Bot", 
+                `📖 <strong>PANDUAN OWOW & LARA BOT:</strong><br>` +
                 `1️⃣ <code>lara hunt</code>: Berburu hewan & dapat EXP.<br>` +
-                `2️⃣ <code>lara quest</code>: Cek misi harian & klaim 200 Cowries 🐚.<br>` +
-                `3️⃣ <code>lara zoo</code>: Cek koleksi hewan tangkapan.<br>` +
-                `4️⃣ <code>lara sell</code>: Jual hewan untuk dapat Cowries 🐚.<br>` +
-                `5️⃣ <code>lara sacrifice</code>: Tumbal hewan demi Gems 💎.<br>` +
-                `6️⃣ <code>lara pray</code>: Berdoa tiap 30 detik untuk bonus uang.<br>` +
-                `7️⃣ <code>lara coinflip [jumlah]</code>: Judi tebak koin.`
+                `2️⃣ <code>lara weapons</code>: Lihat daftar senjata legendaris ber-ID.<br>` +
+                `3️⃣ <code>lara weapon [ID] [hewan]</code>: Pasang senjata ke hewan zoo.<br>` +
+                `4️⃣ <code>lara weapon unequip [ID]</code>: Lepas senjata dari hewan.<br>` +
+                `5️⃣ <code>lara battle</code>: Bertarung melawan musuh dengan tim hewan & senjata.<br>` +
+                `6️⃣ <code>lara quest</code>: Cek misi harian & klaim Cowries 🐚.<br>` +
+                `7️⃣ <code>lara zoo</code>: Cek koleksi hewan tangkapan.<br>` +
+                `8️⃣ <code>lara sacrifice</code>: Tumbal hewan demi Gems 💎.`
             );
         }
 
         function startCooldown(sec) {
-            lara.cooldown = true;
+            owo.cooldown = true;
             let cdDisplay = document.getElementById('gCooldown');
             let btnH = document.getElementById('btnHunt');
             if(btnH) btnH.disabled = true;
@@ -813,15 +835,15 @@
                 if(cdDisplay) cdDisplay.innerText = remaining > 0 ? `${remaining}s` : "Ready";
                 if(remaining <= 0) {
                     clearInterval(interval);
-                    lara.cooldown = false;
+                    owo.cooldown = false;
                     if(btnH) btnH.disabled = false;
                 }
             }, 1000);
         }
 
         function triggerHunt() {
-            lara.captchaCounter++;
-            if (lara.captchaCounter >= 7) {
+            owo.captchaCounter++;
+            if (owo.captchaCounter >= 8) {
                 triggerCaptcha();
                 return;
             }
@@ -829,29 +851,40 @@
             startCooldown(3);
             let randAnimal = baseAnimals[Math.floor(Math.random() * baseAnimals.length)];
             let rarityIndex = Math.floor(Math.random() * rarities.length);
-            if(Math.random() > 0.85) rarityIndex = Math.min(rarities.length - 1, rarityIndex + 2);
+            if(Math.random() > 0.8) rarityIndex = Math.min(rarities.length - 1, rarityIndex + 2);
             let rarity = rarities[rarityIndex];
 
             let invKey = `${rarity}_${randAnimal.name}`;
-            if(!lara.inventory[invKey]) {
-                lara.inventory[invKey] = { baseName: randAnimal.name, rarity: rarity, count: 0 };
+            if(!owo.inventory[invKey]) {
+                owo.inventory[invKey] = { baseName: randAnimal.name, rarity: rarity, count: 0, weaponId: null };
             }
-            lara.inventory[invKey].count++;
+            owo.inventory[invKey].count++;
 
-            if(lara.quest.progress < lara.quest.target) {
-                lara.quest.progress++;
+            // Chance to find a legendary weapon during hunt
+            if(Math.random() > 0.7) {
+                let randomId = "";
+                let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                for(let i=0; i<6; i++) randomId += chars.charAt(Math.floor(Math.random() * chars.length));
+                let wName = weaponNamesList[Math.floor(Math.random() * weaponNamesList.length)];
+                let wStat = (Math.random() * 50 + 25).toFixed(1);
+                owo.weapons[randomId] = { name: wName, rarity: rarity, stat: parseFloat(wStat), equippedTo: null };
+                pushChat("@OwO Bot", `🗡️ **WOW!** Kamu menemukan senjata legendaris baru: **${wName}** dengan ID <code>${randomId}</code>!`);
             }
 
-            lara.exp += 25;
-            let maxExp = lara.level * 100;
-            if(lara.exp >= maxExp) {
-                lara.level++;
-                lara.exp = 0;
-                pushChat("@BotLara", `✨ **LEVEL UP!** Selamat kamu naik ke Level **${lara.level}**!`);
+            if(owo.quest.progress < owo.quest.target) {
+                owo.quest.progress++;
+            }
+
+            owo.exp += 30;
+            let maxExp = owo.level * 100;
+            if(owo.exp >= maxExp) {
+                owo.level++;
+                owo.exp = 0;
+                pushChat("@OwO Bot", `✨ **LEVEL UP!** Selamat kamu naik ke Level **${owo.level}**!`);
             }
 
             playSound('win');
-            pushChat("@BotLara", `🐾 Kamu berburu dan mendapatkan **[${rarity}] ${randAnimal.emoji} ${randAnimal.name}**!`);
+            pushChat("@OwO Bot", `🐾 Kamu berburu dan mendapatkan **[${rarity}] ${randAnimal.emoji} ${randAnimal.name}**!`);
             updateUI();
         }
 
@@ -872,148 +905,220 @@
             if(userVal === currentCaptchaAnswer) {
                 let modal = document.getElementById('captchaModal');
                 if(modal) modal.style.display = 'none';
-                lara.captchaCounter = 0;
+                owo.captchaCounter = 0;
                 showToast("✅ Captcha Berhasil Diverifikasi!");
-                pushChat("@BotLara", `🛡️ Verifikasi sukses! Silakan lanjutkan aktivitas.`);
+                pushChat("@OwO Bot", `🛡️ Verifikasi sukses! Silakan lanjutkan aktivitas.`);
             } else {
                 showToast("❌ Kode Captcha Salah! Coba lagi.");
             }
         }
 
-        function triggerQuest() {
-            if (lara.quest.progress >= lara.quest.target && !lara.quest.claimed) {
-                lara.quest.claimed = true;
-                lara.money += 200;
+        function triggerWeaponsList() {
+            let wKeys = Object.keys(owo.weapons);
+            if(wKeys.length === 0) {
+                pushChat("@OwO Bot", `🗡️ Kamu belum memiliki senjata. Terus berburu untuk mendapatkan senjata legendaris!`);
+                return;
+            }
+            let listStr = wKeys.map(id => {
+                let w = owo.weapons[id];
+                let eq = w.equippedTo ? ` ➔ 🐾 ${w.equippedTo}` : "";
+                return `<code>${id}</code> ⚔️ <strong>${w.name}</strong> (${w.stat}%) [${w.rarity}]${eq}`;
+            }).join("<br>");
+
+            pushChat("@OwO Bot", `🗡️ <strong>@Tamamo's Weapons:</strong><br>${listStr}<br><br><em>Gunakan: <code>lara weapon {ID} {hewan}</code> untuk pasang!</em>`);
+        }
+
+        function triggerWeaponEquipOrUnequip(parts, fullCmd) {
+            // Format: lara weapon {ID} {animal} OR lara weapon unequip {ID}
+            if (parts[2] === 'unequip') {
+                let wId = parts[3] ? parts[3].toUpperCase() : "";
+                if(!owo.weapons[wId]) {
+                    pushChat("@OwO Bot", `⚠️ Senjata dengan ID <code>${wId}</code> tidak ditemukan!`);
+                    return;
+                }
+                let currentAnimal = owo.weapons[wId].equippedTo;
+                if(!currentAnimal) {
+                    pushChat("@OwO Bot", `⚠️ Senjata ini sedang tidak dipasang ke hewan manapun.`);
+                    return;
+                }
+                // Clear from animal
+                owo.weapons[wId].equippedTo = null;
+                // Clear from inventory item
+                Object.keys(owo.inventory).forEach(k => {
+                    if(owo.inventory[k].weaponId === wId) owo.inventory[k].weaponId = null;
+                });
                 playSound('win');
-                pushChat("@BotLara", `🎉 **QUEST SELESAI!** Hadiah diklaim: <span style="color:#f59e0b;">+200 Cowries 🐚</span>!`);
+                pushChat("@OwO Bot", `🛡️ Berhasil melepas senjata <strong>${owo.weapons[wId].name}</strong> dari ${currentAnimal}!`);
                 updateUI();
                 return;
             }
-            pushChat("@BotLara", `📜 **Quest Harian:** Berburu hewan (${lara.quest.progress}/${lara.quest.target}). Ketik **lara hunt**!`);
-        }
 
-        function triggerPay(parts) {
-            let target = parts[2];
-            let amount = parseInt(parts[3]);
-            if(!target || isNaN(amount) || amount <= 0) {
-                pushChat("@BotLara", `💸 Format salah! Gunakan: <strong style="color:var(--accent);">lara pay @user jumlah</strong> (cth: lara pay @budi 100)`);
+            let wId = parts[2] ? parts[2].toUpperCase() : "";
+            let animalName = parts[3] ? parts[3].toLowerCase() : "";
+
+            if(!owo.weapons[wId] || !animalName) {
+                pushChat("@OwO Bot", `⚠️ Format salah! Gunakan: <strong style="color:var(--accent);">lara weapon {ID} {hewan}</strong> atau <strong style="color:var(--accent);">lara weapon unequip {ID}</strong>`);
                 return;
             }
-            if(lara.money < amount) {
-                pushChat("@BotLara", `⚠️ Cowries kamu tidak cukup untuk transfer sebesar ${amount} 🐚!`);
+
+            let weapon = owo.weapons[wId];
+            // Find animal in inventory
+            let foundKey = Object.keys(owo.inventory).find(k => k.toLowerCase().includes(animalName));
+            if(!foundKey) {
+                pushChat("@OwO Bot", `⚠️ Hewan '${animalName}' tidak ditemukan di Zoo kamu!`);
                 return;
             }
-            lara.money -= amount;
+
+            // Unequip previous if weapon was on another animal
+            if(weapon.equippedTo) {
+                let prevAnimalKey = Object.keys(owo.inventory).find(k => k.toLowerCase().includes(weapon.equippedTo.toLowerCase()));
+                if(prevAnimalKey) owo.inventory[prevAnimalKey].weaponId = null;
+            }
+
+            weapon.equippedTo = owo.inventory[foundKey].baseName;
+            owo.inventory[foundKey].weaponId = wId;
+
             playSound('win');
-            pushChat("@BotLara", `💸 Berhasil mengirim <span style="color:#f59e0b;">${amount} Cowries 🐚</span> kepada ${target}!`);
+            pushChat("@OwO Bot", `⚔️ Berhasil memasang <strong>${weapon.name}</strong> ke <strong>${owo.inventory[foundKey].baseName}</strong>!`);
             updateUI();
         }
 
+        function triggerBattle() {
+            startCooldown(5);
+            let userAnimals = Object.keys(owo.inventory);
+            if(userAnimals.length === 0) {
+                pushChat("@OwO Bot", `⚠️ Zoo kamu kosong! Lakukan <code>lara hunt</code> terlebih dahulu untuk mendapatkan pasukan hewan.`);
+                return;
+            }
+
+            let turns = Math.floor(Math.random() * 3) + 3; // 3 to 5 turns
+            let won = Math.random() > 0.2; // 80% win rate if equipped well
+
+            if(won) {
+                let expEarned = owo.level * 1200;
+                let cashEarned = owo.level * 300;
+                owo.money += cashEarned;
+                owo.exp += 200;
+                
+                let maxExp = owo.level * 100;
+                if(owo.exp >= maxExp) {
+                    owo.level++;
+                    owo.exp = 0;
+                }
+
+                playSound('win');
+                pushChat("@OwO Bot", 
+                    `⚔️ <strong>BATTLE RESULT:</strong><br>` +
+                    `🟢 Kamu memenangkan pertarungan dalam <strong>${turns} turns!</strong><br>` +
+                    `🎁 Hadiah: <span style="color:#23a55a;">+${expEarned} xp</span> | <span style="color:#f59e0b;">+${cashEarned} Cowries 🐚</span>`
+                );
+            } else {
+                playSound('lose');
+                pushChat("@OwO Bot", `⚔️ <strong>BATTLE RESULT:</strong> 🔴 Tim musuh terlalu kuat! Pasukanmu kalah dalam ${turns} turns. Coba tingkatkan level dan pasang senjata legendaris!`);
+            }
+            updateUI();
+        }
+
+        function triggerQuest() {
+            if (owo.quest.progress >= owo.quest.target && !owo.quest.claimed) {
+                owo.quest.claimed = true;
+                owo.money += 400;
+                playSound('win');
+                pushChat("@OwO Bot", `🎉 **QUEST SELESAI!** Hadiah diklaim: <span style="color:#f59e0b;">+400 Cowries 🐚</span> & <span style="color:var(--accent);">+2 Gems 💎</span>!`);
+                owo.gems += 2;
+                updateUI();
+                return;
+            }
+            pushChat("@OwO Bot", `📜 **Quest Harian OwO:** Berburu hewan (${owo.quest.progress}/${owo.quest.target}). Ketik **lara hunt**!`);
+        }
+
         function triggerSacrifice() {
-            let keys = Object.keys(lara.inventory);
+            let keys = Object.keys(owo.inventory);
             if(keys.length === 0) {
-                pushChat("@BotLara", `⚠️ Zoo kamu kosong, tidak ada hewan untuk ditumbalkan!`);
+                pushChat("@OwO Bot", `⚠️ Zoo kamu kosong, tidak ada hewan untuk ditumbalkan!`);
                 return;
             }
             let firstKey = keys[0];
-            let item = lara.inventory[firstKey];
+            let item = owo.inventory[firstKey];
             item.count--;
-            if(item.count <= 0) delete lara.inventory[firstKey];
+            if(item.count <= 0) delete owo.inventory[firstKey];
 
-            lara.gems += 2;
+            owo.gems += 3;
             playSound('win');
-            pushChat("@BotLara", `🔥 Menumbalkan **[${item.rarity}] ${item.baseName}** ke altar dewa Lara! Mendapatkan <span style="color:var(--accent);">+2 Gems 💎</span>!`);
+            pushChat("@OwO Bot", `🔥 Menumbalkan hewan **[${item.rarity}] ${item.baseName}** ke altar dewa OwO! Mendapatkan <span style="color:var(--accent);">+3 Gems 💎</span>!`);
             updateUI();
         }
 
         function triggerSell() {
-            let keys = Object.keys(lara.inventory);
+            let keys = Object.keys(owo.inventory);
             if(keys.length === 0) {
-                pushChat("@BotLara", `⚠️ Tidak ada hewan di Zoo untuk dijual.`);
+                pushChat("@OwO Bot", `⚠️ Tidak ada hewan di Zoo untuk dijual.`);
                 return;
             }
             let firstKey = keys[0];
-            let item = lara.inventory[firstKey];
+            let item = owo.inventory[firstKey];
             item.count--;
-            if(item.count <= 0) delete lara.inventory[firstKey];
+            if(item.count <= 0) delete owo.inventory[firstKey];
 
-            let earn = 50 * (rarities.indexOf(item.rarity) + 1);
-            lara.money += earn;
+            let earn = 100 * (rarities.indexOf(item.rarity) + 1);
+            owo.money += earn;
             playSound('win');
-            pushChat("@BotLara", `💰 Menjual **[${item.rarity}] ${item.baseName}** seharga <span style="color:#f59e0b;">+${earn} Cowries 🐚</span>!`);
+            pushChat("@OwO Bot", `💰 Menjual **[${item.rarity}] ${item.baseName}** seharga <span style="color:#f59e0b;">+${earn} Cowries 🐚</span>!`);
             updateUI();
-        }
-
-        function triggerShop(parts) {
-            let subAction = parts[2];
-            let item = parts[3];
-
-            if(!subAction) {
-                pushChat("@BotLara", `🛒 **LARA SHOP:**<br>1️⃣ **dagger** (Harga: 500 🐚) -> Tingkatkan Senjata<br>Ketik: <strong style="color:var(--accent);">lara shop buy dagger</strong>`);
-                return;
-            }
-            if(subAction === 'buy' && item === 'dagger') {
-                if(lara.money < 500) { pushChat("@BotLara", `⚠️ Cowries kurang! Butuh 500 🐚.`); return; }
-                lara.money -= 500;
-                lara.weapon = "Dagger Besi";
-                playSound('win');
-                pushChat("@BotLara", `🗡️ Berhasil membeli **Dagger Besi**!`);
-                updateUI();
-            }
         }
 
         function triggerPray() {
             let now = Date.now();
-            if(now - lara.prayTime < 30000) {
-                pushChat("@BotLara", `🙏 Kamu sudah berdoa baru-baru ini! Tunggu beberapa saat lagi.`);
+            if(now - owo.prayTime < 30000) {
+                pushChat("@OwO Bot", `🙏 Kamu sudah berdoa baru-baru ini! Tunggu beberapa saat lagi.`);
                 return;
             }
-            lara.prayTime = now;
-            let bonusMoney = Math.floor(Math.random() * 150) + 50;
-            lara.money += bonusMoney;
+            owo.prayTime = now;
+            let bonusMoney = Math.floor(Math.random() * 250) + 100;
+            owo.money += bonusMoney;
             playSound('win');
-            pushChat("@BotLara", `🙏 Kamu berdoa dan mendapatkan <span style="color:#f59e0b;">+${bonusMoney} Cowries 🐚</span>!`);
+            pushChat("@OwO Bot", `🙏 Kamu berdoa kepada OwO bot dan mendapatkan <span style="color:#f59e0b;">+${bonusMoney} Cowries 🐚</span>!`);
             updateUI();
         }
 
         function triggerCoinflip(parts) {
-            let bet = parseInt(parts[2]) || 50;
-            if(lara.money < bet) {
-                pushChat("@BotLara", `⚠️ Cowries tidak cukup untuk taruhan ${bet} 🐚!`);
+            let bet = parseInt(parts[2]) || 100;
+            if(owo.money < bet) {
+                pushChat("@OwO Bot", `⚠️ Cowries tidak cukup untuk taruhan ${bet} 🐚!`);
                 return;
             }
             let win = Math.random() >= 0.5;
             if(win) {
-                lara.money += bet;
+                owo.money += bet;
                 playSound('win');
-                pushChat("@BotLara", `🪙 Coinflip: Koin mendarat dengan selamat! Kamu **MENANG** dan mendapat <span style="color:#f59e0b;">+${bet} 🐚</span>!`);
+                pushChat("@OwO Bot", `🪙 Coinflip: Koin mendarat sempurna! Kamu **MENANG** dan mendapat <span style="color:#f59e0b;">+${bet} 🐚</span>!`);
             } else {
-                lara.money -= bet;
+                owo.money -= bet;
                 playSound('lose');
-                pushChat("@BotLara", `🪙 Coinflip: Koin tidak berpihak padamu. Kamu **KALAH** sebesar -${bet} 🐚!`);
+                pushChat("@OwO Bot", `🪙 Coinflip: Sial! Koin salah tebak. Kamu **KALAH** sebesar -${bet} 🐚!`);
             }
             updateUI();
         }
 
         function triggerOpenCrate() {
-            if(lara.crates <= 0) {
-                pushChat("@BotLara", `📦 Kamu tidak punya Crate!`);
+            if(owo.crates <= 0) {
+                pushChat("@OwO Bot", `📦 Kamu tidak punya Crate tersisa! Beli atau dapatkan dari event.`);
                 return;
             }
-            lara.crates--;
-            lara.gems += 5;
+            owo.crates--;
+            owo.gems += 8;
             playSound('win');
-            pushChat("@BotLara", `📦 Membuka Crate dan menemukan <span style="color:var(--accent);">+5 Gems 💎</span>!`);
+            pushChat("@OwO Bot", `📦 Membuka Crate dan menemukan <span style="color:var(--accent);">+8 Gems 💎</span>!`);
             updateUI();
         }
 
         function triggerZoo() {
-            let keys = Object.keys(lara.inventory);
+            let keys = Object.keys(owo.inventory);
             if(keys.length === 0) {
-                pushChat("@BotLara", `🐾 Zoo kamu kosong.`);
+                pushChat("@OwO Bot", `🐾 Zoo kamu kosong.`);
             } else {
-                let summary = keys.map(k => `[${lara.inventory[k].rarity}] ${lara.inventory[k].baseName} (x${lara.inventory[k].count})`).join(", ");
-                pushChat("@BotLara", `🐾 **Zoo Kamu:** ${summary}`);
+                let summary = keys.map(k => `[${owo.inventory[k].rarity}] ${owo.inventory[k].baseName} (x${owo.inventory[k].count})`).join(", ");
+                pushChat("@OwO Bot", `🐾 **Zoo Kamu:** ${summary}`);
             }
         }
     </script>
