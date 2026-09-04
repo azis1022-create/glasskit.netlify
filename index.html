@@ -3,19 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi Tools Asik - Clean Glass Design</title>
+    <title>Multi Tools + Ultimate Lara Bot Simulator</title>
     
-    <!-- Library Eksternal -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
         :root {
-            /* Warna Aksen Default: Cyan Terang */
             --accent: #38bdf8; 
             --accent-glow: rgba(56, 189, 248, 0.4);
         }
@@ -38,589 +35,986 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
         }
 
-        /* --- GLASSMORPHISM UTAMA --- */
+        /* --- LIQUID GLASS EFFECT --- */
         .glass-panel {
-            background: rgba(25, 25, 35, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            background: rgba(25, 25, 35, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             transition: all 0.4s ease;
         }
 
-        /* --- LIQUID GLASS MODE --- */
-        body.liquid-mode .glass-panel {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(22px);
-            -webkit-backdrop-filter: blur(22px);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), inset 0 0 25px rgba(255, 255, 255, 0.12);
-        }
+        .app-wrapper { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 20px; position: relative; z-index: 10; }
 
-        .app-wrapper { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 20px; }
-
-        /* HEADER */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 30px; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 30px; flex-wrap: wrap; gap: 15px; }
         header h2 { font-size: 1.4rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
         header h2 span { color: var(--accent); }
         
         .header-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 
         .btn-outline {
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            background: transparent;
-            padding: 8px 18px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            border: 1px solid var(--accent); color: var(--accent); background: transparent;
+            padding: 8px 18px; border-radius: 12px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            transition: all 0.3s; display: flex; align-items: center; gap: 8px; text-decoration: none;
         }
         .btn-outline:hover { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent-glow); }
+        .btn-coffee { border-color: #f59e0b; color: #f59e0b; }
+        .btn-coffee:hover { background: #f59e0b; color: #000; box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); }
 
-        /* THEME CUSTOMIZER */
-        .customizer {
-            display: flex; align-items: center; gap: 6px;
-            background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
-        }
-        .color-dot { width: 16px; height: 16px; border-radius: 50%; cursor: pointer; border: none; transition: transform 0.2s; }
-        .color-dot:hover { transform: scale(1.2); }
-
-        /* MENU GRID CARDS */
         .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px;
         }
 
         .menu-card {
-            background: rgba(30, 30, 45, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(8px);
-            padding: 20px 15px;
-            border-radius: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; flex-direction: column; align-items: center; gap: 12px;
+            background: rgba(30, 30, 45, 0.4); border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px); padding: 18px 12px; border-radius: 16px; text-align: center;
+            cursor: pointer; transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 10px;
+            z-index: 20; position: relative;
         }
-        .menu-card svg { width: 28px; height: 28px; stroke: #94a3b8; transition: all 0.3s; }
-        .menu-card span { font-size: 0.85rem; font-weight: 500; color: #cbd5e1; transition: all 0.3s; }
-        
-        .menu-card:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-5px); border-color: rgba(255, 255, 255, 0.2); }
-        .menu-card.active { border-color: var(--accent); background: rgba(0, 0, 0, 0.2); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .menu-card svg { width: 26px; height: 26px; stroke: #94a3b8; pointer-events: none; }
+        .menu-card span { font-size: 0.8rem; font-weight: 500; color: #cbd5e1; pointer-events: none; }
+        .menu-card:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-4px); border-color: rgba(255,255,255,0.3); }
+        .menu-card.active { border-color: var(--accent); background: rgba(0, 0, 0, 0.3); box-shadow: 0 0 15px var(--accent-glow); }
         .menu-card.active svg { stroke: var(--accent); }
         .menu-card.active span { color: var(--accent); font-weight: 600; }
 
-        /* CONTENT AREA */
-        .content-area { padding: 40px 30px; min-height: 400px; position: relative; overflow: hidden; }
+        .content-area { padding: 40px 30px; min-height: 420px; position: relative; }
+        .tool-panel { display: none; }
+        .tool-panel.active { display: block; animation: fadeIn 0.3s ease; }
         
-        .tool-panel { display: none; animation: fadeUp 0.4s ease forwards; }
-        .tool-panel.active { display: block; }
-        
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        .tool-panel h3 { font-size: 1.6rem; margin-bottom: 8px; color: #fff; font-weight: 600; }
+        .tool-panel h3 { font-size: 1.6rem; margin-bottom: 8px; color: #fff; }
         .tool-panel p { font-size: 0.9rem; margin-bottom: 25px; color: #94a3b8; }
 
-        /* DRAG AND DROP ZONE */
         .drop-zone {
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-            border-radius: 16px;
-            padding: 40px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: rgba(0, 0, 0, 0.15);
-            margin-bottom: 20px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+            border: 2px dashed rgba(255, 255, 255, 0.3); border-radius: 16px; padding: 30px 20px;
+            text-align: center; cursor: pointer; background: rgba(0, 0, 0, 0.15); margin-bottom: 20px;
+            display: flex; flex-direction: column; align-items: center; gap: 12px; transition: 0.3s;
         }
-        .drop-zone:hover, .drop-zone.dragover { border-color: var(--accent); background: rgba(255, 255, 255, 0.05); }
-        .drop-zone svg { width: 45px; height: 45px; stroke: #64748b; transition: stroke 0.3s; }
-        .drop-zone:hover svg, .drop-zone.dragover svg { stroke: var(--accent); }
-        .drop-text { font-size: 0.95rem; color: #94a3b8; }
+        .drop-zone:hover { border-color: var(--accent); background: rgba(0,0,0,0.25); }
+        .drop-zone svg { width: 45px; height: 45px; stroke: #64748b; pointer-events: none; }
+        .drop-text { font-size: 0.95rem; color: #94a3b8; pointer-events: none; }
 
-        /* FORMS & BUTTONS */
-        input[type="text"], select { 
-            width: 100%; padding: 14px 18px; background: rgba(0,0,0,0.2); 
+        input[type="text"], input[type="number"], select { 
+            width: 100%; padding: 14px 18px; background: rgba(0,0,0,0.3); 
             border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; 
-            color: #fff; margin-bottom: 15px; outline: none; font-size: 0.9rem; transition: all 0.3s;
+            color: #fff; margin-bottom: 15px; outline: none; font-size: 0.9rem;
+            transition: 0.3s;
         }
-        input[type="text"]:focus, select:focus { border-color: var(--accent); background: rgba(0,0,0,0.4); }
-        select option { background: #1e293b; color: #fff; }
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow);
+        }
+        select option { background: #0f172a; color: #fff; }
 
         .action-btn { 
             background: var(--accent); border: none; padding: 14px 20px; border-radius: 12px; 
             color: #000; font-weight: 600; font-size: 0.95rem; cursor: pointer; width: 100%; 
-            display: block; margin-top: 10px; text-decoration: none; text-align: center; transition: all 0.3s;
+            transition: all 0.3s;
         }
         .action-btn:hover { box-shadow: 0 5px 20px var(--accent-glow); transform: translateY(-2px); }
 
-        /* EXTRAS */
-        .status-msg { margin-top: 15px; font-size: 0.85rem; color: var(--accent); background: rgba(0,0,0,0.2); padding: 12px; border-radius: 10px; border: 1px dashed var(--accent); text-align: center; }
-        .preview-box { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; margin-top: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
-        
-        .top-left-switch { display: flex; gap: 10px; margin-bottom: 20px; }
-        .switch-tab { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); padding: 10px 18px; border-radius: 10px; color: #94a3b8; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.3s; }
-        .switch-tab.active { background: var(--accent); border-color: var(--accent); color: #000; }
-
-        /* CUSTOM TOAST */
         #customToast {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
             background: var(--accent); color: #000; padding: 12px 24px; border-radius: 12px;
             font-weight: 600; font-size: 0.9rem; box-shadow: 0 10px 30px var(--accent-glow);
-            transition: transform 0.3s ease, opacity 0.3s ease; opacity: 0; z-index: 9999;
+            transition: transform 0.3s ease, opacity 0.3s ease; opacity: 0; z-index: 99999;
+            pointer-events: none;
         }
 
-        /* MOBILE RESPONSIVE */
-        @media (max-width: 768px) {
-            header { flex-direction: column; gap: 15px; padding: 15px; }
-            .menu-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
-            .menu-card { min-width: 140px; scroll-snap-align: center; }
-            .menu-grid::-webkit-scrollbar { height: 4px; }
-            .menu-grid::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-            .content-area { padding: 25px 20px; }
+        /* --- TOMBOL MENGAMBANG LARA BOT --- */
+        .minigame-btn {
+            position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+            background: #5865f2; color: #fff; padding: 15px 20px 15px 15px;
+            border-radius: 20px 0 0 20px; font-weight: 700; cursor: pointer;
+            box-shadow: -5px 0 20px rgba(88, 101, 242, 0.4); transition: all 0.3s ease;
+            z-index: 1000; writing-mode: vertical-rl; text-orientation: mixed;
+            border: 2px solid rgba(255,255,255,0.2); border-right: none;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .minigame-btn:hover { padding-right: 25px; background: #4752c4; }
+
+        /* --- LARA BOT INTERFACE --- */
+        #gameInterface {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(2, 6, 23, 0.85); z-index: 99990;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        #gameInterface.active { opacity: 1; visibility: visible; }
+        
+        .game-board {
+            width: 100%; max-width: 650px; padding: 25px; position: relative;
+            background: #313338; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; color: #dbdee1;
+            max-height: 95vh; overflow-y: auto; box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+        }
+        .close-game {
+            position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.1); 
+            border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%;
+            cursor: pointer; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center;
+        }
+        .close-game:hover { background: #ef4444; }
+        
+        .game-stats {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 12px;
+            background: #2b2d31; padding: 8px; border-radius: 8px; text-align: center;
+        }
+        .stat-label { font-size: 0.6rem; color: #949ba4; text-transform: uppercase; }
+        .stat-val { font-size: 0.8rem; font-weight: 700; color: #23a55a; }
+        
+        .exp-container { width: 100%; background: #2b2d31; height: 8px; border-radius: 4px; margin-bottom: 12px; overflow: hidden; }
+        #expFill { height: 100%; background: #5865f2; width: 0%; transition: width 0.3s; }
+
+        .discord-chat-box {
+            background: #2b2d31; border-radius: 8px; padding: 12px; margin-bottom: 12px;
+            height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;
+            font-size: 0.82rem; border: 1px solid #1f2023; line-height: 1.4;
+        }
+        .chat-msg { display: flex; flex-direction: column; }
+        .chat-user { font-weight: 600; color: #00a8fc; font-size: 0.8rem; }
+        .chat-text { color: #dbdee1; }
+
+        .discord-input-container {
+            display: flex; background: #383a40; border-radius: 8px; padding: 8px 12px;
+            align-items: center; gap: 10px; margin-bottom: 10px; border: 1px solid #2b2d31;
+        }
+        .discord-input-container input {
+            background: transparent; border: none; color: #fff; outline: none; width: 100%; font-size: 0.9rem; margin: 0; padding: 0;
+        }
+        .discord-input-container span { font-size: 0.75rem; color: #949ba4; background: #2b2d31; padding: 3px 6px; border-radius: 4px; }
+
+        .owo-quick-btns { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 6px; }
+        .owo-btn {
+            background: #4e5058; color: #fff; border: none; padding: 7px 2px; border-radius: 6px;
+            font-size: 0.65rem; font-weight: 600; cursor: pointer; transition: 0.2s; text-align: center;
+        }
+        .owo-btn:hover { background: #6d6f78; }
+        .owo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .inventory-box {
+            background: #2b2d31; padding: 8px; border-radius: 8px; max-height: 75px; overflow-y: auto;
+            font-size: 0.75rem; display: flex; flex-wrap: wrap; gap: 6px;
+        }
+        .inv-chip { background: #1e1f22; padding: 3px 8px; border-radius: 4px; border: 1px solid #3f4147; }
+
+        /* --- CAPTCHA MODAL --- */
+        #captchaModal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 99999; display: none;
+            align-items: center; justify-content: center;
+        }
+        .captcha-box {
+            background: #2b2d31; padding: 25px; border-radius: 12px; width: 320px; text-align: center;
+            border: 2px solid #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+        }
+        .captcha-code {
+            background: #1e1f22; font-size: 1.8rem; font-weight: 700; letter-spacing: 5px;
+            color: #ef4444; padding: 10px; border-radius: 8px; margin: 15px 0; font-family: monospace;
         }
     </style>
 </head>
 <body>
 
-    <div id="customToast">Pesan notifikasi</div>
+    <div id="customToast">Notifikasi</div>
+
+    <div class="minigame-btn" onclick="openLaraGame()">
+        <span>🤖 Lara Bot</span>
+    </div>
+
+    <div id="captchaModal">
+        <div class="captcha-box">
+            <h3 style="color:#ef4444; margin-bottom:5px;">⚠️ VERIFIKASI CAPTCHA!</h3>
+            <p style="font-size:0.8rem; color:#949ba4;">Aktivitas terdeteksi! Ketik ulang kode di bawah untuk lanjut:</p>
+            <div class="captcha-code" id="captchaTextDisplay">AB12</div>
+            <input type="text" id="captchaInput" placeholder="Ketik kode..." style="text-align:center; text-transform:uppercase; margin-bottom:12px;">
+            <button class="action-btn" onclick="verifyCaptcha()" style="background:#ef4444; color:#fff;">Verifikasi</button>
+        </div>
+    </div>
+
+    <div id="gameInterface">
+        <div class="game-board">
+            <button class="close-game" onclick="closeLaraGame()">✕</button>
+            
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; padding-right: 35px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="background:#5865f2; color:#fff; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-weight:700;">Lara Bot</span>
+                    <h3 style="font-size:1.1rem; color:#fff; margin:0;">Mini Game Grinding</h3>
+                </div>
+                <button onclick="triggerHelp()" style="background:#383a40; border:1px solid #5865f2; color:var(--accent); padding:5px 10px; border-radius:6px; font-size:0.75rem; cursor:pointer; display:flex; align-items:center; gap:5px; font-weight:600; transition:0.2s;">
+                    💬 <span style="color:#fff;">Tips / Tutorial</span>
+                </button>
+            </div>
+            
+            <div class="game-stats">
+                <div><div class="stat-label">Level</div><div class="stat-val" id="gLevel">1</div></div>
+                <div><div class="stat-label">Cowries 🐚</div><div class="stat-val" id="gMoney">400</div></div>
+                <div><div class="stat-label">Gems 💎</div><div class="stat-val" id="gGems" style="color:var(--accent);">0</div></div>
+                <div><div class="stat-label">Crates 📦</div><div class="stat-val" id="gCrates" style="color:#a855f7;">1</div></div>
+                <div><div class="stat-label">CD</div><div class="stat-val" id="gCooldown" style="color:#f59e0b;">Ready</div></div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:4px; color:#949ba4;">
+                <span id="expText">0 / 100 EXP</span>
+                <span id="weaponInfo">Senjata: Tangan Kosong</span>
+            </div>
+            <div class="exp-container">
+                <div id="expFill"></div>
+            </div>
+
+            <div class="discord-chat-box" id="discordChatBox">
+                <div class="chat-msg">
+                    <span class="chat-user">@BotLara <span style="font-size:0.6rem; background:#5865f2; color:#fff; padding:1px 3px; border-radius:3px;">BOT</span></span>
+                    <span class="chat-text">👋 Halo Pemula! Selamat datang di <strong>Lara Bot</strong>. Ketik <strong>lara help</strong> atau klik Tips untuk mulai bermain!</span>
+                </div>
+            </div>
+
+            <div class="discord-input-container">
+                <span>Command:</span>
+                <input type="text" id="discordCommandInput" placeholder="Ketik command (cth: lara hunt)..." onkeypress="handleCommandKey(event)">
+            </div>
+
+            <div class="owo-quick-btns">
+                <button class="owo-btn" onclick="executeCommand('lara hunt')" id="btnHunt">hunt</button>
+                <button class="owo-btn" onclick="executeCommand('lara quest')">quest</button>
+                <button class="owo-btn" onclick="executeCommand('lara sacrifice')">sac</button>
+                <button class="owo-btn" onclick="executeCommand('lara shop')">shop</button>
+                <button class="owo-btn" onclick="executeCommand('lara pray')">pray</button>
+            </div>
+            <div class="owo-quick-btns" style="margin-bottom: 10px;">
+                <button class="owo-btn" onclick="executeCommand('lara pay @user 100')">pay</button>
+                <button class="owo-btn" onclick="executeCommand('lara coinflip 50')">flip 50</button>
+                <button class="owo-btn" onclick="executeCommand('lara crate')">crate</button>
+                <button class="owo-btn" onclick="executeCommand('lara zoo')">zoo</button>
+                <button class="owo-btn" onclick="executeCommand('lara sell')" style="background:#ef4444;">sell</button>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                <div style="font-size:0.75rem; font-weight:600; color:#949ba4;">Zoo Hewan:</div>
+                <div style="font-size:0.7rem; color:var(--accent); cursor:pointer;" onclick="executeCommand('lara zoo')">Cek Zoo ↗</div>
+            </div>
+            <div class="inventory-box" id="inventoryBox">
+                <span style="color:#72767d; font-style:italic;">Belum ada hewan. Ketik lara hunt!</span>
+            </div>
+        </div>
+    </div>
 
     <div class="app-wrapper">
-        <!-- HEADER -->
         <header class="glass-panel">
             <h2>🛠️ Multi<span>Tools</span></h2>
             <div class="header-actions">
-                <div class="customizer">
-                    <button class="color-dot" style="background:#38bdf8" onclick="changeTheme('#38bdf8', 'rgba(56, 189, 248, 0.4)')" title="Sky Blue"></button>
-                    <button class="color-dot" style="background:#a855f7" onclick="changeTheme('#a855f7', 'rgba(168, 85, 247, 0.4)')" title="Purple"></button>
-                    <button class="color-dot" style="background:#22c55e" onclick="changeTheme('#22c55e', 'rgba(34, 197, 94, 0.4)')" title="Green"></button>
-                    <button class="color-dot" style="background:#f97316" onclick="changeTheme('#f97316', 'rgba(249, 115, 22, 0.4)')" title="Orange"></button>
-                </div>
-                <!-- Tombol Liquid Glass Mode -->
-                <button class="btn-outline" onclick="toggleLiquidGlass()" id="liquidGlassBtn">
-                    💧 Liquid Glass
-                </button>
-                <a href="https://saweria.co/Weeenkyy" target="_blank" class="btn-outline">
-                    <svg viewBox="0 0 24 24" fill="none" width="16" height="16" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-                    Traktir Kopi
-                </a>
+                <a href="https://saweria.co/Weeenkyy" target="_blank" class="btn-outline btn-coffee">☕ Traktir Kopi</a>
+                <button class="btn-outline" onclick="showToast('✨ Semua alat aktif dan siap digunakan!')">⚡ System Online</button>
             </div>
         </header>
 
-        <!-- MENU CARDS -->
         <nav class="menu-grid">
             <div class="menu-card active" onclick="switchTool(0)">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                 <span>Edit Foto</span>
             </div>
             <div class="menu-card" onclick="switchTool(1)">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
                 <span>Gepengin PDF</span>
             </div>
             <div class="menu-card" onclick="switchTool(2)">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-                <span>Ekstrak MP3</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                <span>TikTok Down</span>
             </div>
             <div class="menu-card" onclick="switchTool(3)">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
-                <span>TikTok Downloader</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/></svg>
+                <span>QR Code</span>
             </div>
             <div class="menu-card" onclick="switchTool(4)">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                <span>QR Code</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <span>Warna Tema</span>
             </div>
         </nav>
 
-        <!-- CONTENT AREA -->
         <main class="content-area glass-panel">
-            
-            <!-- 0. FOTO -->
             <div class="tool-panel active" id="panel-0">
                 <h3>Kecilin & Ubah Foto</h3>
-                <p>Resize atau ganti format foto kamu tanpa ribet. Kualitas tetap jernih!</p>
-                
-                <div class="drop-zone" data-target="imgInput">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    <p class="drop-text">Drag & Drop foto di sini atau klik untuk memilih</p>
+                <p>Resize ukuran dan konversi format gambar secara instan.</p>
+                <div class="drop-zone" onclick="document.getElementById('photoInput').click()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <p class="drop-text" id="photoFileName">Klik untuk pilih file gambar</p>
+                    <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="loadPhoto(event)">
                 </div>
-                <input type="file" id="imgInput" accept="image/*" hidden>
-                
-                <select id="imgFormat">
-                    <option value="jpeg">Convert ke: JPG / JPEG</option>
-                    <option value="png">Convert ke: PNG</option>
-                    <option value="webp">Convert ke: WebP (Lebih Ringan)</option>
-                </select>
-
-                <button class="action-btn" onclick="processImage()">⚡ Eksekusi Foto!</button>
-                <div id="imgResult"></div>
-            </div>
-
-            <!-- 1. PDF -->
-            <div class="tool-panel" id="panel-1">
-                <h3>Gepengin PDF</h3>
-                <p>Kompres ukuran file PDF biar gampang di-upload atau dikirim.</p>
-                
-                <div class="drop-zone" data-target="pdfInput">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
-                    <p class="drop-text">Drag & Drop file PDF di sini atau klik untuk memilih</p>
-                </div>
-                <input type="file" id="pdfInput" accept=".pdf" hidden>
-
-                <select id="pdfCompressLevel">
-                    <option value="medium">Tingkat Kompresi: Sedang (Direkomendasikan)</option>
-                    <option value="high">Tingkat Kompresi: Maksimal (Ukurannya super kecil)</option>
-                    <option value="low">Tingkat Kompresi: Rendah (Kualitas terjaga)</option>
-                </select>
-
-                <button class="action-btn" onclick="compressPDF()">⚡ Gepengin Sekarang</button>
-                <div id="pdfStatus"></div>
-                <div id="pdfResult"></div>
-            </div>
-
-            <!-- 2. MP3 -->
-            <div class="tool-panel" id="panel-2">
-                <h3>Ekstrak MP3 dari Video</h3>
-                <p>Ambil audionya aja dari video MP4 kesukaan lo, langsung jadi MP3.</p>
-                
-                <div class="drop-zone" data-target="videoInput">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
-                    <p class="drop-text">Drag & Drop file Video di sini atau klik untuk memilih</p>
-                </div>
-                <input type="file" id="videoInput" accept="video/mp4,video/webm,video/*" hidden>
-
-                <button class="action-btn" onclick="convertMp4ToMp3()">⚡ Tarik Suaranya!</button>
-                <div id="audioStatus"></div>
-                <div id="audioResult"></div>
-            </div>
-
-            <!-- 3. TIKTOK -->
-            <div class="tool-panel" id="panel-3">
-                <h3>TikTok Downloader (No WM)</h3>
-                <p>Download video TikTok bersih tanpa logo/watermark muter-muter.</p>
-                <input type="text" id="ttUrl" placeholder="Tempel link video TikTok di sini bang...">
-                <button class="action-btn" onclick="downloadTikTok()">📥 Sikat Videonya!</button>
-                <div id="ttStatus"></div>
-                <div id="ttResult"></div>
-            </div>
-
-            <!-- 4. QR CODE -->
-            <div class="tool-panel" id="panel-4">
-                <h3>QR Code Tools</h3>
-                <p>Bikin QR code dari link/teks atau scan QR code dari galeri.</p>
-
-                <div class="top-left-switch">
-                    <button class="switch-tab active" id="btnQrGen" onclick="setQrMode('gen')">Buat QR Baru</button>
-                    <button class="switch-tab" id="btnQrScan" onclick="setQrMode('scan')">Scan Gambar QR</button>
-                </div>
-
-                <!-- SUB: GENERATE -->
-                <div id="qrGenArea">
-                    <input type="text" id="qrText" placeholder="Ketik teks atau paste link di sini...">
-                    <button class="action-btn" onclick="generateQR()">🔲 Sulap Jadi QR</button>
-                    <div id="qrcode" class="preview-box" style="display:none; justify-content:center; background:#fff; padding:20px; border-radius:15px; margin-top:20px; width:max-content; margin-inline:auto;"></div>
-                </div>
-
-                <!-- SUB: SCANNER -->
-                <div id="qrScanArea" style="display: none;">
-                    <div class="drop-zone" data-target="qrFileInput">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                        <p class="drop-text">Upload / Drop gambar QR Code di sini</p>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px;">
+                    <div>
+                        <label style="font-size:0.8rem; color:#94a3b8;">Skala Ukuran (%):</label>
+                        <input type="number" id="photoScale" value="80" min="10" max="100">
                     </div>
-                    <input type="file" id="qrFileInput" accept="image/*" onchange="scanQrFile()" hidden>
-                    <div id="qrScanResult" class="status-msg" style="display:none;"></div>
+                    <div>
+                        <label style="font-size:0.8rem; color:#94a3b8;">Format Output:</label>
+                        <select id="photoFormat">
+                            <option value="image/jpeg">JPEG</option>
+                            <option value="image/png">PNG</option>
+                            <option value="image/webp">WEBP</option>
+                        </select>
+                    </div>
                 </div>
+                <button class="action-btn" onclick="processPhoto()">⚡ Proses & Download Foto</button>
             </div>
 
+            <div class="tool-panel" id="panel-1">
+                <h3>Gepengin PDF (Kompres / Konversi)</h3>
+                <p>Ubah atau kompres file gambar menjadi dokumen PDF ringkas.</p>
+                <div class="drop-zone" onclick="document.getElementById('pdfInput').click()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                    <p class="drop-text" id="pdfFileName">Klik untuk pilih file gambar</p>
+                    <input type="file" id="pdfInput" accept="image/*" style="display:none" onchange="loadPdfFile(event)">
+                </div>
+                <button class="action-btn" onclick="processPDF()">📄 Generate & Download PDF</button>
+            </div>
+
+            <div class="tool-panel" id="panel-2">
+                <h3>TikTok Downloader (No Watermark & MP3)</h3>
+                <p>Masukkan tautan video TikTok untuk mengambil video asli tanpa watermark dan ekstrak audionya.</p>
+                <input type="text" id="tiktokUrl" placeholder="https://www.tiktok.com/@user/video/..." style="margin-bottom: 12px;">
+                <button class="action-btn" onclick="downloadTikTok()">📥 Proses Video TikTok</button>
+                <div id="tiktokResult" style="margin-top:15px;"></div>
+            </div>
+
+            <div class="tool-panel" id="panel-3">
+                <h3>QR Code Generator</h3>
+                <p>Buat QR Code kustom instan dari teks atau tautan web.</p>
+                <input type="text" id="qrText" placeholder="Masukkan teks atau URL di sini..." oninput="generateQRCode()">
+                <div id="qrcodeContainer" style="display:flex; justify-content:center; background:#fff; padding:15px; border-radius:12px; width:fit-content; margin:0 auto 15px auto;"></div>
+                <button class="action-btn" onclick="downloadQRCode()">💾 Download QR Code</button>
+            </div>
+
+            <div class="tool-panel" id="panel-4">
+                <h3>Kustomisasi Warna Tema</h3>
+                <p>Pilih warna aksen kesukaanmu untuk mengubah seluruh nuansa aplikasi.</p>
+                <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
+                    <input type="color" id="accentColorPicker" value="#38bdf8" style="width: 60px; height: 45px; border: none; background: transparent; cursor: pointer; border-radius: 8px;" onchange="changeAccentColor(this.value)">
+                    <div>
+                        <label style="font-size: 0.9rem; font-weight: 600; color: #fff;">Warna Aksen Utama</label>
+                        <p style="font-size: 0.75rem; color: #94a3b8; margin: 0;">Geser atau klik kotak warna untuk memilih.</p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px; margin-bottom: 25px;">
+                    <button onclick="setAccent('#38bdf8')" style="background: #38bdf8; width: 38px; height: 38px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); cursor: pointer;" title="Biru Langit"></button>
+                    <button onclick="setAccent('#10b981')" style="background: #10b981; width: 38px; height: 38px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); cursor: pointer;" title="Hijau Mint"></button>
+                    <button onclick="setAccent('#f43f5e')" style="background: #f43f5e; width: 38px; height: 38px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); cursor: pointer;" title="Merah Pink"></button>
+                    <button onclick="setAccent('#f59e0b')" style="background: #f59e0b; width: 38px; height: 38px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); cursor: pointer;" title="Kuning Oranye"></button>
+                    <button onclick="setAccent('#a855f7')" style="background: #a855f7; width: 38px; height: 38px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); cursor: pointer;" title="Ungu Neon"></button>
+                </div>
+                <button class="action-btn" onclick="showToast('✨ Warna tema berhasil diterapkan!')">Simpan Perubahan</button>
+            </div>
         </main>
     </div>
 
     <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-        // --- THEME CUSTOMIZER ---
-        function changeTheme(color, glow) {
-            document.documentElement.style.setProperty('--accent', color);
-            document.documentElement.style.setProperty('--accent-glow', glow);
+        // --- SAFE AUDIO CONTEXT ---
+        let audioCtx = null;
+        function initAudio() {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+            } catch(e) { console.log("Audio not supported"); }
         }
 
-        // --- LIQUID GLASS TOGGLE ---
-        function toggleLiquidGlass() {
-            document.body.classList.toggle('liquid-mode');
-            const btn = document.getElementById('liquidGlassBtn');
-            const isActive = document.body.classList.contains('liquid-mode');
-            
-            if (isActive) {
-                btn.style.background = 'var(--accent)';
-                btn.style.color = '#000';
-                showToast('💧 Liquid Glass Mode Aktif!');
-            } else {
-                btn.style.background = 'transparent';
-                btn.style.color = 'var(--accent)';
-                showToast('Liquid Glass Mode Dimatikan');
-            }
+        function playSound(type) {
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                let now = audioCtx.currentTime;
+
+                if (type === 'message') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                    osc.start(now); osc.stop(now + 0.1);
+                } else if (type === 'win') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.08);
+                    osc.frequency.setValueAtTime(783.99, now + 0.16);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                    osc.start(now); osc.stop(now + 0.3);
+                } else if (type === 'lose') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.linearRampToValueAtTime(150, now + 0.25);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.start(now); osc.stop(now + 0.25);
+                }
+            } catch(e) { console.log(e); }
         }
 
-        // --- TOAST NOTIFICATION ---
-        function showToast(message) {
-            const toast = document.getElementById('customToast');
-            toast.innerText = message;
-            toast.style.transform = 'translateX(-50%) translateY(0)';
-            toast.style.opacity = '1';
+        function showToast(msg) {
+            let toast = document.getElementById('customToast');
+            if(!toast) return;
+            toast.innerText = msg;
+            toast.style.transform = "translateX(-50%) translateY(0)";
+            toast.style.opacity = "1";
             setTimeout(() => {
-                toast.style.transform = 'translateX(-50%) translateY(100px)';
-                toast.style.opacity = '0';
+                toast.style.transform = "translateX(-50%) translateY(100px)";
+                toast.style.opacity = "0";
             }, 3000);
         }
 
-        // --- MENU NAVIGATION ---
+        // --- MENU SWITCHING FIX ---
         function switchTool(index) {
-            const panels = document.querySelectorAll('.tool-panel');
-            const cards = document.querySelectorAll('.menu-card');
-            
-            panels.forEach(p => p.classList.remove('active'));
-            cards.forEach(c => c.classList.remove('active'));
-            
-            panels[index].classList.add('active');
-            cards[index].classList.add('active');
+            document.querySelectorAll('.menu-card').forEach((el, i) => {
+                el.classList.toggle('active', i === index);
+            });
+            document.querySelectorAll('.tool-panel').forEach((el, i) => {
+                el.classList.toggle('active', i === index);
+            });
+            if(index === 3) {
+                setTimeout(generateQRCode, 50);
+            }
         }
 
-        // --- DRAG AND DROP SETUP ---
-        document.querySelectorAll('.drop-zone').forEach(zone => {
-            const inputId = zone.getAttribute('data-target');
-            const input = document.getElementById(inputId);
-            const textEl = zone.querySelector('.drop-text');
-            const defaultText = textEl.innerText;
+        // --- THEME CUSTOMIZATION ---
+        function changeAccentColor(hex) {
+            document.documentElement.style.setProperty('--accent', hex);
+            let r = parseInt(hex.slice(1,3), 16),
+                g = parseInt(hex.slice(3,5), 16),
+                b = parseInt(hex.slice(5,7), 16);
+            document.documentElement.style.setProperty('--accent-glow', `rgba(${r}, ${g}, ${b}, 0.4)`);
+        }
 
-            zone.addEventListener('click', () => input.click());
+        function setAccent(hex) {
+            let picker = document.getElementById('accentColorPicker');
+            if(picker) picker.value = hex;
+            changeAccentColor(hex);
+            showToast("✨ Warna tema dipilih!");
+        }
 
-            input.addEventListener('change', () => {
-                if(input.files.length > 0) {
-                    textEl.innerHTML = `<span style="color:var(--accent); font-weight:600;">📁 ${input.files[0].name}</span> siap diproses!`;
-                    zone.style.borderColor = 'var(--accent)';
-                } else {
-                    textEl.innerText = defaultText;
-                    zone.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-                }
-            });
+        /* --- MULTI-TOOLS LOGIC --- */
+        let selectedPhotoFile = null;
+        let selectedPdfFile = null;
 
-            zone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                zone.classList.add('dragover');
-            });
+        function loadPhoto(e) {
+            selectedPhotoFile = e.target.files[0];
+            if(selectedPhotoFile) document.getElementById('photoFileName').innerText = selectedPhotoFile.name;
+        }
 
-            zone.addEventListener('dragleave', () => {
-                zone.classList.remove('dragover');
-            });
-
-            zone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                zone.classList.remove('dragover');
-                if(e.dataTransfer.files.length) {
-                    input.files = e.dataTransfer.files;
-                    input.dispatchEvent(new Event('change'));
-                }
-            });
-        });
-
-        // ==========================================
-        // FUNGSI-FUNGSI TOOLS UTAMA
-        // ==========================================
-
-        // 0. FOTO
-        function processImage() {
-            const input = document.getElementById('imgInput');
-            const resultDiv = document.getElementById('imgResult');
-            if (!input.files.length) return showToast('Pilih atau drop gambarnya dulu lek!');
-
-            const file = input.files[0];
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                const img = new Image();
+        function processPhoto() {
+            if(!selectedPhotoFile) { showToast("⚠️ Pilih foto terlebih dahulu!"); return; }
+            let reader = new FileReader();
+            reader.onload = function(event) {
+                let img = new Image();
                 img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.width; canvas.height = img.height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0);
-
-                    const format = document.getElementById('imgFormat').value;
-                    const mimeType = 'image/' + format;
-                    const dataUrl = canvas.toDataURL(mimeType, 0.7);
-
-                    resultDiv.innerHTML = `
-                        <div class="preview-box">
-                            <img src="${dataUrl}" style="max-width:100%; max-height:200px; border-radius:8px;"><br>
-                            <a href="${dataUrl}" download="hasil-multitools.${format}" class="action-btn" style="margin-top:15px;">📥 Simpan Foto</a>
-                        </div>
-                    `;
-                    showToast('Beres! Silakan di-download.');
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // 1. PDF
-        async function compressPDF() {
-            const input = document.getElementById('pdfInput');
-            const status = document.getElementById('pdfStatus');
-            const resultArea = document.getElementById('pdfResult');
-            if (!input.files.length) return showToast('File PDF-nya mana bang?');
-
-            status.style.display = 'block';
-            status.innerHTML = "Tunggu bentar, lagi proses nipisin PDF nih...";
-            resultArea.innerHTML = "";
-
-            try {
-                const file = input.files[0];
-                const arrayBuffer = await file.arrayBuffer();
-                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                const { jsPDF } = window.jspdf;
-                let newPdf = null;
-                const level = document.getElementById('pdfCompressLevel').value;
-
-                let scale = 1.2, quality = 0.6;
-                if(level === 'high') { scale = 0.8; quality = 0.4; }
-                else if(level === 'low') { scale = 1.5; quality = 0.8; }
-
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const viewport = page.getViewport({ scale: scale });
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = viewport.width; canvas.height = viewport.height;
-
-                    await page.render({ canvasContext: ctx, viewport: viewport }).promise;
-                    const imgData = canvas.toDataURL('image/jpeg', quality);
-                    const pdfWidth = viewport.width * 0.264583;
-                    const pdfHeight = viewport.height * 0.264583;
-
-                    if (i === 1) newPdf = new jsPDF({ orientation: pdfWidth > pdfHeight ? 'l' : 'p', unit: 'mm', format: [pdfWidth, pdfHeight] });
-                    else newPdf.addPage([pdfWidth, pdfHeight], pdfWidth > pdfHeight ? 'l' : 'p');
+                    let canvas = document.createElement('canvas');
+                    let scale = parseInt(document.getElementById('photoScale').value) / 100;
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    let ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    let format = document.getElementById('photoFormat').value;
+                    let dataUrl = canvas.toDataURL(format, 0.85);
                     
-                    newPdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+                    let link = document.createElement('a');
+                    link.download = `resized_photo.${format.split('/')[1]}`;
+                    link.href = dataUrl;
+                    link.click();
+                    showToast("✅ Foto berhasil diproses dan diunduh!");
                 }
-
-                const compressedBlob = newPdf.output('blob');
-                const url = URL.createObjectURL(compressedBlob);
-                status.style.display = 'none';
-
-                resultArea.innerHTML = `
-                    <div class="status-msg">Mantap! Ukuran PDF berhasil dikompres.</div>
-                    <a href="${url}" download="${file.name.replace('.pdf', '')}-gepeng.pdf" class="action-btn">📥 Download PDF</a>
-                `;
-                showToast('Proses PDF Selesai!');
-            } catch(e) { status.innerText = "Waduh, gagal bro. Pastiin PDF-nya nggak dipassword."; }
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(selectedPhotoFile);
         }
 
-        // 2. MP3
-        async function convertMp4ToMp3() {
-            const input = document.getElementById('videoInput');
-            const status = document.getElementById('audioStatus');
-            const result = document.getElementById('audioResult');
-
-            if (!input.files.length) return showToast('Pilih videonya dulu!');
-
-            status.style.display = 'block';
-            status.innerText = "Lagi narik suaranya nih... sabar dikit!";
-            result.innerHTML = "";
-
-            try {
-                const file = input.files[0];
-                const arrayBuffer = await file.arrayBuffer();
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                
-                const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-                const wavBlob = audioBufferToWav(audioBuffer);
-                const url = URL.createObjectURL(wavBlob);
-
-                status.style.display = 'none';
-                result.innerHTML = `
-                    <div class="preview-box">
-                        <audio controls src="${url}" style="width:100%; margin-bottom:15px; outline:none; border-radius:10px;"></audio>
-                        <a href="${url}" download="${file.name.replace(/\.[^/.]+$/, "")}-multitools.mp3" class="action-btn">📥 Simpan MP3</a>
-                    </div>
-                `;
-                showToast('Audio berhasil diekstrak!');
-            } catch (err) { status.innerText = "Gagal. Format video mungkin nggak support."; }
+        function loadPdfFile(e) {
+            selectedPdfFile = e.target.files[0];
+            if(selectedPdfFile) document.getElementById('pdfFileName').innerText = selectedPdfFile.name;
         }
-        
-        // Helper WAV convert logic
-        function audioBufferToWav(b){let c=b.numberOfChannels,s=b.sampleRate,r=c===2?interleave(b.getChannelData(0),b.getChannelData(1)):b.getChannelData(0);return encodeWAV(r,c,s,16);}
-        function interleave(l,r){let len=l.length+r.length,res=new Float32Array(len),i=0,inI=0;while(i<len){res[i++]=l[inI];res[i++]=r[inI];inI++;}return res;}
-        function encodeWAV(s,c,sr,bd){let bps=bd/8,ba=c*bps,buf=new ArrayBuffer(44+s.length*bps),v=new DataView(buf);writeString(v,0,'RIFF');v.setUint32(4,36+s.length*bps,true);writeString(v,8,'WAVE');writeString(v,12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,c,true);v.setUint32(24,sr,true);v.setUint32(28,sr*ba,true);v.setUint16(32,ba,true);v.setUint16(34,bd,true);writeString(v,36,'data');v.setUint32(40,s.length*bps,true);floatTo16BitPCM(v,44,s);return new Blob([buf],{type:'audio/mp3'});}
-        function floatTo16BitPCM(o,off,inArr){for(let i=0;i<inArr.length;i++,off+=2){let s=Math.max(-1,Math.min(1,inArr[i]));o.setInt16(off,s<0?s*0x8000:s*0x7FFF,true);}}
-        function writeString(v,off,str){for(let i=0;i<str.length;i++){v.setUint8(off+i,str.charCodeAt(i));}}
 
-        // 3. TIKTOK
+        function processPDF() {
+            if(!selectedPdfFile) { showToast("⚠️ Pilih file gambar untuk dikompres ke PDF!"); return; }
+            let reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const { jsPDF } = window.jspdf;
+                    let doc = new jsPDF();
+                    let imgData = event.target.result;
+                    doc.addImage(imgData, 'JPEG', 10, 10, 190, 0);
+                    doc.save("compressed_output.pdf");
+                    showToast("✅ PDF berhasil dibuat dan diunduh!");
+                } catch(err) {
+                    showToast("❌ Gagal membuat PDF.");
+                }
+            }
+            reader.readAsDataURL(selectedPdfFile);
+        }
+
+        // TIKTOK DOWNLOADER DENGAN API PUBLIK AMAN
         async function downloadTikTok() {
-            const url = document.getElementById('ttUrl').value;
-            const status = document.getElementById('ttStatus');
-            const result = document.getElementById('ttResult');
-
-            if (!url) return showToast('Link-nya diisi dulu dong!');
-
-            status.style.display = 'block';
-            status.innerText = "Sabar, lagi mancing videonya...";
-            result.innerHTML = "";
-
+            let urlInput = document.getElementById('tiktokUrl').value.trim();
+            let resultDiv = document.getElementById('tiktokResult');
+            if(!urlInput) { showToast("⚠️ Masukkan link TikTok!"); return; }
+            
+            resultDiv.innerHTML = '<p style="color:var(--accent); font-size:0.85rem; text-align:center;">⏳ Sedang mengambil video tanpa watermark...</p>';
+            
             try {
-                const res = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`);
-                const data = await res.json();
-
-                if (data.code === 0) {
-                    status.style.display = 'none';
-                    result.innerHTML = `
-                        <div class="preview-box">
-                            <p style="font-weight:600; margin-bottom:10px; color:var(--accent);">${data.data.title || 'TikTok Video'}</p>
-                            <video controls src="${data.data.play}" style="max-width:100%; max-height:220px; border-radius:10px; margin-bottom:15px;"></video>
-                            <a href="${data.data.play}" target="_blank" download class="action-btn">📥 Download Video</a>
+                let apiURL = `https://www.tikwm.com/api/?url=${encodeURIComponent(urlInput)}`;
+                let proxyURL = `https://corsproxy.io/?${encodeURIComponent(apiURL)}`;
+                let response = await fetch(proxyURL);
+                if (!response.ok) {
+                    let altProxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiURL)}`;
+                    response = await fetch(altProxy);
+                }
+                let json = await response.json();
+                
+                if (json.code === 0 && json.data) {
+                    let data = json.data;
+                    resultDiv.innerHTML = `
+                        <div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.15); display:flex; flex-direction:column; gap:10px;">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <img src="${data.author.avatar}" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+                                <div>
+                                    <h4 style="font-size:0.85rem; color:#fff;">${data.author.nickname}</h4>
+                                    <p style="font-size:0.75rem; color:#94a3b8;">@${data.author.unique_id}</p>
+                                </div>
+                            </div>
+                            <p style="font-size:0.8rem; color:#cbd5e1; max-height:50px; overflow-y:auto;">${data.title}</p>
+                            <div style="display:flex; gap:8px; margin-top:5px;">
+                                <a href="${data.play}" target="_blank" download="tiktok_nowm.mp4" class="action-btn" style="text-align:center; text-decoration:none; font-size:0.8rem; padding:10px;">📥 Download Video No WM</a>
+                                <a href="${data.music}" target="_blank" download="tiktok_audio.mp3" class="action-btn" style="text-align:center; text-decoration:none; font-size:0.8rem; padding:10px; background:#10b981; color:#000;">🎵 Download MP3</a>
+                            </div>
                         </div>
                     `;
-                } else { status.innerText = "Link salah atau video di-private."; }
-            } catch (err) { status.innerText = "Koneksi ke server gagal, coba bentar lagi."; }
+                    showToast("✅ Berhasil memproses TikTok!");
+                } else {
+                    showFallbackTikTok(urlInput, resultDiv);
+                }
+            } catch(e) {
+                showFallbackTikTok(urlInput, resultDiv);
+            }
         }
 
-        // 4. QR CODE
-        function setQrMode(mode) {
-            document.getElementById('btnQrGen').classList.toggle('active', mode === 'gen');
-            document.getElementById('btnQrScan').classList.toggle('active', mode === 'scan');
-            document.getElementById('qrGenArea').style.display = mode === 'gen' ? 'block' : 'none';
-            document.getElementById('qrScanArea').style.display = mode === 'scan' ? 'block' : 'none';
+        function showFallbackTikTok(url, container) {
+            container.innerHTML = `
+                <div style="background:rgba(239,68,68,0.15); border:1px solid #ef4444; padding:12px; border-radius:10px; font-size:0.8rem; color:#fca5a5;">
+                    <p style="font-weight:600; margin-bottom:4px;">⚠️ Terhalang Keamanan Browser (CORS)</p>
+                    <p style="margin-bottom:8px;">Silakan gunakan platform download langsung berikut:</p>
+                    <a href="https://www.tikwm.com/" target="_blank" style="color:var(--accent); text-decoration:underline; font-weight:600;">Buka TikWM Downloader ↗</a>
+                </div>
+            `;
         }
 
-        function generateQR() {
-            const text = document.getElementById('qrText').value;
-            const box = document.getElementById('qrcode');
-            box.innerHTML = "";
-            if (!text) return showToast('Teks/Link-nya diketik dulu dong!');
-
-            box.style.display = "flex";
-            new QRCode(box, { text: text, width: 160, height: 160, colorDark : "#000000", colorLight : "#ffffff" });
+        let qrInstance = null;
+        function generateQRCode() {
+            let container = document.getElementById('qrcodeContainer');
+            if(!container) return;
+            let textInput = document.getElementById('qrText');
+            let text = (textInput && textInput.value.trim()) ? textInput.value.trim() : "https://example.com";
+            container.innerHTML = "";
+            try {
+                if (typeof QRCode !== 'undefined') {
+                    new QRCode(container, {
+                        text: text,
+                        width: 160,
+                        height: 160,
+                        colorDark: "#000000",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                }
+            } catch(e) { console.log(e); }
         }
 
-        function scanQrFile() {
-            const input = document.getElementById('qrFileInput');
-            const msg = document.getElementById('qrScanResult');
-            if (!input.files.length) return;
+        function downloadQRCode() {
+            let img = document.querySelector('#qrcodeContainer img');
+            if(!img) { showToast("⚠️ QR Code belum dibuat!"); return; }
+            let link = document.createElement('a');
+            link.download = "qrcode.png";
+            link.href = img.src;
+            link.click();
+            showToast("💾 QR Code berhasil diunduh!");
+        }
 
-            msg.style.display = 'block';
-            msg.innerText = "Lagi baca isi QR...";
+        // --- LARA BOT GAME STATE & SAFE STORAGE ---
+        let defaultLaraState = {
+            level: 1,
+            exp: 0,
+            money: 400,
+            gems: 0,
+            crates: 1,
+            inventory: {},
+            captchaCounter: 0,
+            quest: { target: 5, progress: 0, claimed: false },
+            weapon: "Tangan Kosong",
+            prayTime: 0
+        };
 
-            const html5QrCode = new Html5Qrcode("qrScanArea");
-            html5QrCode.scanFile(input.files[0], true)
-                .then(text => { msg.innerHTML = `<b>Hasil Scan:</b> <br> <a href="${text}" target="_blank" style="color:var(--accent); word-break:break-all;">${text}</a>`; })
-                .catch(err => { msg.innerText = "Blur, QR tidak terdeteksi."; });
+        let lara = defaultLaraState;
+        try {
+            let savedLaraData = localStorage.getItem('lara_bot_save');
+            if (savedLaraData) {
+                let parsed = JSON.parse(savedLaraData);
+                lara = { ...defaultLaraState, ...parsed };
+            }
+        } catch(e) { console.log("Save load error"); }
+        lara.cooldown = false;
+
+        function saveGame() {
+            try {
+                localStorage.setItem('lara_bot_save', JSON.stringify(lara));
+            } catch(e) {}
+        }
+
+        const baseAnimals = [
+            { name: "Babi", emoji: "🐷", baseVal: 20 },
+            { name: "Sapi", emoji: "🐮", baseVal: 40 },
+            { name: "Ayam", emoji: "🐔", baseVal: 15 },
+            { name: "Domba", emoji: "🐑", baseVal: 30 },
+            { name: "Kucing", emoji: "🐱", baseVal: 60 },
+            { name: "Panda", emoji: "🐼", baseVal: 120 },
+            { name: "Naga", emoji: "🐲", baseVal: 300 }
+        ];
+
+        const rarities = ["Common", "Uncommon", "Rare", "Epic", "Mythical", "Fabled", "Special"];
+        let currentCaptchaAnswer = "";
+
+        function openLaraGame() {
+            let modal = document.getElementById('gameInterface');
+            if(modal) modal.classList.add('active');
+            updateUI();
+        }
+
+        function closeLaraGame() {
+            let modal = document.getElementById('gameInterface');
+            if(modal) modal.classList.remove('active');
+        }
+
+        function updateUI() {
+            try {
+                document.getElementById('gLevel').innerText = lara.level;
+                document.getElementById('gMoney').innerText = lara.money;
+                document.getElementById('gGems').innerText = lara.gems;
+                document.getElementById('gCrates').innerText = lara.crates;
+                document.getElementById('weaponInfo').innerText = `Senjata: ${lara.weapon}`;
+
+                let maxExp = lara.level * 100;
+                document.getElementById('expText').innerText = `${lara.exp} / ${maxExp} EXP`;
+                document.getElementById('expFill').style.width = `${Math.min(100, (lara.exp / maxExp) * 100)}%`;
+
+                const invBox = document.getElementById('inventoryBox');
+                const keys = Object.keys(lara.inventory);
+                if(keys.length === 0) {
+                    invBox.innerHTML = `<span style="color:#72767d; font-style:italic;">Zoo kamu masih kosong. Ketik lara hunt!</span>`;
+                } else {
+                    invBox.innerHTML = "";
+                    keys.forEach(k => {
+                        let item = lara.inventory[k];
+                        let ani = baseAnimals.find(a => a.name === item.baseName);
+                        invBox.innerHTML += `<div class="inv-chip">${ani ? ani.emoji : '🐾'} [${item.rarity}] ${item.baseName}: <strong>x${item.count}</strong></div>`;
+                    });
+                }
+                saveGame();
+            } catch(e) {}
+        }
+
+        function pushChat(user, text) {
+            const box = document.getElementById('discordChatBox');
+            if(!box) return;
+            box.innerHTML += `
+                <div class="chat-msg">
+                    <span class="chat-user">${user}</span>
+                    <span class="chat-text">${text}</span>
+                </div>
+            `;
+            box.scrollTop = box.scrollHeight;
+            playSound('message');
+        }
+
+        function handleCommandKey(e) {
+            if (e.key === 'Enter') {
+                let input = document.getElementById('discordCommandInput');
+                let val = input ? input.value.trim() : "";
+                if(input) input.value = "";
+                if(val) executeCommand(val);
+            }
+        }
+
+        function executeCommand(cmd) {
+            if(lara.cooldown) {
+                showToast("⏳ Bot sedang cooldown, sabar ya!");
+                return;
+            }
+
+            pushChat("@Kamu", cmd);
+            let parts = cmd.toLowerCase().trim().split(/\s+/);
+            let action = parts[1];
+
+            if (action === 'hunt' || action === 'h') {
+                triggerHunt();
+            } else if (action === 'quest') {
+                triggerQuest();
+            } else if (action === 'sacrifice' || action === 's') {
+                triggerSacrifice();
+            } else if (action === 'shop') {
+                triggerShop(parts);
+            } else if (action === 'pay') {
+                triggerPay(parts);
+            } else if (action === 'pray') {
+                triggerPray();
+            } else if (action === 'coinflip' || action === 'cf') {
+                triggerCoinflip(parts);
+            } else if (action === 'crate' || action === 'open') {
+                triggerOpenCrate();
+            } else if (action === 'zoo' || action === 'inv') {
+                triggerZoo();
+            } else if (action === 'sell') {
+                triggerSell();
+            } else if (action === 'help') {
+                triggerHelp();
+            } else {
+                pushChat("@BotLara", `❓ Command tidak dikenal. Ketik atau klik <strong>Tips / Tutorial</strong> untuk bantuan!`);
+            }
+        }
+
+        function triggerHelp() {
+            pushChat("@BotLara", 
+                `📖 <strong>PANDUAN LARA BOT:</strong><br>` +
+                `1️⃣ <code>lara hunt</code>: Berburu hewan & dapat EXP.<br>` +
+                `2️⃣ <code>lara quest</code>: Cek misi harian & klaim 200 Cowries 🐚.<br>` +
+                `3️⃣ <code>lara zoo</code>: Cek koleksi hewan tangkapan.<br>` +
+                `4️⃣ <code>lara sell</code>: Jual hewan untuk dapat Cowries 🐚.<br>` +
+                `5️⃣ <code>lara sacrifice</code>: Tumbal hewan demi Gems 💎.<br>` +
+                `6️⃣ <code>lara pray</code>: Berdoa tiap 30 detik untuk bonus uang.<br>` +
+                `7️⃣ <code>lara coinflip [jumlah]</code>: Judi tebak koin.`
+            );
+        }
+
+        function startCooldown(sec) {
+            lara.cooldown = true;
+            let cdDisplay = document.getElementById('gCooldown');
+            let btnH = document.getElementById('btnHunt');
+            if(btnH) btnH.disabled = true;
+
+            let remaining = sec;
+            if(cdDisplay) cdDisplay.innerText = `${remaining}s`;
+            let interval = setInterval(() => {
+                remaining--;
+                if(cdDisplay) cdDisplay.innerText = remaining > 0 ? `${remaining}s` : "Ready";
+                if(remaining <= 0) {
+                    clearInterval(interval);
+                    lara.cooldown = false;
+                    if(btnH) btnH.disabled = false;
+                }
+            }, 1000);
+        }
+
+        function triggerHunt() {
+            lara.captchaCounter++;
+            if (lara.captchaCounter >= 7) {
+                triggerCaptcha();
+                return;
+            }
+
+            startCooldown(3);
+            let randAnimal = baseAnimals[Math.floor(Math.random() * baseAnimals.length)];
+            let rarityIndex = Math.floor(Math.random() * rarities.length);
+            if(Math.random() > 0.85) rarityIndex = Math.min(rarities.length - 1, rarityIndex + 2);
+            let rarity = rarities[rarityIndex];
+
+            let invKey = `${rarity}_${randAnimal.name}`;
+            if(!lara.inventory[invKey]) {
+                lara.inventory[invKey] = { baseName: randAnimal.name, rarity: rarity, count: 0 };
+            }
+            lara.inventory[invKey].count++;
+
+            if(lara.quest.progress < lara.quest.target) {
+                lara.quest.progress++;
+            }
+
+            lara.exp += 25;
+            let maxExp = lara.level * 100;
+            if(lara.exp >= maxExp) {
+                lara.level++;
+                lara.exp = 0;
+                pushChat("@BotLara", `✨ **LEVEL UP!** Selamat kamu naik ke Level **${lara.level}**!`);
+            }
+
+            playSound('win');
+            pushChat("@BotLara", `🐾 Kamu berburu dan mendapatkan **[${rarity}] ${randAnimal.emoji} ${randAnimal.name}**!`);
+            updateUI();
+        }
+
+        function triggerCaptcha() {
+            let chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            currentCaptchaAnswer = "";
+            for(let i=0; i<4; i++) currentCaptchaAnswer += chars.charAt(Math.floor(Math.random() * chars.length));
+            let disp = document.getElementById('captchaTextDisplay');
+            if(disp) disp.innerText = currentCaptchaAnswer;
+            let inp = document.getElementById('captchaInput');
+            if(inp) inp.value = "";
+            let modal = document.getElementById('captchaModal');
+            if(modal) modal.style.display = 'flex';
+        }
+
+        function verifyCaptcha() {
+            let userVal = document.getElementById('captchaInput').value.toUpperCase().trim();
+            if(userVal === currentCaptchaAnswer) {
+                let modal = document.getElementById('captchaModal');
+                if(modal) modal.style.display = 'none';
+                lara.captchaCounter = 0;
+                showToast("✅ Captcha Berhasil Diverifikasi!");
+                pushChat("@BotLara", `🛡️ Verifikasi sukses! Silakan lanjutkan aktivitas.`);
+            } else {
+                showToast("❌ Kode Captcha Salah! Coba lagi.");
+            }
+        }
+
+        function triggerQuest() {
+            if (lara.quest.progress >= lara.quest.target && !lara.quest.claimed) {
+                lara.quest.claimed = true;
+                lara.money += 200;
+                playSound('win');
+                pushChat("@BotLara", `🎉 **QUEST SELESAI!** Hadiah diklaim: <span style="color:#f59e0b;">+200 Cowries 🐚</span>!`);
+                updateUI();
+                return;
+            }
+            pushChat("@BotLara", `📜 **Quest Harian:** Berburu hewan (${lara.quest.progress}/${lara.quest.target}). Ketik **lara hunt**!`);
+        }
+
+        function triggerPay(parts) {
+            let target = parts[2];
+            let amount = parseInt(parts[3]);
+            if(!target || isNaN(amount) || amount <= 0) {
+                pushChat("@BotLara", `💸 Format salah! Gunakan: <strong style="color:var(--accent);">lara pay @user jumlah</strong> (cth: lara pay @budi 100)`);
+                return;
+            }
+            if(lara.money < amount) {
+                pushChat("@BotLara", `⚠️ Cowries kamu tidak cukup untuk transfer sebesar ${amount} 🐚!`);
+                return;
+            }
+            lara.money -= amount;
+            playSound('win');
+            pushChat("@BotLara", `💸 Berhasil mengirim <span style="color:#f59e0b;">${amount} Cowries 🐚</span> kepada ${target}!`);
+            updateUI();
+        }
+
+        function triggerSacrifice() {
+            let keys = Object.keys(lara.inventory);
+            if(keys.length === 0) {
+                pushChat("@BotLara", `⚠️ Zoo kamu kosong, tidak ada hewan untuk ditumbalkan!`);
+                return;
+            }
+            let firstKey = keys[0];
+            let item = lara.inventory[firstKey];
+            item.count--;
+            if(item.count <= 0) delete lara.inventory[firstKey];
+
+            lara.gems += 2;
+            playSound('win');
+            pushChat("@BotLara", `🔥 Menumbalkan **[${item.rarity}] ${item.baseName}** ke altar dewa Lara! Mendapatkan <span style="color:var(--accent);">+2 Gems 💎</span>!`);
+            updateUI();
+        }
+
+        function triggerSell() {
+            let keys = Object.keys(lara.inventory);
+            if(keys.length === 0) {
+                pushChat("@BotLara", `⚠️ Tidak ada hewan di Zoo untuk dijual.`);
+                return;
+            }
+            let firstKey = keys[0];
+            let item = lara.inventory[firstKey];
+            item.count--;
+            if(item.count <= 0) delete lara.inventory[firstKey];
+
+            let earn = 50 * (rarities.indexOf(item.rarity) + 1);
+            lara.money += earn;
+            playSound('win');
+            pushChat("@BotLara", `💰 Menjual **[${item.rarity}] ${item.baseName}** seharga <span style="color:#f59e0b;">+${earn} Cowries 🐚</span>!`);
+            updateUI();
+        }
+
+        function triggerShop(parts) {
+            let subAction = parts[2];
+            let item = parts[3];
+
+            if(!subAction) {
+                pushChat("@BotLara", `🛒 **LARA SHOP:**<br>1️⃣ **dagger** (Harga: 500 🐚) -> Tingkatkan Senjata<br>Ketik: <strong style="color:var(--accent);">lara shop buy dagger</strong>`);
+                return;
+            }
+            if(subAction === 'buy' && item === 'dagger') {
+                if(lara.money < 500) { pushChat("@BotLara", `⚠️ Cowries kurang! Butuh 500 🐚.`); return; }
+                lara.money -= 500;
+                lara.weapon = "Dagger Besi";
+                playSound('win');
+                pushChat("@BotLara", `🗡️ Berhasil membeli **Dagger Besi**!`);
+                updateUI();
+            }
+        }
+
+        function triggerPray() {
+            let now = Date.now();
+            if(now - lara.prayTime < 30000) {
+                pushChat("@BotLara", `🙏 Kamu sudah berdoa baru-baru ini! Tunggu beberapa saat lagi.`);
+                return;
+            }
+            lara.prayTime = now;
+            let bonusMoney = Math.floor(Math.random() * 150) + 50;
+            lara.money += bonusMoney;
+            playSound('win');
+            pushChat("@BotLara", `🙏 Kamu berdoa dan mendapatkan <span style="color:#f59e0b;">+${bonusMoney} Cowries 🐚</span>!`);
+            updateUI();
+        }
+
+        function triggerCoinflip(parts) {
+            let bet = parseInt(parts[2]) || 50;
+            if(lara.money < bet) {
+                pushChat("@BotLara", `⚠️ Cowries tidak cukup untuk taruhan ${bet} 🐚!`);
+                return;
+            }
+            let win = Math.random() >= 0.5;
+            if(win) {
+                lara.money += bet;
+                playSound('win');
+                pushChat("@BotLara", `🪙 Coinflip: Koin mendarat dengan selamat! Kamu **MENANG** dan mendapat <span style="color:#f59e0b;">+${bet} 🐚</span>!`);
+            } else {
+                lara.money -= bet;
+                playSound('lose');
+                pushChat("@BotLara", `🪙 Coinflip: Koin tidak berpihak padamu. Kamu **KALAH** sebesar -${bet} 🐚!`);
+            }
+            updateUI();
+        }
+
+        function triggerOpenCrate() {
+            if(lara.crates <= 0) {
+                pushChat("@BotLara", `📦 Kamu tidak punya Crate!`);
+                return;
+            }
+            lara.crates--;
+            lara.gems += 5;
+            playSound('win');
+            pushChat("@BotLara", `📦 Membuka Crate dan menemukan <span style="color:var(--accent);">+5 Gems 💎</span>!`);
+            updateUI();
+        }
+
+        function triggerZoo() {
+            let keys = Object.keys(lara.inventory);
+            if(keys.length === 0) {
+                pushChat("@BotLara", `🐾 Zoo kamu kosong.`);
+            } else {
+                let summary = keys.map(k => `[${lara.inventory[k].rarity}] ${lara.inventory[k].baseName} (x${lara.inventory[k].count})`).join(", ");
+                pushChat("@BotLara", `🐾 **Zoo Kamu:** ${summary}`);
+            }
         }
     </script>
 </body>
