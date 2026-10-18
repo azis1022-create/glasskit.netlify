@@ -45,9 +45,9 @@
   }
   .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
   .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:2px}
-  .logo .dot{
-    width:14px;height:14px;border-radius:50%;
-    background:var(--accent);box-shadow:0 0 14px var(--accent-glow);
+  .logo img{
+    width:32px;height:32px;border-radius:8px;object-fit:cover;
+    box-shadow:0 0 14px var(--accent-glow);
   }
   .menu{display:flex;gap:6px;align-items:center}
   .menu a{
@@ -61,6 +61,12 @@
     display:inline-flex;align-items:center;gap:8px;
   }
   .btn-coffee:hover{background:#f59e0b!important;color:#04101f!important;box-shadow:0 0 18px rgba(245,158,11,0.5)}
+  .btn-apk{
+    border:1px solid var(--accent);color:var(--accent)!important;
+    background:rgba(34,166,255,0.08);box-shadow:0 0 0 rgba(34,166,255,0);
+    transition:.25s;display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-apk:hover{background:var(--accent)!important;color:#04101f!important;box-shadow:0 0 18px var(--accent-glow)}
   .burger{display:none;flex-direction:column;gap:5px;cursor:pointer}
   .burger span{width:26px;height:2px;background:var(--text);border-radius:2px}
 
@@ -101,12 +107,10 @@
     content:"";position:absolute;inset:0;
     background:radial-gradient(220px 120px at 50% 0%,rgba(34,166,255,0.25),transparent 70%);
   }
-  .hero-card .icon-ring{
-    width:140px;height:140px;margin:0 auto 20px;border-radius:50%;
-    border:2px dashed rgba(34,166,255,0.4);display:flex;align-items:center;justify-content:center;
-    animation:spin 16s linear infinite;font-size:50px;color:var(--accent);
+  .hero-card .app-icon-img{
+    width:120px;height:120px;margin:0 auto 20px;border-radius:26px;object-fit:cover;
+    border:2px solid var(--glass-border);box-shadow:0 10px 30px rgba(34,166,255,0.3);
   }
-  @keyframes spin{to{transform:rotate(360deg)}}
   .hero-card h3{font-size:22px;margin-top:6px}
   .hero-card p{color:var(--muted);font-size:14px;margin-top:8px}
 
@@ -200,7 +204,9 @@
 <!-- NAV -->
 <header>
   <div class="container nav">
-    <div class="logo"><span class="dot"></span>TECHGEAR</div>
+    <div class="logo">
+      <img src="1000105785_bdad01.jpg" alt="TECHGEAR Logo"> TECHGEAR[cite: 2]
+    </div>
     <nav class="menu" id="menu">
       <a href="#home" data-nav>HOME</a>
       <a href="#tools" data-nav>TOOLS</a>
@@ -208,6 +214,9 @@
       <a href="#contacts" data-nav>CONTACTS</a>
       <a href="https://saweria.co/Weeenkyy" target="_blank" rel="noopener noreferrer" class="btn-coffee">
         <i class="fa-solid fa-mug-hot"></i> TRAKTIR KOPI
+      </a>
+      <a href="#" onclick="installApp(event)" class="btn-apk">
+        <i class="fa-solid fa-download"></i> INSTALL APLIKASI
       </a>
     </nav>
     <div class="burger" id="burger"><span></span><span></span><span></span></div>
@@ -223,13 +232,14 @@
     <div class="hero-cta">
       <button class="btn btn-primary" onclick="document.getElementById('tools').scrollIntoView()">Eksplorasi Tools</button>
       <button class="btn btn-ghost" onclick="document.getElementById('contacts').scrollIntoView()">Hubungi Kami</button>
+      <a href="#" onclick="installApp(event)" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-mobile-screen-button"></i> Tambah ke Layar HP
+      </a>
     </div>
   </div>
   <div class="hero-visual">
     <div class="glass-panel hero-card">
-      <div class="icon-ring">
-        <i class="fa-solid fa-screwdriver-wrench"></i>
-      </div>
+      <img src="1000105785_bdad01.jpg" alt="App Icon" class="app-icon-img"[cite: 2]>
       <h3>Multi-Tools Engine</h3>
       <p>Cepat, Aman & Hemat Memori Perangkat Anda</p>
     </div>
@@ -392,18 +402,85 @@
   <div class="container">
     <div class="foot-grid">
       <div class="foot-col">
-        <div class="logo" style="margin-bottom:14px"><span class="dot"></span>TECHGEAR</div>
+        <div class="logo" style="margin-bottom:14px">
+          <img src="1000105785_bdad01.jpg" alt="Logo"> TECHGEAR[cite: 2]
+        </div>
         <p style="color:var(--muted);font-size:13px;line-height:1.6">Next-generation web tools engine built for productivity and speed.</p>
       </div>
       <div class="foot-col"><h5>Tools</h5><a href="#tools">Image Editor</a><a href="#tools">QR Code</a><a href="#tools">TikTok Grabber</a></div>
       <div class="foot-col"><h5>Converter</h5><a href="#pdf-services">Text to PDF</a><a href="#pdf-services">PDF to Word</a><a href="#pdf-services">Word to PDF</a></div>
-      <div class="foot-col"><h5>Support</h5><a href="https://saweria.co/Weeenkyy" target="_blank">Traktir Kopi</a><a href="#contacts">Contacts</a></div>
+      <div class="foot-col">
+        <h5>Support</h5>
+        <a href="https://saweria.co/Weeenkyy" target="_blank"><i class="fa-solid fa-mug-hot"></i> Traktir Kopi</a>
+        <a href="#" onclick="installApp(event)"><i class="fa-solid fa-mobile-screen-button"></i> Install Aplikasi</a>
+        <a href="1000105785_bdad01.jpg" download="TECHGEAR-App-Icon.jpg"><i class="fa-solid fa-image"></i> Download Ikon[cite: 2]</a>
+        <a href="#contacts">Contacts</a>
+      </div>
     </div>
     <div class="foot-bottom">© 2026 TECHGEAR. All rights reserved. Designed with a futuristic glassmorphic theme.</div>
   </div>
 </footer>
 
 <script>
+  // ---------- PWA AUTO SETUP (INSTALL LANGSUNG DARI WEBSITE) ----------
+  let deferredPrompt = null;
+
+  // Buat Web App Manifest secara otomatis via Blob
+  const manifestData = {
+    "name": "TECHGEAR Web Tools Suite",
+    "short_name": "TECHGEAR",
+    "start_url": "./",
+    "display": "standalone",
+    "background_color": "#05070f",
+    "theme_color": "#05070f",
+    "icons": [
+      {
+        "src": "1000105785_bdad01.jpg",
+        "sizes": "512x512",
+        "type": "image/jpeg"
+      }
+    ]
+  };
+  const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/manifest+json'});
+  const manifestURL = URL.createObjectURL(manifestBlob);
+  document.querySelector('head').insertAdjacentHTML('beforeend', `<link rel="manifest" href="${manifestURL}">`);
+
+  // Daftarkan Service Worker secara otomatis via Blob agar memenuhi syarat PWA
+  if ('serviceWorker' in navigator) {
+    const swCode = `
+      self.addEventListener('install', (e) => { self.skipWaiting(); });
+      self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
+      self.addEventListener('fetch', (e) => {
+        e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+      });
+    `;
+    const swBlob = new Blob([swCode], {type: 'text/javascript'});
+    const swURL = URL.createObjectURL(swBlob);
+    navigator.serviceWorker.register(swURL).catch(err => console.log('SW error', err));
+  }
+
+  // Tangkap event instalasi browser
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+
+  // Fungsi tombol Install Aplikasi
+  function installApp(e) {
+    e.preventDefault();
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('Pengguna menerima instalasi aplikasi');
+        }
+        deferredPrompt = null;
+      });
+    } else {
+      alert('Cara Install: Di browser HP (Chrome), ketuk menu titik tiga (⋮) di pojok kanan atas, lalu pilih "Tambahkan ke Layar Utama" (Add to Home Screen) untuk menginstal aplikasi TECHGEAR secara instan!');
+    }
+  }
+
   // Mobile menu toggle
   const burger=document.getElementById('burger'),menu=document.getElementById('menu');
   burger.addEventListener('click',()=>menu.classList.toggle('open'));
@@ -551,8 +628,6 @@
   function executeTikTokDownload() {
     const select = document.getElementById('tiktok-resolution');
     if (!select || !select.value) return alert('Pilih resolusi terlebih dahulu!');
-    
-    // Open direct video stream in new tab to allow mobile download / playback without redirecting to tiktok.com
     window.open(select.value, '_blank');
   }
 
