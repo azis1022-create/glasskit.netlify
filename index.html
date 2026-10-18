@@ -477,17 +477,23 @@
     win.print();
   }
 
-  // TikTok Downloader Live API with Resolution Options (SD & HD)
+  // TikTok Downloader Fixed & Optimized with Direct Video Preview & Download
   async function downloadTikTok() {
     const urlInput = document.getElementById('tiktok-url');
     const url = urlInput.value.trim();
     const resultDiv = document.getElementById('tiktok-result');
     if (!url) return alert('Masukkan URL TikTok terlebih dahulu!');
     
-    resultDiv.innerHTML = '<p style="color:var(--accent); font-size:13px;"><i class="fa-solid fa-spinner fa-spin"></i> Sedang memproses video...</p>';
+    resultDiv.innerHTML = '<p style="color:var(--accent); font-size:13px;"><i class="fa-solid fa-spinner fa-spin"></i> Sedang memproses video tanpa watermark...</p>';
     
     try {
-      const response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`);
+      const response = await fetch('https://www.tikwm.com/api/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: `url=${encodeURIComponent(url)}&hd=1`
+      });
       const res = await response.json();
       
       if (res.code === 0 && res.data) {
@@ -499,7 +505,7 @@
         const cover = data.cover;
 
         resultDiv.innerHTML = `
-          <div style="background: rgba(8,12,24,0.85); padding: 14px; border-radius: 10px; border: 1px solid var(--glass-border);">
+          <div style="background: rgba(8,12,24,0.9); padding: 14px; border-radius: 10px; border: 1px solid var(--glass-border);">
             <div style="display:flex; gap:10px; align-items:center; margin-bottom:12px;">
               ${cover ? `<img src="${cover}" alt="Thumb" style="width:50px; height:65px; object-fit:cover; border-radius:6px; border:1px solid var(--glass-border);">` : ''}
               <div style="overflow:hidden;">
@@ -507,27 +513,46 @@
                 <p style="font-size:11px; color:var(--muted); margin-top:2px;">@${author}</p>
               </div>
             </div>
+
             <div class="field" style="margin-bottom:10px;">
-              <label style="font-size:11px; margin-bottom:4px; color:var(--muted);">Pilih Resolusi Video (No Watermark)</label>
-              <select id="tiktok-resolution" style="padding:10px; font-size:13px;">
+              <label style="font-size:11px; margin-bottom:4px; color:var(--muted);">Preview Video No Watermark</label>
+              <video id="tiktok-video-preview" controls crossorigin="anonymous" style="width:100%; max-height:220px; object-fit:contain; border-radius:8px; background:#000; border:1px solid var(--glass-border);" src="${sdLink}"></video>
+            </div>
+
+            <div class="field" style="margin-bottom:10px;">
+              <label style="font-size:11px; margin-bottom:4px; color:var(--muted);">Pilih Resolusi Video</label>
+              <select id="tiktok-resolution" style="padding:10px; font-size:13px;" onchange="updateVideoPreviewSource(this)">
                 <option value="${sdLink}">SD Quality (Standard)</option>
                 <option value="${hdLink}">HD Quality (High Definition)</option>
               </select>
             </div>
-            <button class="btn btn-primary" style="width:100%; padding:10px; font-size:13px;" onclick="executeTikTokDownload()">Download MP4</button>
+
+            <div style="display:flex; gap:8px;">
+              <button class="btn btn-primary" style="flex:1; padding:10px; font-size:13px;" onclick="executeTikTokDownload()"><i class="fa-solid fa-download"></i> Download MP4</button>
+            </div>
           </div>
         `;
       } else {
         resultDiv.innerHTML = `<p style="color:#ef4444; font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> Gagal mengambil video. Pastikan URL valid dan publik.</p>`;
       }
     } catch (err) {
-      resultDiv.innerHTML = `<p style="color:#ef4444; font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> Gagal terhubung ke server TikTok downloader.</p>`;
+      resultDiv.innerHTML = `<p style="color:#ef4444; font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> Gagal terhubung ke server downloader.</p>`;
+    }
+  }
+
+  function updateVideoPreviewSource(select) {
+    const video = document.getElementById('tiktok-video-preview');
+    if (video && select.value) {
+      video.src = select.value;
+      video.load();
     }
   }
 
   function executeTikTokDownload() {
     const select = document.getElementById('tiktok-resolution');
     if (!select || !select.value) return alert('Pilih resolusi terlebih dahulu!');
+    
+    // Open direct video stream in new tab to allow mobile download / playback without redirecting to tiktok.com
     window.open(select.value, '_blank');
   }
 
