@@ -1,656 +1,513 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Tools Dashboard</title>
-    <!-- FontAwesome & QR Code JS CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <style>
-        :root {
-            --bg-dark: #0b0f19;
-            --panel-bg: #151d30;
-            --panel-border: #232f48;
-            --text-main: #f8fafc;
-            --text-sub: #94a3b8;
-            
-            /* Dynamic Color Theme Variables */
-            --accent-color: #0284c7;
-            --accent-light: #38bdf8;
-            --accent-glow: rgba(2, 132, 199, 0.35);
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TECHGEAR — Next-Gen Web Tools Suite</title>
+<!-- FontAwesome & QR Code CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root{
+    --bg:#05070f;
+    --bg2:#0a0e1a;
+    --glass:rgba(20,28,48,0.45);
+    --glass-border:rgba(80,160,255,0.18);
+    --accent:#22a6ff;
+    --accent2:#3a7bff;
+    --accent-glow:rgba(34,166,255,0.55);
+    --text:#e8f1ff;
+    --muted:#8fa3c7;
+    --radius:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 80% -10%,rgba(34,166,255,0.18),transparent 60%),
+      radial-gradient(900px 500px at 0% 20%,rgba(58,123,255,0.12),transparent 55%),
+      linear-gradient(180deg,var(--bg),var(--bg2));
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:#04101f}
+  a{color:inherit;text-decoration:none}
+  .container{max-width:1180px;margin:0 auto;padding:0 24px}
 
-            /* Glassmorphism Variables */
-            --glass-bg: rgba(21, 29, 48, 0.55);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;top:0;z-index:100;
+    backdrop-filter:blur(14px);
+    background:rgba(5,8,18,0.6);
+    border-bottom:1px solid var(--glass-border);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:2px}
+  .logo .dot{
+    width:14px;height:14px;border-radius:50%;
+    background:var(--accent);box-shadow:0 0 14px var(--accent-glow);
+  }
+  .menu{display:flex;gap:6px;align-items:center}
+  .menu a{
+    padding:9px 16px;border-radius:10px;font-size:14px;font-weight:600;color:var(--muted);
+    transition:.25s;cursor:pointer;
+  }
+  .menu a:hover{color:#fff;background:rgba(34,166,255,0.12)}
+  .btn-coffee{
+    border:1px solid #f59e0b;color:#f59e0b!important;
+    box-shadow:0 0 0 rgba(245,158,11,0);transition:.25s;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-coffee:hover{background:#f59e0b!important;color:#04101f!important;box-shadow:0 0 18px rgba(245,158,11,0.5)}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+  .burger span{width:26px;height:2px;background:var(--text);border-radius:2px}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-        }
+  /* ---------- GLASS PANEL & CARDS ---------- */
+  .glass-panel{
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);
+    backdrop-filter:blur(16px);box-shadow:0 20px 60px rgba(0,0,0,.45);
+  }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            display: flex;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
+  /* ---------- HERO ---------- */
+  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:80px 0 60px}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:1px;
+    color:var(--accent);border:1px solid var(--glass-border);padding:6px 14px;border-radius:30px;
+    background:rgba(34,166,255,0.06);margin-bottom:22px;
+  }
+  .badge .pulse{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent-glow);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .hero h1{font-size:52px;line-height:1.05;font-weight:800;letter-spacing:-1px}
+  .hero h1 span{
+    background:linear-gradient(90deg,var(--accent),#7fb8ff);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p{color:var(--muted);margin:22px 0 30px;font-size:17px;line-height:1.7;max-width:500px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    padding:14px 28px;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;border:none;transition:.25s;
+    text-align:center;display:inline-block;
+  }
+  .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#04101f;box-shadow:0 8px 26px var(--accent-glow)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 34px var(--accent-glow)}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--glass-border)}
+  .btn-ghost:hover{background:rgba(34,166,255,0.1)}
 
-        /* Ambient Glow Background Orbs for Glass Mode */
-        .bg-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(90px);
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-        }
+  .hero-visual{position:relative;display:flex;justify-content:center;align-items:center}
+  .hero-card{width:360px;padding:36px;text-align:center;position:relative;overflow:hidden}
+  .hero-card::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(220px 120px at 50% 0%,rgba(34,166,255,0.25),transparent 70%);
+  }
+  .hero-card .icon-ring{
+    width:140px;height:140px;margin:0 auto 20px;border-radius:50%;
+    border:2px dashed rgba(34,166,255,0.4);display:flex;align-items:center;justify-content:center;
+    animation:spin 16s linear infinite;font-size:50px;color:var(--accent);
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .hero-card h3{font-size:22px;margin-top:6px}
+  .hero-card p{color:var(--muted);font-size:14px;margin-top:8px}
 
-        .orb-1 {
-            width: 350px;
-            height: 350px;
-            background: var(--accent-color);
-            top: -50px;
-            left: -50px;
-        }
+  /* ---------- SECTION ---------- */
+  section{padding:70px 0}
+  .sec-head{text-align:center;margin-bottom:46px}
+  .sec-head .tag{color:var(--accent);font-size:13px;letter-spacing:3px;font-weight:700}
+  .sec-head h2{font-size:36px;margin-top:10px;font-weight:800}
+  .sec-head p{color:var(--muted);margin-top:10px}
 
-        .orb-2 {
-            width: 400px;
-            height: 400px;
-            background: #8b5cf6;
-            bottom: -100px;
-            right: -100px;
-        }
+  /* INPUT & FORM FIELDS */
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+  .field input,.field select,.field textarea{
+    width:100%;padding:13px 14px;border-radius:10px;background:rgba(8,12,24,0.7);
+    border:1px solid var(--glass-border);color:var(--text);font-size:14px;font-family:inherit;transition:.2s;
+  }
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,166,255,0.15)}
+  .field textarea{resize:vertical;min-height:90px}
 
-        /* Sidebar Styling */
-        .sidebar {
-            width: 270px;
-            background-color: var(--panel-bg);
-            padding: 24px 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            border-right: 1px solid var(--panel-border);
-            z-index: 10;
-        }
+  /* GRID LAYOUTS */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  
+  .tool-card{padding:30px;border-radius:var(--radius);transition:.3s;display:flex;flex-direction:column;justify-content:space-between}
+  .tool-card:hover{transform:translateY(-6px);border-color:rgba(34,166,255,0.45);box-shadow:0 20px 40px rgba(34,166,255,0.1)}
+  .tool-card .ico{
+    width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+    background:rgba(34,166,255,0.12);border:1px solid var(--glass-border);margin-bottom:18px;font-size:24px;color:var(--accent);
+  }
+  .tool-card h3{font-size:20px;margin-bottom:8px}
+  .tool-card p{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:20px}
 
-        .sidebar h2 {
-            font-size: 1.25rem;
-            color: var(--accent-light);
-            margin-bottom: 24px;
-            text-align: center;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
+  /* CANVAS & IMAGE EDITOR */
+  canvas{
+    width:100%;max-height:200px;object-fit:contain;border-radius:10px;
+    border:1px dashed var(--glass-border);background:rgba(0,0,0,0.3);margin-bottom:14px;
+  }
+  .range-box{margin-bottom:10px}
+  .range-box label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px}
+  input[type="range"]{width:100%;accent-color:var(--accent);cursor:pointer}
 
-        .nav-btn {
-            background: transparent;
-            color: var(--text-sub);
-            border: 1px solid transparent;
-            padding: 12px 18px;
-            text-align: left;
-            font-size: 0.95rem;
-            border-radius: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-weight: 500;
-        }
+  /* QR CODE DISPLAY */
+  #qrcode{
+    background:#ffffff;padding:12px;display:inline-block;border-radius:12px;
+    box-shadow:0 0 20px rgba(0,0,0,0.5);margin-top:10px;
+  }
 
-        .nav-btn:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: var(--text-main);
-        }
+  /* WHY SECTION / SERVICES */
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .svc{padding:28px 20px;border-radius:var(--radius);text-align:center;transition:.3s}
+  .svc:hover{transform:translateY(-6px);border-color:rgba(34,166,255,0.45)}
+  .svc .ico{font-size:30px;margin-bottom:12px;color:var(--accent)}
+  .svc h4{font-size:16px;margin-bottom:6px}
+  .svc p{color:var(--muted);font-size:13px}
 
-        .nav-btn.active {
-            background-color: var(--accent-color);
-            color: #ffffff;
-            box-shadow: 0 4px 15px var(--accent-glow);
-        }
+  /* CONTACT */
+  .contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+  .contact-info h3{font-size:26px;margin-bottom:14px}
+  .contact-info p{color:var(--muted);line-height:1.7;margin-bottom:20px}
+  .contact-info .row{display:flex;align-items:center;gap:12px;margin-bottom:14px;color:var(--muted)}
+  .contact-info .row .ico{width:38px;height:38px;border-radius:10px;background:rgba(34,166,255,0.1);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center}
+  form{padding:30px;border-radius:var(--radius);display:grid;gap:12px}
 
-        /* Main Content Styling */
-        .main-content {
-            flex: 1;
-            padding: 30px 40px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
+  /* FOOTER */
+  footer{border-top:1px solid var(--glass-border);padding:50px 0 30px;margin-top:40px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px}
+  .foot-col h5{font-size:15px;margin-bottom:16px}
+  .foot-col a{display:block;color:var(--muted);font-size:13px;margin-bottom:10px;transition:.2s}
+  .foot-col a:hover{color:var(--accent)}
+  .foot-bottom{text-align:center;color:var(--muted);font-size:13px;margin-top:36px;padding-top:20px;border-top:1px solid rgba(80,160,255,0.1)}
 
-        /* Top Bar Header Controls */
-        .top-header {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 12px;
-            width: 100%;
-            flex-wrap: wrap;
-        }
-
-        .control-badge {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background-color: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            padding: 8px 14px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            color: var(--text-sub);
-            text-decoration: none;
-        }
-
-        .control-badge i {
-            color: var(--accent-light);
-        }
-
-        /* Custom Coffee Button Styling */
-        .coffee-btn {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.25));
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            color: #fef3c7;
-            font-weight: 600;
-        }
-
-        .coffee-btn:hover {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(217, 119, 6, 0.45));
-            border-color: #f59e0b;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-            color: #ffffff;
-        }
-
-        /* Custom Toggle Switch */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 22px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #334155;
-            transition: .3s;
-            border-radius: 30px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: var(--accent-color);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(22px);
-        }
-
-        /* Color Picker Input */
-        .color-picker-wrapper {
-            position: relative;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid #ffffff;
-            cursor: pointer;
-        }
-
-        .color-picker-wrapper input[type="color"] {
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            width: 44px;
-            height: 44px;
-            border: none;
-            cursor: pointer;
-            background: none;
-        }
-
-        /* Tab Content Styling */
-        .tab-content {
-            display: none;
-            background-color: var(--panel-bg);
-            padding: 30px;
-            border-radius: 16px;
-            border: 1px solid var(--panel-border);
-            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .tab-title {
-            font-size: 1.6rem;
-            margin-bottom: 24px;
-            color: var(--text-main);
-            border-bottom: 1px solid var(--panel-border);
-            padding-bottom: 12px;
-            font-weight: 700;
-        }
-
-        /* Input & Button Global Styling */
-        input[type="text"], input[type="url"], input[type="file"], select, textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 10px;
-            border: 1px solid var(--panel-border);
-            background-color: rgba(15, 23, 42, 0.6);
-            color: #fff;
-            margin-bottom: 16px;
-            outline: none;
-            font-size: 0.95rem;
-        }
-
-        input[type="text"]:focus, input[type="url"]:focus, textarea:focus {
-            border-color: var(--accent-light);
-            box-shadow: 0 0 0 3px var(--accent-glow);
-        }
-
-        .btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            box-shadow: 0 4px 14px var(--accent-glow);
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        /* Image Editor Controls */
-        .editor-container {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
-
-        .canvas-area {
-            flex: 1;
-            min-width: 300px;
-            text-align: center;
-        }
-
-        canvas {
-            max-width: 100%;
-            border-radius: 12px;
-            border: 1px dashed var(--panel-border);
-            background-color: rgba(0, 0, 0, 0.2);
-        }
-
-        .controls-area {
-            width: 260px;
-        }
-
-        .control-group {
-            margin-bottom: 18px;
-        }
-
-        .control-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.85rem;
-            color: var(--text-sub);
-        }
-
-        input[type="range"] {
-            width: 100%;
-            accent-color: var(--accent-color);
-        }
-
-        /* External Converter Card */
-        .converter-card {
-            background-color: rgba(15, 23, 42, 0.5);
-            border: 1px solid var(--panel-border);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 15px;
-        }
-
-        /* QR Code Container */
-        #qrcode {
-            margin-top: 20px;
-            background: white;
-            padding: 18px;
-            display: inline-block;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        /* LIQUID GLASS MODE STYLES */
-        body.glass-mode .bg-orb {
-            opacity: 0.6;
-        }
-
-        body.glass-mode .sidebar,
-        body.glass-mode .tab-content,
-        body.glass-mode .control-badge,
-        body.glass-mode .converter-card {
-            background: var(--glass-bg) !important;
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border: 1px solid var(--glass-border) !important;
-            box-shadow: var(--glass-shadow);
-        }
-
-        body.glass-mode input[type="text"], 
-        body.glass-mode input[type="url"], 
-        body.glass-mode textarea {
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(8px);
-            border: 1px solid var(--glass-border);
-        }
-    </style>
+  /* RESPONSIVE */
+  @media(max-width:900px){
+    .hero{grid-template-columns:1fr;text-align:center}
+    .hero p{margin-left:auto;margin-right:auto}
+    .hero-cta{justify-content:center}
+    .grid-3,.grid-4,.grid-2{grid-template-columns:1fr 1fr}
+    .contact-wrap{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    .menu{position:fixed;top:68px;right:0;flex-direction:column;background:rgba(5,8,18,0.96);width:220px;padding:14px;border-left:1px solid var(--glass-border);transform:translateX(100%);transition:.3s}
+    .menu.open{transform:translateX(0)}
+    .burger{display:flex}
+    .hero h1{font-size:38px}
+  }
+  @media(max-width:560px){.grid-3,.grid-4,.grid-2,.foot-grid{grid-template-columns:1fr}.hero h1{font-size:32px}}
+</style>
 </head>
 <body>
 
-    <!-- Ambient Glowing Orbs -->
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
+<!-- NAV -->
+<header>
+  <div class="container nav">
+    <div class="logo"><span class="dot"></span>TECHGEAR</div>
+    <nav class="menu" id="menu">
+      <a href="#home" data-nav>HOME</a>
+      <a href="#tools" data-nav>TOOLS</a>
+      <a href="#pdf-services" data-nav>CONVERTER</a>
+      <a href="#contacts" data-nav>CONTACTS</a>
+      <a href="https://saweria.co/Weeenkyy" target="_blank" rel="noopener noreferrer" class="btn-coffee">
+        <i class="fa-solid fa-mug-hot"></i> TRAKTIR KOPI
+      </a>
+    </nav>
+    <div class="burger" id="burger"><span></span><span></span><span></span></div>
+  </div>
+</header>
 
-    <!-- Sidebar Navigasi -->
-    <div class="sidebar">
-        <h2><i class="fa-solid fa-screwdriver-wrench"></i> Multi-Tools</h2>
-        <button class="nav-btn active" onclick="switchTab('dashboard')"><i class="fa-solid fa-house"></i> Dashboard</button>
-        <button class="nav-btn" onclick="switchTab('image-editor')"><i class="fa-solid fa-image"></i> Image Editor</button>
-        <button class="nav-btn" onclick="switchTab('pdf-tool')"><i class="fa-solid fa-file-pdf"></i> PDF Tools</button>
-        <button class="nav-btn" onclick="switchTab('tiktok')"><i class="fa-brands fa-tiktok"></i> TikTok Downloader</button>
-        <button class="nav-btn" onclick="switchTab('qr-gen')"><i class="fa-solid fa-qrcode"></i> QR Generator</button>
+<!-- HERO -->
+<section id="home" class="container hero">
+  <div class="hero-text">
+    <span class="badge"><span class="pulse"></span> ONLINE UTILITIES · 2026 EDITION</span>
+    <h1>Next-Gen Web Tools Suite For <span>Productivity</span></h1>
+    <p>Kumpulan utilitas digital berkecepatan tinggi yang dapat diakses langsung dari browser Anda. Tanpa instalasi, hemat penyimpanan, dan langsung eksekusi dalam hitungan detik.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary" onclick="document.getElementById('tools').scrollIntoView()">Eksplorasi Tools</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('contacts').scrollIntoView()">Hubungi Kami</button>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="glass-panel hero-card">
+      <div class="icon-ring">
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+      </div>
+      <h3>Multi-Tools Engine</h3>
+      <p>Cepat, Aman & Hemat Memori Perangkat Anda</p>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS SECTION -->
+<section id="tools" class="container">
+  <div class="sec-head">
+    <div class="tag">FEATURED UTILITIES</div>
+    <h2>Pilih Tools Yang Anda Butuhkan</h2>
+    <p>Dioptimalkan untuk pengerjaan cepat langsung dari browser.</p>
+  </div>
+  <div class="grid-3">
+
+    <!-- Tool 1: Image Editor -->
+    <div class="glass-panel tool-card">
+      <div>
+        <div class="ico"><i class="fa-solid fa-image"></i></div>
+        <h3>Image Editor</h3>
+        <p>Atur kecerahan dan kontras gambar instan tanpa aplikasi tambahan.</p>
+        <div class="field">
+          <input type="file" id="img-input" accept="image/*">
+        </div>
+        <canvas id="image-canvas"></canvas>
+        <div class="range-box">
+          <label>Brightness <span id="v-bright">100%</span></label>
+          <input type="range" id="brightness" min="0" max="200" value="100">
+        </div>
+        <div class="range-box">
+          <label>Contrast <span id="v-contrast">100%</span></label>
+          <input type="range" id="contrast" min="0" max="200" value="100">
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width:100%; margin-top:14px" onclick="downloadImage()">Download Gambar</button>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        
-        <!-- Top Bar Control -->
-        <div class="top-header">
-            <!-- Glass Switch -->
-            <div class="control-badge">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <span>Liquid Glass</span>
-                <label class="switch">
-                    <input type="checkbox" id="glass-toggle" onchange="toggleGlassMode(this.checked)">
-                    <span class="slider"></span>
-                </label>
-            </div>
-
-            <!-- Accent Color Picker -->
-            <div class="control-badge">
-                <i class="fa-solid fa-palette"></i>
-                <span>Tema</span>
-                <div class="color-picker-wrapper">
-                    <input type="color" id="theme-color" value="#0284c7" oninput="changeThemeColor(this.value)">
-                </div>
-            </div>
-
-            <!-- Traktir Kopi (Saweria Link) -->
-            <a href="https://saweria.co/Weeenkyy" target="_blank" rel="noopener noreferrer" class="control-badge coffee-btn">
-                <i class="fa-solid fa-mug-hot" style="color: #f59e0b;"></i>
-                <span>Traktir Kopi</span>
-            </a>
+    <!-- Tool 2: QR Generator -->
+    <div class="glass-panel tool-card">
+      <div>
+        <div class="ico"><i class="fa-solid fa-qrcode"></i></div>
+        <h3>QR Generator</h3>
+        <p>Ubah teks atau URL menjadi QR Code berpresisi tinggi siap pakai.</p>
+        <div class="field">
+          <label>Teks / URL</label>
+          <input type="text" id="qr-text" placeholder="https://contoh.com">
         </div>
-
-        <!-- Dashboard -->
-        <div id="dashboard" class="tab-content active">
-            <h2 class="tab-title">Dashboard Utama</h2>
-            
-            <h3 style="color: var(--accent-light); font-size: 1.2rem; margin-bottom: 12px;">Kenapa web ini dibikin? 🤔</h3>
-            <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 16px;">
-                Jujur aja, capek banget nggak sih tiap kali mau edit foto tipis-tipis atau konversi PDF, harus <i>download</i> aplikasinya dulu terus nunggu sampai terpasang di HP? Belum lagi bikin memori HP makin penuh cuma buat pakenya sekali-dua kali.
-            </p>
-            <p style="color: var(--text-sub); line-height: 1.7; margin-bottom: 24px;">
-                Makanya web <b>Multi-Tools</b> ini lahir! Ide dasarnya simpel banget: ngumpulin semua alat digital serbaguna yang sering kepake sehari-hari langsung di browser. Jadi kamu tinggal pakai kapan aja tanpa perlu ribet pasang aplikasi tambahan yang bikin berat HP.
-            </p>
-
-            <div style="background-color: rgba(15, 23, 42, 0.4); border-left: 4px solid var(--accent-color); padding: 18px; border-radius: 0 12px 12px 0;">
-                <p style="color: var(--text-main); font-weight: 600; margin-bottom: 6px;"><i class="fa-solid fa-rocket" style="color: var(--accent-light);"></i> Langsung Pakai & Hemat Memori</p>
-                <p style="color: var(--text-sub); font-size: 0.9rem;">Tinggal pilih fitur yang kamu butuhin di sidebar sebelah kiri dan langsung eksekusi saat itu juga tanpa makan ruang penyimpanan!</p>
-            </div>
+        <button class="btn btn-primary" style="width:100%" onclick="generateQR()">Buat QR Code</button>
+        <div style="text-align:center; margin-top:20px;">
+          <div id="qrcode"></div>
         </div>
-
-        <!-- Image Editor -->
-        <div id="image-editor" class="tab-content">
-            <h2 class="tab-title">Image Editor</h2>
-            <input type="file" id="img-input" accept="image/*">
-            <div class="editor-container">
-                <div class="canvas-area">
-                    <canvas id="image-canvas"></canvas>
-                </div>
-                <div class="controls-area">
-                    <div class="control-group">
-                        <label>Brightness</label>
-                        <input type="range" id="brightness" min="0" max="200" value="100">
-                    </div>
-                    <div class="control-group">
-                        <label>Contrast</label>
-                        <input type="range" id="contrast" min="0" max="200" value="100">
-                    </div>
-                    <div class="control-group">
-                        <label>Grayscale</label>
-                        <input type="range" id="grayscale" min="0" max="100" value="0">
-                    </div>
-                    <button class="btn" onclick="downloadImage()">Download Gambar</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- PDF Tools -->
-        <div id="pdf-tool" class="tab-content">
-            <h2 class="tab-title">PDF Tools & Converter</h2>
-            
-            <div style="margin-bottom: 25px;">
-                <h3 style="font-size: 1.1rem; color: var(--accent-light); margin-bottom: 8px;">Cetak Teks ke PDF</h3>
-                <p style="margin-bottom: 12px; font-size: 0.9rem; color: var(--text-sub);">Ketik teks di bawah ini untuk mencetaknya secara langsung ke format PDF.</p>
-                <textarea id="pdf-text" style="height:120px;" placeholder="Tulis catatan atau dokumen kamu di sini..."></textarea>
-                <button class="btn" onclick="printToPDF()">Cetak ke PDF</button>
-            </div>
-
-            <hr style="border: 0; border-top: 1px solid var(--panel-border); margin: 25px 0;">
-
-            <div>
-                <h3 style="font-size: 1.1rem; color: var(--accent-light); margin-bottom: 8px;">Konversi Dokumen</h3>
-                <p style="margin-bottom: 15px; font-size: 0.9rem; color: var(--text-sub);">Fitur konversi didukung secara langsung oleh layanan resmi <b>iLovePDF</b>:</p>
-                
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <div class="converter-card" style="flex: 1; min-width: 250px;">
-                        <h4 style="margin-bottom: 8px; color: var(--text-main);"><i class="fa-solid fa-file-word" style="color: #2563eb;"></i> PDF ke Word</h4>
-                        <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 15px;">Ubah dokumen PDF kamu menjadi file Word (.docx) melalui situs iLovePDF.</p>
-                        <a href="https://www.ilovepdf.com/" target="_blank" rel="noopener noreferrer" class="btn" style="text-decoration: none; display: inline-block; background-color: #e11d48; box-shadow: none;">
-                            Konversi via iLovePDF <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.8rem; margin-left: 5px;"></i>
-                        </a>
-                    </div>
-
-                    <div class="converter-card" style="flex: 1; min-width: 250px;">
-                        <h4 style="margin-bottom: 8px; color: var(--text-main);"><i class="fa-solid fa-file-pdf" style="color: #e11d48;"></i> Word ke PDF</h4>
-                        <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 15px;">Ubah dokumen Word (.doc/.docx) menjadi format PDF melalui situs iLovePDF.</p>
-                        <a href="https://www.ilovepdf.com/id/word-ke-pdf" target="_blank" rel="noopener noreferrer" class="btn" style="text-decoration: none; display: inline-block; background-color: #2563eb; box-shadow: none;">
-                            Konversi via iLovePDF <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.8rem; margin-left: 5px;"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <p style="font-size: 0.8rem; color: var(--text-sub); margin-top: 15px;">
-                    <i class="fa-solid fa-circle-info"></i> Sumber & Layanan Konversi Eksternal: <a href="https://www.ilovepdf.com/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-light); text-decoration: underline;">iLovePDF (https://www.ilovepdf.com/)</a>
-                </p>
-            </div>
-        </div>
-
-        <!-- TikTok Downloader -->
-        <div id="tiktok" class="tab-content">
-            <h2 class="tab-title">TikTok Video Downloader</h2>
-            <input type="url" id="tiktok-url" placeholder="Tempel URL Video TikTok di sini...">
-            <button class="btn" onclick="downloadTikTok()">Proses Video</button>
-            <div id="tiktok-result" style="margin-top:20px;"></div>
-        </div>
-
-        <!-- QR Code Generator -->
-        <div id="qr-gen" class="tab-content">
-            <h2 class="tab-title">QR Code Generator</h2>
-            <input type="text" id="qr-text" placeholder="Masukkan URL atau teks untuk QR Code...">
-            <button class="btn" onclick="generateQR()">Buat QR Code</button>
-            <div>
-                <div id="qrcode"></div>
-            </div>
-        </div>
-
+      </div>
     </div>
 
-    <script>
-        // Toggle Liquid Glass Mode
-        function toggleGlassMode(enabled) {
-            if (enabled) {
-                document.body.classList.add('glass-mode');
-            } else {
-                document.body.classList.remove('glass-mode');
-            }
-        }
+    <!-- Tool 3: TikTok Downloader -->
+    <div class="glass-panel tool-card">
+      <div>
+        <div class="ico"><i class="fa-brands fa-tiktok"></i></div>
+        <h3>TikTok Downloader</h3>
+        <p>Dapatkan link unduhan langsung video TikTok tanpa watermark.</p>
+        <div class="field">
+          <label>URL Video TikTok</label>
+          <input type="url" id="tiktok-url" placeholder="Tempel URL TikTok di sini...">
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="downloadTikTok()">Proses Video</button>
+        <div id="tiktok-result" style="margin-top:16px;"></div>
+      </div>
+    </div>
 
-        // Custom Theme Accent Color Change
-        function changeThemeColor(hexColor) {
-            const root = document.documentElement;
-            root.style.setProperty('--accent-color', hexColor);
-            root.style.setProperty('--accent-glow', hexColor + '55');
-            root.style.setProperty('--accent-light', hexColor);
-        }
+  </div>
+</section>
 
-        // Tab Navigation
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
+<!-- PDF SERVICES -->
+<section id="pdf-services" class="container">
+  <div class="sec-head">
+    <div class="tag">CONVERTER & DOCUMENTS</div>
+    <h2>PDF Tools & Document Converter</h2>
+    <p>Kelola kebutuhan dokumen PDF dan konversi file dengan mudah.</p>
+  </div>
+  <div class="grid-2">
 
-        // Image Editor Logic
-        const imgInput = document.getElementById('img-input');
-        const canvas = document.getElementById('image-canvas');
-        const ctx = canvas.getContext('2d');
-        let currentImg = null;
+    <!-- Cetak Teks ke PDF -->
+    <div class="glass-panel tool-card">
+      <div>
+        <div class="ico"><i class="fa-solid fa-file-pdf"></i></div>
+        <h3>Quick Text to PDF</h3>
+        <p>Ketik dokumen atau catatan Anda dan cetak langsung ke file PDF.</p>
+        <div class="field">
+          <label>Konten Teks</label>
+          <textarea id="pdf-text" placeholder="Ketik tulisan Anda di sini..."></textarea>
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="printToPDF()">Cetak ke PDF</button>
+    </div>
 
-        imgInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                currentImg = new Image();
-                currentImg.onload = () => {
-                    canvas.width = currentImg.width;
-                    canvas.height = currentImg.height;
-                    applyFilters();
-                };
-                currentImg.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
-        });
+    <!-- Converter Eksternal -->
+    <div class="glass-panel tool-card">
+      <div>
+        <div class="ico"><i class="fa-solid fa-arrows-rotate"></i></div>
+        <h3>External Document Converter</h3>
+        <p>Konversi dokumen PDF ke Word atau sebaliknya didukung oleh iLovePDF.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; margin-top:10px;">
+        <a href="https://www.ilovepdf.com/" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="text-align:center">
+          <i class="fa-solid fa-file-word" style="color:var(--accent);"></i> PDF ke Word via iLovePDF
+        </a>
+        <a href="https://www.ilovepdf.com/id/word-ke-pdf" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="text-align:center">
+          <i class="fa-solid fa-file-pdf" style="color:var(--accent);"></i> Word ke PDF via iLovePDF
+        </a>
+      </div>
+    </div>
 
-        const brightness = document.getElementById('brightness');
-        const contrast = document.getElementById('contrast');
-        const grayscale = document.getElementById('grayscale');
+  </div>
+</section>
 
-        [brightness, contrast, grayscale].forEach(slider => {
-            slider.addEventListener('input', applyFilters);
-        });
+<!-- WHY TECHGEAR -->
+<section class="container">
+  <div class="sec-head">
+    <div class="tag">WHY TECHGEAR UTILITIES</div>
+    <h2>Keunggulan Menggunakan Web Tools</h2>
+  </div>
+  <div class="grid-4">
+    <div class="glass-panel svc"><div class="ico"><i class="fa-solid fa-bolt"></i></div><h4>Super Cepat</h4><p>Proses instan tanpa beban antrean server.</p></div>
+    <div class="glass-panel svc"><div class="ico"><i class="fa-solid fa-shield-halved"></i></div><h4>Privasi Aman</h4><p>File Anda diproses langsung di browser Anda.</p></div>
+    <div class="glass-panel svc"><div class="ico"><i class="fa-solid fa-hard-drive"></i></div><h4>Hemat Memori</h4><p>Tidak perlu instalasi aplikasi di HP/PC.</p></div>
+    <div class="glass-panel svc"><div class="ico"><i class="fa-solid fa-infinity"></i></div><h4>Gratis Diakses</h4><p>Dapat digunakan kapan saja tanpa batas.</p></div>
+  </div>
+</section>
 
-        function applyFilters() {
-            if (!currentImg) return;
-            ctx.filter = `brightness(${brightness.value}%) contrast(${contrast.value}%) grayscale(${grayscale.value}%)`;
-            ctx.drawImage(currentImg, 0, 0, canvas.width, canvas.height);
-        }
+<!-- CONTACTS -->
+<section id="contacts" class="container">
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <h3>Hubungi Tim TECHGEAR</h3>
+      <p>Punya saran fitur baru atau kendala saat menggunakan tools kami? Kirimkan pesan Anda langsung di bawah ini.</p>
+      <div class="row"><div class="ico">📍</div>Jakarta, Indonesia</div>
+      <div class="row"><div class="ico">✉️</div>support@techgear.id</div>
+      <div class="row"><div class="ico">💬</div>24/7 Web Assistant Ready</div>
+    </div>
+    <form class="glass-panel" id="contactForm" onsubmit="event.preventDefault(); alert('Pesan berhasil terkirim!'); this.reset();">
+      <div class="field">
+        <label>Nama</label>
+        <input type="text" placeholder="Nama Anda" required>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" placeholder="nama@email.com" required>
+      </div>
+      <div class="field">
+        <label>Pesan / Feedback</label>
+        <textarea placeholder="Tuliskan pesan Anda..." required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Kirim Pesan</button>
+    </form>
+  </div>
+</section>
 
-        function downloadImage() {
-            if (!currentImg) return alert('Pilih gambar terlebih dahulu!');
-            const link = document.createElement('a');
-            link.download = 'edited-image.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        }
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <div class="logo" style="margin-bottom:14px"><span class="dot"></span>TECHGEAR</div>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6">Next-generation web tools engine built for productivity and speed.</p>
+      </div>
+      <div class="foot-col"><h5>Tools</h5><a href="#tools">Image Editor</a><a href="#tools">QR Code</a><a href="#tools">TikTok Grabber</a></div>
+      <div class="foot-col"><h5>Converter</h5><a href="#pdf-services">Text to PDF</a><a href="#pdf-services">PDF to Word</a><a href="#pdf-services">Word to PDF</a></div>
+      <div class="foot-col"><h5>Support</h5><a href="https://saweria.co/Weeenkyy" target="_blank">Traktir Kopi</a><a href="#contacts">Contacts</a></div>
+    </div>
+    <div class="foot-bottom">© 2026 TECHGEAR. All rights reserved. Designed with a futuristic glassmorphic theme.</div>
+  </div>
+</footer>
 
-        // PDF Printing
-        function printToPDF() {
-            const text = document.getElementById('pdf-text').value;
-            if (!text) return alert('Isi teks terlebih dahulu!');
-            const win = window.open('', '', 'height=500,width=800');
-            win.document.write(`<pre style="font-family: sans-serif; font-size: 14px; padding: 20px;">${text}</pre>`);
-            win.document.close();
-            win.print();
-        }
+<script>
+  // Mobile menu toggle
+  const burger=document.getElementById('burger'),menu=document.getElementById('menu');
+  burger.addEventListener('click',()=>menu.classList.toggle('open'));
+  menu.querySelectorAll('a[data-nav]').forEach(a=>a.addEventListener('click',()=>menu.classList.remove('open')));
 
-        // TikTok Downloader Simulation
-        function downloadTikTok() {
-            const url = document.getElementById('tiktok-url').value;
-            const resultDiv = document.getElementById('tiktok-result');
-            if (!url) return alert('Masukkan URL TikTok terlebih dahulu!');
-            
-            resultDiv.innerHTML = '<p style="color: var(--accent-light);">Memproses video...</p>';
-            
-            setTimeout(() => {
-                resultDiv.innerHTML = `
-                    <div style="background: rgba(15, 23, 42, 0.5); padding: 18px; border-radius: 12px; border: 1px solid var(--panel-border);">
-                        <p><b>Status:</b> Berhasil ditemukan!</p>
-                        <p style="margin-top: 12px;">
-                            <a href="${url}" target="_blank" class="btn" style="text-decoration:none; display:inline-block;">Download MP4 (No Watermark)</a>
-                        </p>
-                    </div>
-                `;
-            }, 1500);
-        }
+  // Active nav highlight on scroll
+  const sections=[...document.querySelectorAll('section[id]')];
+  const navLinks=[...document.querySelectorAll('.menu a[data-nav]')];
+  window.addEventListener('scroll',()=>{
+    let cur='';
+    sections.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id});
+    navLinks.forEach(a=>a.style.color=a.getAttribute('href')==='#'+cur?'#fff':'');
+  });
 
-        // QR Code Generator
-        let qrInstance = null;
-        function generateQR() {
-            const text = document.getElementById('qr-text').value;
-            const qrContainer = document.getElementById('qrcode');
-            if (!text) return alert('Masukkan teks atau URL!');
-            
-            qrContainer.innerHTML = '';
-            qrInstance = new QRCode(qrContainer, {
-                text: text,
-                width: 160,
-                height: 160
-            });
-        }
-    </script>
+  // Image Editor Logic
+  const imgInput = document.getElementById('img-input');
+  const canvas = document.getElementById('image-canvas');
+  const ctx = canvas.getContext('2d');
+  let currentImg = null;
+
+  imgInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      currentImg = new Image();
+      currentImg.onload = () => {
+        canvas.width = currentImg.width;
+        canvas.height = currentImg.height;
+        applyFilters();
+      };
+      currentImg.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  const brightness = document.getElementById('brightness');
+  const contrast = document.getElementById('contrast');
+  const vBright = document.getElementById('v-bright');
+  const vContrast = document.getElementById('v-contrast');
+
+  [brightness, contrast].forEach(slider => {
+    slider.addEventListener('input', () => {
+      vBright.innerText = `${brightness.value}%`;
+      vContrast.innerText = `${contrast.value}%`;
+      applyFilters();
+    });
+  });
+
+  function applyFilters() {
+    if (!currentImg) return;
+    ctx.filter = `brightness(${brightness.value}%) contrast(${contrast.value}%)`;
+    ctx.drawImage(currentImg, 0, 0, canvas.width, canvas.height);
+  }
+
+  function downloadImage() {
+    if (!currentImg) return alert('Silakan pilih gambar terlebih dahulu!');
+    const link = document.createElement('a');
+    link.download = 'edited-image.png';
+    link.href = canvas.toDataURL();
+    link.click();
+  }
+
+  // PDF Printing
+  function printToPDF() {
+    const text = document.getElementById('pdf-text').value;
+    if (!text) return alert('Isi teks terlebih dahulu!');
+    const win = window.open('', '', 'height=500,width=800');
+    win.document.write(`<pre style="font-family: sans-serif; font-size: 14px; padding: 20px;">${text}</pre>`);
+    win.document.close();
+    win.print();
+  }
+
+  // TikTok Downloader Simulation
+  function downloadTikTok() {
+    const url = document.getElementById('tiktok-url').value;
+    const resultDiv = document.getElementById('tiktok-result');
+    if (!url) return alert('Masukkan URL TikTok terlebih dahulu!');
+    
+    resultDiv.innerHTML = '<p style="color:var(--accent); font-size:13px;"><i class="fa-solid fa-spinner fa-spin"></i> Memproses video...</p>';
+    
+    setTimeout(() => {
+      resultDiv.innerHTML = `
+        <div style="background: rgba(8,12,24,0.7); padding: 12px; border-radius: 10px; border: 1px solid var(--glass-border);">
+          <p style="font-size:13px; color:#22c55e;"><i class="fa-solid fa-circle-check"></i> Video Berhasil Ditemukan!</p>
+          <a href="${url}" target="_blank" class="btn btn-primary" style="margin-top:10px; padding:8px 16px; font-size:12px; width:100%;">Download MP4</a>
+        </div>
+      `;
+    }, 1200);
+  }
+
+  // QR Code Generator
+  function generateQR() {
+    const text = document.getElementById('qr-text').value;
+    const qrContainer = document.getElementById('qrcode');
+    if (!text) return alert('Masukkan teks atau URL terlebih dahulu!');
+    
+    qrContainer.innerHTML = '';
+    new QRCode(qrContainer, {
+      text: text,
+      width: 130,
+      height: 130
+    });
+  }
+</script>
 </body>
-</html>
+                                                </html>
