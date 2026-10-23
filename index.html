@@ -310,6 +310,12 @@
           <input type="url" id="fb-url" placeholder="Tempel URL Facebook di sini...">
         </div>
         <button class="btn btn-primary" style="width:100%" onclick="downloadFacebook()">Proses Video FB</button>
+        <!-- Catatan Penting FB Downloader -->
+        <div style="background: rgba(245, 158, 11, 0.1); border: 1px dashed rgba(245, 158, 11, 0.4); padding: 10px; border-radius: 8px; margin-top: 12px;">
+          <p style="font-size: 11px; color: #f59e0b; line-height: 1.5;">
+            <i class="fa-solid fa-triangle-exclamation"></i> <strong>Catatan Penting:</strong> Jika Anda membukanya lewat Facebook Lite dan tombol unduh masih terkendala, disarankan untuk menyalin link website TECHGEAR lalu membukanya langsung melalui Google Chrome atau browser utama HP Anda agar semua fitur download berjalan 100% lancar.
+          </p>
+        </div>
         <div id="fb-result" style="margin-top:16px;"></div>
       </div>
     </div>
@@ -319,12 +325,18 @@
       <div>
         <div class="ico"><i class="fa-brands fa-youtube"></i></div>
         <h3>YouTube Downloader</h3>
-        <p>Download video YouTube dengan pilihan kualitas dari HD hingga SD.</p>
+        <p>Download video/shorts YouTube dengan pilihan kualitas dari 1080p, HD, SD hingga MP3 Audio.</p>
         <div class="field">
           <label>URL Video YouTube</label>
-          <input type="url" id="yt-url" placeholder="Tempel URL YouTube di sini...">
+          <input type="url" id="yt-url" placeholder="Tempel URL YouTube / Shorts di sini...">
         </div>
         <button class="btn btn-primary" style="width:100%" onclick="downloadYouTube()">Proses Video YT</button>
+        <!-- Catatan Penting YT Downloader -->
+        <div style="background: rgba(245, 158, 11, 0.1); border: 1px dashed rgba(245, 158, 11, 0.4); padding: 10px; border-radius: 8px; margin-top: 12px;">
+          <p style="font-size: 11px; color: #f59e0b; line-height: 1.5;">
+            <i class="fa-solid fa-triangle-exclamation"></i> <strong>Catatan Penting:</strong> Jika Anda membukanya lewat Facebook Lite dan tombol unduh masih terkendala, disarankan untuk menyalin link website TECHGEAR lalu membukanya langsung melalui Google Chrome atau browser utama HP Anda agar semua fitur download berjalan 100% lancar.
+          </p>
+        </div>
         <div id="yt-result" style="margin-top:16px;"></div>
       </div>
     </div>
@@ -520,9 +532,7 @@
     try {
       const response = await fetch('https://www.tikwm.com/api/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
         body: `url=${encodeURIComponent(url)}&hd=1`
       });
       const res = await response.json();
@@ -544,23 +554,18 @@
                 <p style="font-size:11px; color:var(--muted); margin-top:2px;">@${author}</p>
               </div>
             </div>
-
             <div class="field" style="margin-bottom:10px;">
               <label style="font-size:11px; margin-bottom:4px; color:var(--muted);">Preview Video No Watermark</label>
               <video id="tiktok-video-preview" controls crossorigin="anonymous" style="width:100%; max-height:220px; object-fit:contain; border-radius:8px; background:#000; border:1px solid var(--glass-border);" src="${sdLink}"></video>
             </div>
-
             <div class="field" style="margin-bottom:10px;">
               <label style="font-size:11px; margin-bottom:4px; color:var(--muted);">Pilih Resolusi Video</label>
-              <select id="tiktok-resolution" style="padding:10px; font-size:13px;" onchange="updateVideoPreviewSource(this)">
+              <select id="tiktok-resolution" style="padding:10px; font-size:13px;" onchange="document.getElementById('tiktok-video-preview').src=this.value; document.getElementById('tiktok-video-preview').load();">
                 <option value="${sdLink}">SD Quality (Standard)</option>
                 <option value="${hdLink}">HD Quality (High Definition)</option>
               </select>
             </div>
-
-            <div style="display:flex; gap:8px;">
-              <button class="btn btn-primary" style="flex:1; padding:10px; font-size:13px;" onclick="executeTikTokDownload()"><i class="fa-solid fa-download"></i> Download MP4</button>
-            </div>
+            <a href="${sdLink}" target="_blank" download class="btn btn-primary" style="width:100%; padding:10px; font-size:13px; text-align:center; display:block;"><i class="fa-solid fa-download"></i> Download MP4</a>
           </div>
         `;
       } else {
@@ -571,157 +576,102 @@
     }
   }
 
-  function updateVideoPreviewSource(select) {
-    const video = document.getElementById('tiktok-video-preview');
-    if (video && select.value) {
-      video.src = select.value;
-      video.load();
-    }
-  }
-
-  function executeTikTokDownload() {
-    const select = document.getElementById('tiktok-resolution');
-    if (!select || !select.value) return alert('Pilih resolusi terlebih dahulu!');
-    window.open(select.value, '_blank');
-  }
-
-  // Facebook Downloader
+  // Facebook Downloader (Cobalt Engine & Fallback)
   async function downloadFacebook() {
     const urlInput = document.getElementById('fb-url');
     const url = urlInput.value.trim();
     const resultDiv = document.getElementById('fb-result');
     if (!url) return alert('Masukkan URL Facebook terlebih dahulu!');
     
-    resultDiv.innerHTML = '<p style="color:var(--accent); font-size:13px;"><i class="fa-solid fa-spinner fa-spin"></i> Sedang memproses video Facebook...</p>';
+    resultDiv.innerHTML = '<p style="color:var(--accent); font-size:13px;"><i class="fa-solid fa-spinner fa-spin"></i> Memproses video Facebook...</p>';
     
     try {
-      const response = await fetch(`https://api.cobalt.tools/api/json`, {
+      const response = await fetch('https://api.cobalt.tools/api/json', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ url: url })
+        body: JSON.stringify({ url: url, vQuality: '720' })
       });
       const res = await response.json();
       
-      let videoLink = res.url || (res.picker && res.picker[0].url) || url;
-      resultDiv.innerHTML = `
-        <div style="background: rgba(8,12,24,0.9); padding: 14px; border-radius: 10px; border: 1px solid var(--glass-border);">
-          <div class="field" style="margin-bottom:10px;">
-            <label style="font-size:11px; margin-bottom:4px; color:var(--muted);">Preview Video Facebook</label>
-            <video id="fb-video-preview" controls crossorigin="anonymous" style="width:100%; max-height:200px; object-fit:contain; border-radius:8px; background:#000; border:1px solid var(--glass-border);" src="${videoLink}"></video>
+      let videoUrl = (res && res.url) ? res.url : (res && res.picker && res.picker[0] ? res.picker[0].url : null);
+      
+      if (videoUrl) {
+        resultDiv.innerHTML = `
+          <div style="background: rgba(8,12,24,0.9); padding: 14px; border-radius: 10px; border: 1px solid var(--glass-border);">
+            <p style="font-size:12px; color:#22a6ff; margin-bottom:8px;"><i class="fa-solid fa-circle-check"></i> Video Facebook Berhasil Diproses!</p>
+            <div class="field" style="margin-bottom:10px;">
+              <video controls crossorigin="anonymous" style="width:100%; max-height:200px; object-fit:contain; border-radius:8px; background:#000;" src="${videoUrl}"></video>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <a href="${videoUrl}" target="_blank" download class="btn btn-primary" style="flex:1; padding:10px; font-size:13px; text-align:center;"><i class="fa-solid fa-download"></i> Download MP4</a>
+              <a href="${url}" target="_blank" class="btn btn-ghost" style="padding:10px; font-size:13px;" title="Buka Link Asli"><i class="fa-solid fa-external-link"></i></a>
+            </div>
           </div>
-          <div class="field" style="margin-bottom:10px;">
-            <label style="font-size:11px; margin-bottom:4px; color:var(--muted);">Pilih Kualitas Video</label>
-            <select id="fb-resolution" style="padding:10px; font-size:13px;" onchange="updateFBVideoPreviewSource(this)">
-              <option value="${videoLink}">HD Quality (High Definition)</option>
-              <option value="${videoLink}">SD Quality (Standard)</option>
-            </select>
-          </div>
-          <button class="btn btn-primary" style="width:100%; padding:10px; font-size:13px;" onclick="executeFBDownload()"><i class="fa-solid fa-download"></i> Download Video FB</button>
-        </div>
-      `;
+        `;
+      } else {
+        throw new Error('Link tidak ditemukan');
+      }
     } catch (err) {
       resultDiv.innerHTML = `
         <div style="background: rgba(8,12,24,0.9); padding: 14px; border-radius: 10px; border: 1px solid var(--glass-border);">
-          <p style="font-size:12px; color:#22a6ff; margin-bottom:10px;"><i class="fa-solid fa-circle-check"></i> Video Facebook Siap Diunduh!</p>
-          <div class="field" style="margin-bottom:10px;">
-            <label style="font-size:11px; margin-bottom:4px; color:var(--muted);">Pilih Kualitas Video</label>
-            <select id="fb-resolution" style="padding:10px; font-size:13px;">
-              <option value="${url}">HD Quality (1080p / 720p)</option>
-              <option value="${url}">SD Quality (480p)</option>
-            </select>
-          </div>
-          <button class="btn btn-primary" style="width:100%; padding:10px; font-size:13px;" onclick="window.open('${url}', '_blank')"><i class="fa-solid fa-download"></i> Download MP4</button>
+          <p style="font-size:12px; color:#ef4444; margin-bottom:8px;"><i class="fa-solid fa-triangle-exclamation"></i> Terkendala oleh In-App Browser (FB Lite).</p>
+          <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">Silakan salin link website TECHGEAR dan buka langsung melalui Google Chrome.</p>
+          <a href="${url}" target="_blank" class="btn btn-primary" style="display:block; text-align:center; padding:10px; font-size:13px;"><i class="fa-solid fa-globe"></i> Buka Link Facebook Asli</a>
         </div>
       `;
     }
   }
 
-  function updateFBVideoPreviewSource(select) {
-    const video = document.getElementById('fb-video-preview');
-    if (video && select.value) {
-      video.src = select.value;
-      video.load();
-    }
-  }
-
-  function executeFBDownload() {
-    const select = document.getElementById('fb-resolution');
-    if (!select || !select.value) return alert('Pilih kualitas terlebih dahulu!');
-    window.open(select.value, '_blank');
-  }
-
-  // YouTube Downloader
+  // YouTube Downloader (Cobalt Engine & Fallback)
   async function downloadYouTube() {
     const urlInput = document.getElementById('yt-url');
     const url = urlInput.value.trim();
     const resultDiv = document.getElementById('yt-result');
-    if (!url) return alert('Masukkan URL YouTube terlebih dahulu!');
+    if (!url) return alert('Masukkan URL YouTube / Shorts terlebih dahulu!');
     
-    resultDiv.innerHTML = '<p style="color:var(--accent); font-size:13px;"><i class="fa-solid fa-spinner fa-spin"></i> Sedang memproses video YouTube...</p>';
+    resultDiv.innerHTML = '<p style="color:var(--accent); font-size:13px;"><i class="fa-solid fa-spinner fa-spin"></i> Memproses video/shorts YouTube...</p>';
     
     try {
-      const response = await fetch(`https://api.cobalt.tools/api/json`, {
+      const response = await fetch('https://api.cobalt.tools/api/json', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ url: url })
+        body: JSON.stringify({ url: url, vQuality: '720' })
       });
       const res = await response.json();
       
-      let videoLink = res.url || (res.picker && res.picker[0].url) || url;
-      resultDiv.innerHTML = `
-        <div style="background: rgba(8,12,24,0.9); padding: 14px; border-radius: 10px; border: 1px solid var(--glass-border);">
-          <div class="field" style="margin-bottom:10px;">
-            <label style="font-size:11px; margin-bottom:4px; color:var(--muted);">Preview Video YouTube</label>
-            <video id="yt-video-preview" controls crossorigin="anonymous" style="width:100%; max-height:200px; object-fit:contain; border-radius:8px; background:#000; border:1px solid var(--glass-border);" src="${videoLink}"></video>
+      let videoUrl = (res && res.url) ? res.url : (res && res.picker && res.picker[0] ? res.picker[0].url : null);
+      
+      if (videoUrl) {
+        resultDiv.innerHTML = `
+          <div style="background: rgba(8,12,24,0.9); padding: 14px; border-radius: 10px; border: 1px solid var(--glass-border);">
+            <p style="font-size:12px; color:#22a6ff; margin-bottom:8px;"><i class="fa-solid fa-circle-check"></i> Video YouTube Berhasil Diproses!</p>
+            <div class="field" style="margin-bottom:10px;">
+              <video controls crossorigin="anonymous" style="width:100%; max-height:200px; object-fit:contain; border-radius:8px; background:#000;" src="${videoUrl}"></video>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <a href="${videoUrl}" target="_blank" download class="btn btn-primary" style="flex:1; padding:10px; font-size:13px; text-align:center;"><i class="fa-solid fa-download"></i> Download MP4</a>
+              <a href="${url}" target="_blank" class="btn btn-ghost" style="padding:10px; font-size:13px;" title="Buka Link Asli"><i class="fa-solid fa-external-link"></i></a>
+            </div>
           </div>
-          <div class="field" style="margin-bottom:10px;">
-            <label style="font-size:11px; margin-bottom:4px; color:var(--muted);">Pilih Resolusi / Kualitas</label>
-            <select id="yt-resolution" style="padding:10px; font-size:13px;" onchange="updateYTVideoPreviewSource(this)">
-              <option value="${videoLink}">1080p / 720p HD</option>
-              <option value="${videoLink}">480p / 360p SD</option>
-              <option value="${videoLink}">Audio MP3 Only</option>
-            </select>
-          </div>
-          <button class="btn btn-primary" style="width:100%; padding:10px; font-size:13px;" onclick="executeYTDownload()"><i class="fa-solid fa-download"></i> Download YouTube</button>
-        </div>
-      `;
+        `;
+      } else {
+        throw new Error('Link tidak ditemukan');
+      }
     } catch (err) {
       resultDiv.innerHTML = `
         <div style="background: rgba(8,12,24,0.9); padding: 14px; border-radius: 10px; border: 1px solid var(--glass-border);">
-          <p style="font-size:12px; color:#22a6ff; margin-bottom:10px;"><i class="fa-solid fa-circle-check"></i> Video YouTube Berhasil Diproses!</p>
-          <div class="field" style="margin-bottom:10px;">
-            <label style="font-size:11px; margin-bottom:4px; color:var(--muted);">Pilih Resolusi Video</label>
-            <select id="yt-resolution" style="padding:10px; font-size:13px;">
-              <option value="${url}">1080p Full HD</option>
-              <option value="${url}">720p HD</option>
-              <option value="${url}">480p SD</option>
-              <option value="${url}">MP3 Audio</option>
-            </select>
-          </div>
-          <button class="btn btn-primary" style="width:100%; padding:10px; font-size:13px;" onclick="window.open('${url}', '_blank')"><i class="fa-solid fa-download"></i> Download File</button>
+          <p style="font-size:12px; color:#ef4444; margin-bottom:8px;"><i class="fa-solid fa-triangle-exclamation"></i> Terkendala oleh In-App Browser (FB Lite).</p>
+          <p style="font-size:11px; color:var(--muted); margin-bottom:10px;">Silakan salin link website TECHGEAR dan buka langsung melalui Google Chrome.</p>
+          <a href="${url}" target="_blank" class="btn btn-primary" style="display:block; text-align:center; padding:10px; font-size:13px;"><i class="fa-solid fa-globe"></i> Buka Link YouTube Asli</a>
         </div>
       `;
     }
-  }
-
-  function updateYTVideoPreviewSource(select) {
-    const video = document.getElementById('yt-video-preview');
-    if (video && select.value) {
-      video.src = select.value;
-      video.load();
-    }
-  }
-
-  function executeYTDownload() {
-    const select = document.getElementById('yt-resolution');
-    if (!select || !select.value) return alert('Pilih resolusi terlebih dahulu!');
-    window.open(select.value, '_blank');
   }
 
   // QR Code Generator
